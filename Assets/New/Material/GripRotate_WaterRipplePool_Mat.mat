@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GripRotate_WaterRipplePool_Mat
+  m_Shader: {fileID: 4800000, guid: ca261c2528b07a64dbfb8ea2a6fca2c4, type: 3}
+  m_ShaderKeywords:
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+      _MainTex:
+        m_Texture: {fileID: 2800000, guid: 60877a11fb586124087d85706d172142, type: 3}
+        m_Scale: {x: 0.01, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+      _Frequency: 5
+      _InvWavelength: 10
+      _Magnitude: 0.05
+      _ShadowRamp: 1
+      _UseLightMap: 1
+    m_Colors:
+      _AmbientColour1: {r: 0.4745098, g: 0.4745098, b: 0.4745098, a: 0}
+      _Color: {r: 1, g: 1, b: 1, a: 1}
+      _LightColour0: {r: 0.4392157, g: 0.2795205, b: 0.25836217, a: 0}
+      _LightColour1: {r: 0.69803923, g: 0.6666667, b: 0.7019608, a: 0}
+      _LightColour2: {r: 0.6509804, g: 0.48512957, b: 0.43909267, a: 0}
+      _LightColour3: {r: 0, g: 0, b: 0, a: 0}
+      _LightTint: {r: 1, g: 1, b: 1, a: 0}
+      _ShadowColour: {r: 0.8235294, g: 0.79880685, b: 0.599481, a: 1}
+  m_BuildTextureStacks: []

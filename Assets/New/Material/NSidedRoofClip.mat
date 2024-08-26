@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: NSidedRoofClip
+  m_Shader: {fileID: 4800000, guid: beedf956372429f42955c8e6412b2327, type: 3}
+  m_ShaderKeywords:
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+      _MainTex:
+        m_Texture: {fileID: 2800000, guid: ea0b02dbf9d1b4e49b76cb8db7b197c7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+      _ShadowRamp: 0
+      _UseLightMap: 1
+    m_Colors:
+      _AmbientColour1: {r: 0, g: 0, b: 0, a: 0}
+      _Color: {r: 0.79790384, g: 0.8028303, b: 0.8283582, a: 1}
+      _LightColour0: {r: 0.30357555, g: 0.3692726, b: 0.4117647, a: 1}
+      _LightColour1: {r: 0.85172415, g: 0.85172415, b: 0.85172415, a: 0}
+      _LightColour2: {r: 0.5147059, g: 0.61764705, b: 0.6509804, a: 0}
+      _LightColour3: {r: 0.34827587, g: 0.34827587, b: 0.34827587, a: 0}
+      _LightTint: {r: 1, g: 1, b: 1, a: 0}
+      _Plane: {r: 1, g: 0, b: 0, a: 26.5}
+      _Plane0: {r: 1, g: 0, b: 0, a: -3.5}
+      _Plane1: {r: -1, g: 0, b: 0, a: -3.5}
+      _Plane2: {r: 0, g: 0, b: 1, a: -3.5}
+      _Plane3: {r: 0, g: 0, b: -1, a: -3.5}
+      _Plane4: {r: 0, g: 1, b: 0, a: 1}
+      _Plane5: {r: 0, g: 1, b: 0, a: 1}
+      _ShadowColour: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []

@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Zen_Hub_Mat
+  m_Shader: {fileID: 4800000, guid: bbd9eec337a7de043847552b92eb7e57, type: 3}
+  m_ShaderKeywords:
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+      _MainTex:
+        m_Texture: {fileID: 2800000, guid: 69af572f824f32447918d00b449ac423, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+      _Density: 0.1
+      _PanSpeedX: 0
+      _PanSpeedY: 0
+      _ShadowRamp: 1
+      _Tim: 0
+      _UseLightMap: 1
+    m_Colors:
+      _AmbientColour1: {r: 0, g: 0, b: 0, a: 0}
+      _Color: {r: 1, g: 1, b: 1, a: 1}
+      _FogColour: {r: 0, g: 0, b: 0, a: 1}
+      _LightColour0: {r: 0.41256443, g: 0.54509807, b: 0.53956044, a: 0}
+      _LightColour1: {r: 0.7372549, g: 0.98039216, b: 0.8745098, a: 0}
+      _LightColour2: {r: 0.11937716, g: 0.42708218, b: 0.50735295, a: 0}
+      _LightColour3: {r: 0.19863975, g: 0.069204144, b: 0.2352941, a: 0}
+      _LightTint: {r: 1, g: 1, b: 1, a: 0}
+      _Plane: {r: 0, g: -1, b: 0, a: 4}
+      _ShadowColour: {r: 0.085640125, g: 0.10821499, b: 0.16176468, a: 0}
+  m_BuildTextureStacks: []

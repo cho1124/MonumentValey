@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CrushWaterEdge_Mat
+  m_Shader: {fileID: 4800000, guid: d64de23aefe322f40876f2637a64daa0, type: 3}
+  m_ShaderKeywords:
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+      _MainTex:
+        m_Texture: {fileID: 2800000, guid: 924de4fb625a6b746ace390c9c3e9d2a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+      _Density: 0.05
+      _SpeedA: 10
+      _SpeedB: 8
+    m_Colors:
+      _Color: {r: 1, g: 1, b: 1, a: 1}
+      _Colour0: {r: 0.73333335, g: 0.8235294, b: 0.75686276, a: 0.44313726}
+      _Colour1: {r: 0.05, g: 0.275, b: 0.275, a: 0}
+      _FogColour: {r: 0.77254903, g: 0.77254903, b: 0.77254903, a: 1}
+      _Plane: {r: 0, g: -1, b: 0, a: 1}
+  m_BuildTextureStacks: []

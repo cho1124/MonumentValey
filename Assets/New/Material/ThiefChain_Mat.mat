@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ThiefChain_Mat
+  m_Shader: {fileID: 4800000, guid: ce5766161b7aec845b7f0c12c901e856, type: 3}
+  m_ShaderKeywords:
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+      _MainTex:
+        m_Texture: {fileID: 2800000, guid: eec4f16146712464abc4b0c0f5e6a034, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+      _Density: 0.1
+      _ShadowRamp: 0
+      _UseLightMap: 1
+    m_Colors:
+      _AmbientColour1: {r: 0.34487832, g: 0.375, b: 0.2757353, a: 0}
+      _Color: {r: 1, g: 1, b: 1, a: 1}
+      _FogColour: {r: 0.74578285, g: 0.8718396, b: 0.8897059, a: 1}
+      _LightColour0: {r: 0.64705884, g: 0.43771628, b: 0.48535988, a: 0}
+      _LightColour1: {r: 0.66176474, g: 0.6376029, b: 0.5741782, a: 0}
+      _LightColour2: {r: 0.44117647, g: 0.32439446, b: 0.39446366, a: 0}
+      _LightColour3: {r: 0, g: 1, b: 0.8758621, a: 0}
+      _LightTint: {r: 1, g: 1, b: 1, a: 0}
+      _Pivot: {r: 0, g: 0, b: 0, a: 1}
+      _Pivot2: {r: 0, g: 0, b: 0, a: 1}
+      _Plane: {r: 0, g: 0, b: 1, a: 100}
+      _Plane0: {r: 0, g: 1, b: 0, a: 1}
+      _Plane1: {r: 0, g: 1, b: 0, a: 1}
+      _Plane2: {r: 0, g: 0, b: -1, a: -111}
+      _Plane3: {r: 0, g: 1, b: 0, a: 1}
+      _Plane4: {r: 0, g: 1, b: 0, a: 1}
+      _Plane5: {r: 0, g: 1, b: 0, a: 1}
+      _ShadowColour: {r: 0.6764706, g: 0.5516048, b: 0.22383219, a: 0}
+  m_BuildTextureStacks: []

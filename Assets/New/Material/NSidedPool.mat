@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: NSidedPool
+  m_Shader: {fileID: 4800000, guid: 1776fbb8059a17f4bb6928ce2ed47eac, type: 3}
+  m_ShaderKeywords:
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+      _MainTex:
+        m_Texture: {fileID: 2800000, guid: d1107a2909024f349bd752d36b58c298, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+      _Frequency: 2
+      _InvWavelength: 10
+      _Magnitude: 0.02
+      _ShadowRamp: 1
+      _UseLightMap: 1
+      _ZOffset: 5E-05
+    m_Colors:
+      _AmbientColour1: {r: 0.32647058, g: 0.36537555, b: 0.38275862, a: 0}
+      _LightColour0: {r: 0, g: 0, b: 0, a: 0}
+      _LightColour1: {r: 0.6838235, g: 0.97210205, b: 1, a: 0}
+      _LightColour2: {r: 0.41759637, g: 0.46353433, b: 0.46551725, a: 0}
+      _LightColour3: {r: 0, g: 0, b: 0, a: 0}
+      _LightTint: {r: 1, g: 1, b: 1, a: 0}
+      _Plane: {r: 0, g: 1, b: 0, a: -5}
+      _ShadowColour: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []

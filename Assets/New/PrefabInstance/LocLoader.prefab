@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1645276706634575
+GameObject:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Component:
+  - component: {fileID: 4498162001762170}
+  - component: {fileID: 114784655898142350}
+  m_Layer: 0
+  m_Name: LocLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4498162001762170
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645276706634575}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -197.01169, y: 101.31409, z: 647.1228}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
+--- !u!114 &114784655898142350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645276706634575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dd082f12a02d720c615827cee32fbcb, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  localisedStrings: {fileID: 4900000, guid: 44c1f08a1f1b873438d541731987f906, type: 3}
+  localisedFonts:
+  - language: 0
+    serifFont: {fileID: 12800000, guid: 939f120bb6d6a434a854d9d286210819, type: 3}
+    sansSerifFont: {fileID: 12800000, guid: ffa96b680376e3740a0e320618283c73, type: 3}
+    storytellerFont: {fileID: 12800000, guid: 8a0f34caadcaf0c4e822af37129e34d2, type: 3}
+    scale: 1
+    localiseTitles: 0
+  - language: 7
+    serifFont: {fileID: 12800000, guid: 38d95ec96ed9e91498cc49796ba14d69, type: 3}
+    sansSerifFont: {fileID: 12800000, guid: 38d95ec96ed9e91498cc49796ba14d69, type: 3}
+    storytellerFont: {fileID: 12800000, guid: 38d95ec96ed9e91498cc49796ba14d69, type: 3}
+    scale: 1.35
+    localiseTitles: 0
+  - language: 8
+    serifFont: {fileID: 12800000, guid: 2d939237a1eb25c459bcc80a2cb2ccee, type: 3}
+    sansSerifFont: {fileID: 12800000, guid: c2f37420d01f8834a827e90b8a557b42, type: 3}
+    storytellerFont: {fileID: 12800000, guid: 2d939237a1eb25c459bcc80a2cb2ccee, type: 3}
+    scale: 1.25
+    localiseTitles: 0
+  - language: 9
+    serifFont: {fileID: 12800000, guid: 3cc8e2cfdd24a5d499f66e28d8128b75, type: 3}
+    sansSerifFont: {fileID: 12800000, guid: 3cc8e2cfdd24a5d499f66e28d8128b75, type: 3}
+    storytellerFont: {fileID: 12800000, guid: fd57dd42fe2a8ff4f97bc89b7aa27d18, type: 3}
+    scale: 1
+    localiseTitles: 0
+  - language: 5
+    serifFont: {fileID: 12800000, guid: 38d95ec96ed9e91498cc49796ba14d69, type: 3}
+    sansSerifFont: {fileID: 12800000, guid: 38d95ec96ed9e91498cc49796ba14d69, type: 3}
+    storytellerFont: {fileID: 12800000, guid: 38d95ec96ed9e91498cc49796ba14d69, type: 3}
+    scale: 1.35
+    localiseTitles: 0
+  - language: 6
+    serifFont: {fileID: 12800000, guid: 38d95ec96ed9e91498cc49796ba14d69, type: 3}
+    sansSerifFont: {fileID: 12800000, guid: 38d95ec96ed9e91498cc49796ba14d69, type: 3}
+    storytellerFont: {fileID: 12800000, guid: 38d95ec96ed9e91498cc49796ba14d69, type: 3}
+    scale: 1.35
+    localiseTitles: 0
+  - language: 16
+    serifFont: {fileID: 12800000, guid: a48ebb3966464d84cb95a3dce03a6102, type: 3}
+    sansSerifFont: {fileID: 12800000, guid: a48ebb3966464d84cb95a3dce03a6102, type: 3}
+    storytellerFont: {fileID: 12800000, guid: a48ebb3966464d84cb95a3dce03a6102, type: 3}
+    scale: 1
+    localiseTitles: 1

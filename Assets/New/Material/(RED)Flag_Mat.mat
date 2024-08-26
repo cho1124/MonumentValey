@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: (RED)Flag_Mat
+  m_Shader: {fileID: 4800000, guid: 44fca680144e39e428eea6c6bc6cbcb8, type: 3}
+  m_ShaderKeywords:
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+      _MainTex:
+        m_Texture: {fileID: 2800000, guid: d21e8601617b20e4ba0dc85a2bd77375, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+      _Frequency: 100
+      _InvWavelength: 30
+      _Magnitude: 0.05
+      _ShadowRamp: 1
+      _UseLightMap: 1
+      _Wavelength: 0.5
+    m_Colors:
+      _AmbientColour1: {r: 1, g: 1, b: 1, a: 0}
+      _BlendAxis: {r: 1, g: 0, b: 0, a: 0}
+      _Color: {r: 1, g: 1, b: 1, a: 1}
+      _DistortAxis: {r: 0, g: 0, b: 0, a: 0}
+      _LightColour0: {r: 0.022058845, g: 0.012322527, b: 0, a: 0}
+      _LightColour1: {r: 0.58823526, g: 0.57570684, b: 0.13408302, a: 0}
+      _LightColour2: {r: 0.18382353, g: 0.02297794, b: 0.119485356, a: 0}
+      _LightColour3: {r: 0.5441177, g: 0.44809693, b: 0.44809693, a: 0}
+      _LightTint: {r: 1, g: 0.52205884, b: 0.5319472, a: 0}
+      _ShadowColour: {r: 0.11916091, g: 0.23135062, b: 0.5588235, a: 0}
+  m_BuildTextureStacks: []

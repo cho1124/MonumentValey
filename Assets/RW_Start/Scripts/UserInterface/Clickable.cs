@@ -59,5 +59,6 @@ namespace RW.MonumentValley
                 clickAction.Invoke(this, eventData.pointerPressRaycast.worldPosition);
             }
         }
+
     }
 }

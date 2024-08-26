@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: FlatWaterTest_0
+  m_Shader: {fileID: 4800000, guid: fe484a62d726cfe4c91cdda679d6f482, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _ColourRamp0:
+        m_Texture: {fileID: 2800000, guid: f8f2a789968ab7a4784278df8c67f480, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DepthTex:
+        m_Texture: {fileID: 2800000, guid: d901a09478ef06643b00743eb00755f5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Blend: 0
+    - _Bottom: -9.9
+    - _Depth: 24
+    - _Lightning: 0
+    - _Speed: 1
+    - _Tim: 0
+    - _WaveHeight: 0.5
+    - _WaveHeightEnd: 0.3
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DarkColour: {r: 0.13408305, g: 0.26946068, b: 0.45588237, a: 0}
+    - _DarkColour1: {r: 0.2983131, g: 0.26811203, b: 0.41911763, a: 0}
+    - _FoamColour: {r: 1, g: 1, b: 1, a: 0}
+    - _LightColour0: {r: 0.46831748, g: 0.82609475, b: 0.89705884, a: 0}
+    - _LightColour1: {r: 0.4065744, g: 0.42031375, b: 0.6911765, a: 0}
+    - _LightDir: {r: -1, g: -0.5, b: 0, a: 0}
+    - _LightDirEnd: {r: -0.5, g: -0.5, b: -0.3, a: 0}
+    - _SpecularColour: {r: 1, g: 1, b: 1, a: 0}
+  m_BuildTextureStacks: []

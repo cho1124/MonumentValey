@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -534679499, guid: c0590dd943f62390985fe071454f936d, type: 3}
+  m_Name: CursorPreference-Diamond
+  m_EditorClassIdentifier:
+  cursorImage: {fileID: 2800000, guid: 6b12311608a3cfc418883e1ca1a7e2ec, type: 3}
+  dropShadowImage: {fileID: 2800000, guid: 0c1880be7a2e7d44287022e6df66e97c, type: 3}
+  sdfImage: {fileID: 2800000, guid: 096ed20c033d0404788c3cc7929d2ac5, type: 3}
+  cursorColourEnabled: {r: 0.9411765, g: 0.9411765, b: 0.9411765, a: 1}
+  dropShadowColourEnabled: {r: 0, g: 0, b: 0, a: 1}
+  fillSpeed: 10
+  scaleSpeed: 15
+  minFill: -0.45
+  maxFill: 1
+  minSize: 40
+  maxSize: 70
+  clickedSize: 40
+  clickedSizeInputDisabled: 83
