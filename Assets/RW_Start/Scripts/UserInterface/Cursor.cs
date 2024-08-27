@@ -39,10 +39,10 @@ namespace RW.MonumentValley
         // extra distance offset toward camera
         [SerializeField] private float offsetDistance = 1f;
 
-        private Camera cam;
+        [SerializeField] private Camera cam;
 
         // cursor AnimationController
-        private Animator animController;
+        [SerializeField] private Animator animController;
 
         private void Awake()
         {
@@ -72,8 +72,9 @@ namespace RW.MonumentValley
             {
                 Vector3 cameraForwardOffset = cam.transform.rotation * new Vector3(0f, 0f, offsetDistance);
                 transform.position = position - cameraForwardOffset;
-
+                
                 animController.SetTrigger("ClickTrigger");
+                Debug.Log("Cursor Clicked");
             }
         }
     }

@@ -125,7 +125,12 @@ namespace RW.MonumentValley
             // show a marker for the mouse click
             if (cursor != null)
             {
+                
                 cursor.ShowCursor(position);
+            }
+            else
+            {
+                Debug.Log("Cursor is null");    
             }
 
             // if we have a valid path, follow it
