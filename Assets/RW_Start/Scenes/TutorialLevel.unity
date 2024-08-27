@@ -246,7 +246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 575632584355978813, guid: 2342a2eb76274426aa3400faf2f325da, type: 3}
       propertyPath: edges.Array.data[0].isActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 575632584355978813, guid: 2342a2eb76274426aa3400faf2f325da, type: 3}
       propertyPath: edges.Array.data[0].neighbor
@@ -2776,20 +2776,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 363311625}
+      objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 363311625}
+      objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -2800,19 +2800,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: EnableHighlight
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: EnableHighlight
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: RW.MonumentValley.Highlighter, Assembly-CSharp
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: RW.MonumentValley.Highlighter, Assembly-CSharp
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
@@ -2820,11 +2820,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371548, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: m_RootOrder
