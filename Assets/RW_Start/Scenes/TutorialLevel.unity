@@ -2775,9 +2775,33 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 801327914}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: edgeNode.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: edgeNodes.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: edgeNode.Array.data[0]
+      value: 
+      objectReference: {fileID: 109429536}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: edgeNode.Array.data[1]
+      value: 
+      objectReference: {fileID: 198960099}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: allowedAngle.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: edgeNodes.Array.data[0]
+      value: 
+      objectReference: {fileID: 109429536}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: edgeNodes.Array.data[1]
+      value: 
+      objectReference: {fileID: 198960099}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: allowedAngle.Array.data[0]
       value: 90
