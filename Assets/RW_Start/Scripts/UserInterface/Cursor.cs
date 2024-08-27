@@ -74,7 +74,7 @@ namespace RW.MonumentValley
                 transform.position = position - cameraForwardOffset;
                 
                 animController.SetTrigger("ClickTrigger");
-                Debug.Log("Cursor Clicked");
+                
             }
         }
     }

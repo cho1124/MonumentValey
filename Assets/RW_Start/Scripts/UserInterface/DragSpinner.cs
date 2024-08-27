@@ -31,6 +31,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 namespace RW.MonumentValley
 {
@@ -80,6 +81,12 @@ namespace RW.MonumentValley
         public UnityEvent snapEvent;
 
         private float timeCount;
+
+        [Header("이동할 수 있는 앵글")]
+        [SerializeField] private List<float> allowedAngle;
+        [SerializeField] private bool canMoveState = false;
+        [SerializeField] private List<Node> edgeNodes;
+
 
         void Start()
         {
@@ -157,6 +164,7 @@ namespace RW.MonumentValley
             // invoke event (e.g. to update the SpinnerControl)
             if (snapEvent != null)
             {
+                
                 snapEvent.Invoke();
             }
         }
@@ -184,6 +192,91 @@ namespace RW.MonumentValley
         }
 
 
+        //개선점 1. 앞으로 ai추가 할 예정인데 이런 방식으로는 아예 ai 사용이 불가능할 것 따라서 이 부분을 끝 점으로 개선해야 한다
+        //이에 대한 해결방안 1. 그냥 인스펙터로 끝점 받아서 처리하기
+        //2. 어떻게든 스크립트 내부에서 받아오기
+        //둘에 대한 비교 1. 1번 방안은 매우 편하고 빠르다. 2. 2번 방안은 간지난다.
+        //결론 그냥 인스펙터에 때려 박고 하자 >> 28일 TODO
+        public void CanMoveNode()
+        {
+            //Debug.Log("Event!!@@!@"); //이벤트는 잘 먹어
+            if(allowedAngle.Count <= 0)
+            {
+                Debug.LogError("할당 안했어 바보야");
+                return;
+            }
+
+            Node[] nodes = targetToSpin.gameObject.GetComponentsInChildren<Node>();
+
+            if (nodes.Length == 0)
+            {
+                Debug.LogError("여기도 할당 안했어 바보야");
+            }
+
+            for (int i = 0; i < allowedAngle.Count; i++)
+            {
+                if(targetToSpin.rotation.eulerAngles.x == allowedAngle[i])
+                {
+                    
+                    //비효율적인 코드 1. 이웃노드를 받아와서 그 이웃 노드의 isactive가 true라면 false로 만들어 주기 else문에서는 그 반대 실행... 
+                    //edgeNodes를 통해서 상당 부분 코드 개선을 하였지만.. 딱 하나의 논리만 해결하면 될거 같다.
+                    //
+                    foreach(Node node in edgeNodes)
+                    {
+                        if(node.Edges.Count == 0)
+                        {
+                            Debug.LogError("이건 이웃 엣지가 없는 무언가 입니다 이름은 : " + node.name);
+                            continue;
+                        }
+                        
+                        foreach(Edge edge in node.Edges)
+                        {
+
+                            foreach(Edge newNode in edge.neighbor.Edges)
+                            {
+                                if(newNode.neighbor == node)
+                                {
+                                    newNode.isActive = true;
+                                    edge.isActive = true;
+                                    break;
+                                }
+                            }
+
+                        }
+                    }
+
+                    //return; //멍청이
+                }
+                else
+                {
+                    foreach (Node node in edgeNodes)
+                    {
+                        if (node.Edges.Count == 0)
+                        {
+                            Debug.LogError("이건 이웃 엣지가 없는 무언가 입니다 이름은 : " + node.name);
+                            continue;
+                        }
+
+                        foreach (Edge edge in node.Edges)
+                        {
+
+                            foreach (Edge newNode in edge.neighbor.Edges)
+                            {
+                                if (newNode.neighbor == node)
+                                {
+                                    newNode.isActive = false;
+                                    edge.isActive = false;
+                                    break;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+
+        }
 
 
 
