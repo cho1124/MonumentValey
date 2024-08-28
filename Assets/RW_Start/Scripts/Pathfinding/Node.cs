@@ -61,6 +61,8 @@ namespace RW.MonumentValley
         // properties
         
         public Node PreviousNode { get { return previousNode; } set { previousNode = value; } }
+
+        
         public List<Edge> Edges => edges;
 
         // 3d compass directions to check for horizontal neighbors automatically(east/west/north/south)

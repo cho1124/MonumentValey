@@ -53,7 +53,7 @@ namespace RW.MonumentValley
 
         // pathfinding fields
         private Clickable[] clickables;
-        private Pathfinder pathfinder;
+        [SerializeField] private Pathfinder pathfinder;
         private Graph graph;
         private Node currentNode;
         private Node nextNode;
@@ -67,7 +67,7 @@ namespace RW.MonumentValley
         {
             //  initialize fields
             clickables = FindObjectsOfType<Clickable>();
-            pathfinder = FindObjectOfType<Pathfinder>();
+            //pathfinder = FindObjectOfType<Pathfinder>();
             playerAnimation = GetComponent<PlayerAnimation>();
 
             if (pathfinder != null)
