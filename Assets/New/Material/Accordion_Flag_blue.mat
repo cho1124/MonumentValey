@@ -2,14 +2,15 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Accordion_Flag_blue
-  m_Shader: {fileID: 4800000, guid: 44fca680144e39e428eea6c6bc6cbcb8, type: 3}
-  m_ShaderKeywords:
+  m_Shader: {fileID: -6465566751694194690, guid: 8ba3dc70fc74b9a4baa215c11c487041, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -19,24 +20,59 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-      _MainTex:
+    - _MainTex:
         m_Texture: {fileID: 2800000, guid: b7d10e031cff4e54fadbc85b625e4bb3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture:
+        m_Texture: {fileID: 2800000, guid: b7d10e031cff4e54fadbc85b625e4bb3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
-      _Frequency: 100
-      _InvWavelength: 30
-      _Magnitude: 0.03
-      _ShadowRamp: 1
-      _UseLightMap: 1
-      _Wavelength: 0.2
+    - _Distortion_Frequency: 0.5
+    - _Distortion_Magnitude: 0.05
+    - _Distortion_Wavelength: 1
+    - _Frequency: 100
+    - _InvWavelength: 30
+    - _Magnitude: 0.03
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _ShadowRamp: 1
+    - _UseLightMap: 1
+    - _Wavelength: 0.2
     m_Colors:
-      _AmbientColour1: {r: 0.1254902, g: 0.15294118, b: 0.13333334, a: 0}
-      _Color: {r: 1, g: 1, b: 1, a: 1}
-      _LightColour0: {r: 0.5254902, g: 0.56078434, b: 0.5372549, a: 0}
-      _LightColour1: {r: 1, g: 0.9280067, b: 0.72794116, a: 1}
-      _LightColour2: {r: 0.7411765, g: 0.7254902, b: 0.5764706, a: 0}
-      _LightColour3: {r: 0.5441177, g: 0.44809693, b: 0.44809693, a: 0}
-      _LightTint: {r: 1, g: 1, b: 1, a: 0}
-      _ShadowColour: {r: 0.16193764, g: 0.056228384, b: 0.38235295, a: 0}
+    - _AmbientColour1: {r: 0.1254902, g: 0.15294118, b: 0.13333334, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _LightColour0: {r: 0.5254902, g: 0.56078434, b: 0.5372549, a: 0}
+    - _LightColour1: {r: 1, g: 0.9280067, b: 0.72794116, a: 1}
+    - _LightColour2: {r: 0.7411765, g: 0.7254902, b: 0.5764706, a: 0}
+    - _LightColour3: {r: 0.5441177, g: 0.44809693, b: 0.44809693, a: 0}
+    - _LightTint: {r: 1, g: 1, b: 1, a: 0}
+    - _ShadowColour: {r: 0.16193764, g: 0.056228384, b: 0.38235295, a: 0}
   m_BuildTextureStacks: []
+--- !u!114 &2044023410503171228
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5

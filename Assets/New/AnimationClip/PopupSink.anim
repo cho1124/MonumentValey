@@ -2,13 +2,13 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!74 &7400000
 AnimationClip:
+  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PopupSink
-  serializedVersion: 6
-  m_Legacy: 0
+  m_Legacy: 1
   m_Compressed: 0
   m_UseHighQualityCurve: 1
   m_RotationCurves:
@@ -17,7 +17,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: -0, y: -0, z: -1, w: 0.00000016292068}
+        value: {x: -0, y: -0, z: -1, w: 1.6292068E-07}
         inSlope: {x: 0, y: 0, z: 0.020560024, w: -1.570615}
         outSlope: {x: 0, y: 0, z: 0.020560024, w: -1.570615}
         tangentMode: 0
@@ -576,9 +576,9 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: -0.0000009536743, y: 0.75, z: 0}
-        inSlope: {x: 0.0000009536743, y: -0.75, z: 0}
-        outSlope: {x: 0.0000009536743, y: -0.75, z: 0}
+        value: {x: -9.536743E-07, y: 0.75, z: 0}
+        inSlope: {x: 9.536743E-07, y: -0.75, z: 0}
+        outSlope: {x: 9.536743E-07, y: -0.75, z: 0}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
@@ -586,8 +586,8 @@ AnimationClip:
       - serializedVersion: 3
         time: 1
         value: {x: 0, y: 0, z: 0}
-        inSlope: {x: 0.0000009536743, y: -0.75, z: 0}
-        outSlope: {x: 0.0000009536743, y: -0.75, z: 0}
+        inSlope: {x: 9.536743E-07, y: -0.75, z: 0}
+        outSlope: {x: 9.536743E-07, y: -0.75, z: 0}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}

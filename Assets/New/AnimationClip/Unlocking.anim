@@ -2,13 +2,13 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!74 &7400000
 AnimationClip:
+  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Unlocking
-  serializedVersion: 6
-  m_Legacy: 0
+  m_Legacy: 1
   m_Compressed: 0
   m_UseHighQualityCurve: 1
   m_RotationCurves:
@@ -1239,7 +1239,7 @@ AnimationClip:
   m_SampleRate: 24
   m_WrapMode: 0
   m_Bounds:
-    m_Center: {x: -0.0000011920929, y: 0.00000023841858, z: 0.00000035762787}
+    m_Center: {x: -1.1920929E-06, y: 2.3841858E-07, z: 3.5762787E-07}
     m_Extent: {x: 0.9542707, y: 0.3677253, z: 0.9542695}
   m_ClipBindingConstant:
     genericBindings: []

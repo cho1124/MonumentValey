@@ -63,7 +63,6 @@ public class AiNav : MonoBehaviour
         {
             possiblePath = pathfinder.FindPath(currentNode, EndNode);
             //시작 경로와 끝 경로를 구하지 말고 이동 가능한 최선의 경로를 구하는 것
-
         }
         else
         {

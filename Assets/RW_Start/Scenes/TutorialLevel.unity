@@ -554,7 +554,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6767428620746205571, guid: 6dd9802aa7d754063890458f384c215b, type: 3}
       propertyPath: m_RootOrder
-      value: 24
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 6767428620746205571, guid: 6dd9802aa7d754063890458f384c215b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -706,7 +706,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 27
+  m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &363311625 stripped
 MonoBehaviour:
@@ -913,6 +913,11 @@ MonoBehaviour:
     activeEulerAngle: {x: 90, y: 0, z: 0}
     nodeA: {fileID: 198960099}
     nodeB: {fileID: 1628035953}
+--- !u!4 &518387450 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6374139949356371548, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+  m_PrefabInstance: {fileID: 1919972583}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &582998432
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1064,7 +1069,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 26
+  m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &801327914 stripped
 Transform:
@@ -1767,7 +1772,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5790093395637586881, guid: 02d152b12869049ccbae5c1962a70c55, type: 3}
       propertyPath: m_RootOrder
-      value: 21
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5790093395637586881, guid: 02d152b12869049ccbae5c1962a70c55, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2016,6 +2021,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e382c44da12f4d2a83df3044cc89bf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1461868917
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1461868918}
+  m_Layer: 0
+  m_Name: SpinnerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1461868918
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461868917}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 518387450}
+  m_Father: {fileID: 0}
+  m_RootOrder: 27
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1481350306 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 6633812455786136192, guid: 02d152b12869049ccbae5c1962a70c55, type: 3}
@@ -2759,7 +2796,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 685417712145940287, guid: a5699be57685b484281ad29dec47398e, type: 3}
       propertyPath: m_RootOrder
-      value: 23
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 685417712145940287, guid: a5699be57685b484281ad29dec47398e, type: 3}
       propertyPath: m_LocalScale.x
@@ -2943,7 +2980,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 22
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1844916589
 GameObject:
@@ -2994,7 +3031,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 25
+  m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1903919008 stripped
 GameObject:
@@ -3025,7 +3062,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1461868918}
     m_Modifications:
     - target: {fileID: 6374139949356371494, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: meshRenderers.Array.size
@@ -3043,6 +3080,18 @@ PrefabInstance:
       propertyPath: targetToSpin
       value: 
       objectReference: {fileID: 801327914}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: settings.pivot
+      value: 
+      objectReference: {fileID: 518387450}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: settings.target
+      value: 
+      objectReference: {fileID: 801327914}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: settings.spinAxis
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: edgeNode.Array.size
       value: 2
@@ -3080,6 +3129,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: settings.snapEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
@@ -3112,6 +3165,22 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: settings.snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: settings.snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 518387449}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: settings.snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: settings.snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UpdateRotationLinks
+      objectReference: {fileID: 0}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: RW.MonumentValley.Linker, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -3124,6 +3193,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: settings.snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: RW.MonumentValley.Linker, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -3131,13 +3204,21 @@ PrefabInstance:
       propertyPath: snapEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6374139949356371544, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: settings.snapEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371548, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: m_RootOrder
-      value: 20
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6374139949356371548, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.050000034
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371548, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.85
+      value: 7.8500004
       objectReference: {fileID: 0}
     - target: {fileID: 6374139949356371548, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
       propertyPath: m_LocalPosition.y
