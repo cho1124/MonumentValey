@@ -138,7 +138,7 @@ Animator:
   m_GameObject: {fileID: 52842490}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f6b6dfebe60f7d04da695a76d80b4a72, type: 2}
+  m_Controller: {fileID: 9100000, guid: 794644f7d3d8f9043a72899e6d67c6f3, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -975,7 +975,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4914362807450694325, guid: 2230feb93c9fe496aa22349a4aad3007, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2230feb93c9fe496aa22349a4aad3007, type: 3}
@@ -1416,6 +1416,10 @@ PrefabInstance:
     - target: {fileID: 882264020275722536, guid: 2ddb388d636d24391ae03e944a9a8a65, type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 882264020275722536, guid: 2ddb388d636d24391ae03e944a9a8a65, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 882264020562355144, guid: 2ddb388d636d24391ae03e944a9a8a65, type: 3}
       propertyPath: m_Layer

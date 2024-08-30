@@ -1,15 +1,29 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6312157912306625100
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LSE_Normal1
-  m_Shader: {fileID: 4800000, guid: ce8d931c88de40746b571debefb6c91f, type: 3}
-  m_ShaderKeywords:
+  m_Shader: {fileID: -6465566751694194690, guid: 86dbb3f9fa561a24d9d9a979bd27cd3e, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -19,21 +33,36 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-      _MainTex:
+    - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
-      _ShadowRamp: 1
-      _UseLightMap: 1
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _ShadowRamp: 0
+    - _UseLightMap: 1
     m_Colors:
-      _AmbientColour1: {r: 0, g: 0, b: 0, a: 0}
-      _Color: {r: 0.43382353, g: 0.40511462, b: 0.40511462, a: 1}
-      _Colour: {r: 0.75, g: 0.74756706, b: 0.7169118, a: 1}
-      _LightColour0: {r: 0.41611794, g: 0.44852942, b: 0.33253044, a: 0}
-      _LightColour1: {r: 0.7294118, g: 0.7022416, b: 0.66648215, a: 0}
-      _LightColour2: {r: 0.5659362, g: 0.626937, b: 0.627451, a: 0}
-      _LightColour3: {r: 0, g: 0, b: 0, a: 0}
-      _LightTint: {r: 1, g: 1, b: 1, a: 0}
-      _ShadowColour: {r: 0, g: 0, b: 0, a: 0}
+    - _AmbientColour1: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 0.43382353, g: 0.40511462, b: 0.40511462, a: 1}
+    - _Colour: {r: 0.75, g: 0.74756706, b: 0.7169118, a: 1}
+    - _LightColour0: {r: 0.41611794, g: 0.44852942, b: 0.33253044, a: 0}
+    - _LightColour1: {r: 0.7294118, g: 0.7022416, b: 0.66648215, a: 0}
+    - _LightColour2: {r: 0.5659362, g: 0.626937, b: 0.627451, a: 0}
+    - _LightColour3: {r: 0, g: 0, b: 0, a: 0}
+    - _LightTint: {r: 1, g: 1, b: 1, a: 0}
+    - _ShadowColour: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

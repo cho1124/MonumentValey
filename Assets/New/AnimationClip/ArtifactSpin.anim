@@ -2,13 +2,13 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!74 &7400000
 AnimationClip:
-  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ArtifactSpin
-  m_Legacy: 1
+  serializedVersion: 6
+  m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
   m_RotationCurves:
@@ -827,9 +827,9 @@ AnimationClip:
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
       - serializedVersion: 3
         time: 1.4999993
-        value: {x: -1, y: 6.7154434E-07, z: -6.7154434E-07, w: 4.509718E-13}
-        inSlope: {x: 0, y: -1.046987, z: 1.046987, w: -1.4053658E-06}
-        outSlope: {x: 0, y: -1.046987, z: 1.046987, w: -1.4053658E-06}
+        value: {x: -1, y: 0.00000067154434, z: -0.00000067154434, w: 4.509718e-13}
+        inSlope: {x: 0, y: -1.046987, z: 1.046987, w: -0.0000014053658}
+        outSlope: {x: 0, y: -1.046987, z: 1.046987, w: -0.0000014053658}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
@@ -1233,8 +1233,8 @@ AnimationClip:
       - serializedVersion: 3
         time: 2.2499986
         value: {x: -0.50000143, y: -0.49999997, z: 0.49999997, w: 0.49999854}
-        inSlope: {x: 1.0469878, y: -1.7881393E-06, z: 1.7881393E-06, w: 1.0469851}
-        outSlope: {x: 1.0469878, y: -1.7881393E-06, z: 1.7881393E-06, w: 1.0469851}
+        inSlope: {x: 1.0469878, y: -0.0000017881393, z: 0.0000017881393, w: 1.0469851}
+        outSlope: {x: 1.0469878, y: -0.0000017881393, z: 0.0000017881393, w: 1.0469851}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
@@ -1637,7 +1637,7 @@ AnimationClip:
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
       - serializedVersion: 3
         time: 3
-        value: {x: -1.061726E-13, y: 3.2584137E-07, z: -3.2584137E-07, w: 1}
+        value: {x: -1.061726e-13, y: 0.00000032584137, z: -0.00000032584137, w: 1}
         inSlope: {x: 0.018276459, y: 1.0469738, z: -1.0469738, w: 0.0182796}
         outSlope: {x: 0.018276459, y: 1.0469738, z: -1.0469738, w: 0.0182796}
         tangentMode: 0
@@ -1647,7 +1647,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path:
+    path: 
   m_CompressedRotationCurves: []
   m_EulerCurves: []
   m_PositionCurves: []

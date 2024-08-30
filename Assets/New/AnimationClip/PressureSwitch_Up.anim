@@ -2,13 +2,13 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!74 &7400000
 AnimationClip:
-  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PressureSwitch_Up
-  m_Legacy: 1
+  serializedVersion: 6
+  m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
   m_RotationCurves: []
@@ -21,8 +21,8 @@ AnimationClip:
       - serializedVersion: 3
         time: 0
         value: {x: 0, y: -0.625, z: 0}
-        inSlope: {x: 1.2408492E-23, y: 1.0500002, z: 0}
-        outSlope: {x: 1.2408492E-23, y: 1.0500002, z: 0}
+        inSlope: {x: 1.2408492e-23, y: 1.0500002, z: 0}
+        outSlope: {x: 1.2408492e-23, y: 1.0500002, z: 0}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
@@ -30,8 +30,8 @@ AnimationClip:
       - serializedVersion: 3
         time: 0.16666666
         value: {x: 0, y: -0.45, z: 0}
-        inSlope: {x: 1.2408492E-23, y: 0.37500006, z: 0}
-        outSlope: {x: 1.2408492E-23, y: 0.37500006, z: 0}
+        inSlope: {x: 1.2408492e-23, y: 0.37500006, z: 0}
+        outSlope: {x: 1.2408492e-23, y: 0.37500006, z: 0}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
@@ -48,7 +48,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path:
+    path: 
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves: []
@@ -87,7 +87,7 @@ AnimationClip:
   m_Events:
   - time: 0
     functionName: SwapMatToOriginal
-    data:
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

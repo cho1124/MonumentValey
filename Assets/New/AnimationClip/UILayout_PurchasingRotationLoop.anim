@@ -2,13 +2,13 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!74 &7400000
 AnimationClip:
-  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: UILayout_PurchasingRotationLoop
-  m_Legacy: 1
+  serializedVersion: 6
+  m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
   m_RotationCurves:
@@ -557,9 +557,9 @@ AnimationClip:
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
       - serializedVersion: 3
         time: 0.9999997
-        value: {x: -0, y: -0, z: 1, w: -4.3312576E-07}
-        inSlope: {x: 0, y: 0, z: 3.7252903E-08, w: 1.5706174}
-        outSlope: {x: 0, y: 0, z: 3.7252903E-08, w: 1.5706174}
+        value: {x: -0, y: -0, z: 1, w: -0.00000043312576}
+        inSlope: {x: 0, y: 0, z: 0.000000037252903, w: 1.5706174}
+        outSlope: {x: 0, y: 0, z: 0.000000037252903, w: 1.5706174}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
@@ -1097,7 +1097,7 @@ AnimationClip:
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
       - serializedVersion: 3
         time: 2
-        value: {x: -0, y: -0, z: -3.2584137E-07, w: 1}
+        value: {x: -0, y: -0, z: -0.00000032584137, w: 1}
         inSlope: {x: 0, y: 0, z: -1.5706259, w: 0.020562151}
         outSlope: {x: 0, y: 0, z: -1.5706259, w: 0.020562151}
         tangentMode: 0
@@ -1107,7 +1107,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path:
+    path: 
   m_CompressedRotationCurves: []
   m_EulerCurves: []
   m_PositionCurves: []

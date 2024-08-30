@@ -2,13 +2,13 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!74 &7400000
 AnimationClip:
-  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PressureSwitch_Down
-  m_Legacy: 1
+  serializedVersion: 6
+  m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
   m_RotationCurves: []
@@ -20,27 +20,27 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: 0, y: -0.49999952, z: 8.940711E-08}
-        inSlope: {x: 0, y: -1.050003, z: -1.11758716E-07}
-        outSlope: {x: 0, y: -1.050003, z: -1.11758716E-07}
+        value: {x: 0, y: -0.49999952, z: 0.00000008940711}
+        inSlope: {x: 0, y: -1.050003, z: -0.000000111758716}
+        outSlope: {x: 0, y: -1.050003, z: -0.000000111758716}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 0.16666666
-        value: {x: 0, y: -0.675, z: 7.078066E-08}
-        inSlope: {x: 0, y: -0.0471138, z: -1.11758716E-07}
-        outSlope: {x: 0, y: -0.0471138, z: -1.11758716E-07}
+        value: {x: 0, y: -0.675, z: 0.00000007078066}
+        inSlope: {x: 0, y: -0.0471138, z: -0.000000111758716}
+        outSlope: {x: 0, y: -0.0471138, z: -0.000000111758716}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 0.3333333
-        value: {x: 0, y: -0.6249995, z: 5.2154206E-08}
-        inSlope: {x: 0, y: 0.47455803, z: -1.11758716E-07}
-        outSlope: {x: 0, y: 0.47455803, z: -1.11758716E-07}
+        value: {x: 0, y: -0.6249995, z: 0.000000052154206}
+        inSlope: {x: 0, y: 0.47455803, z: -0.000000111758716}
+        outSlope: {x: 0, y: 0.47455803, z: -0.000000111758716}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
@@ -48,7 +48,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path:
+    path: 
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves: []
@@ -87,7 +87,7 @@ AnimationClip:
   m_Events:
   - time: 0
     functionName: SwapMatToAlternate
-    data:
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

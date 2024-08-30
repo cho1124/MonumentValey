@@ -2,13 +2,13 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!74 &7400000
 AnimationClip:
-  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Default Take
-  m_Legacy: 1
+  serializedVersion: 6
+  m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
   m_RotationCurves:
@@ -309,7 +309,7 @@ AnimationClip:
   m_SampleRate: 24
   m_WrapMode: 0
   m_Bounds:
-    m_Center: {x: -5.9604645E-08, y: -0.25046718, z: -5.9604645E-08}
+    m_Center: {x: -0.000000059604645, y: -0.25046718, z: -0.000000059604645}
     m_Extent: {x: 0.9923038, y: 0.2504673, z: 0.99230385}
   m_ClipBindingConstant:
     genericBindings: []
