@@ -15,27 +15,31 @@ public class AiNav : MonoBehaviour
     public Node StartNode;
     public Node EndNode;
     public Pathfinder pathfinder;
-    private Graph graph;
     public Transform ChildTr;
+    private Graph graph;
     [SerializeField] private List<Node> possiblePath;
 
-    private Node nextNode;
+    [SerializeField] private Node nextNode;
+    [SerializeField] private Node lastNode;
     
     [SerializeField] private bool isReversing = false;
     private bool isMoving = false;
     private bool canMove = true;
     private float moveTime = 1.0f; // 이동 시간 변수
-    private Node currentNode;
+    [SerializeField] private Node currentNode;
     private Camera mainCamera;
 
     private void Start()
     {
         ChildTr.GetComponent<Collider>();
         pathfinder.StartNode = StartNode;
+        
         pathfinder.DestinationNode = EndNode;
+        nextNode = StartNode;
         graph = pathfinder.GetComponent<Graph>();
         mainCamera = Camera.main;
         SnapToNearestNode();
+        
 
     }
 
@@ -46,33 +50,52 @@ public class AiNav : MonoBehaviour
 
     private void AIPatrol()
     {
-        
+
         //감지하면 Patrol하지 않게
         //추가해야 할 것 패트롤 도중에 이동할 수 없는 길을 만난다면 다시 뒤로 돌도록
         //플레이어 또한 ai가 이동경로 사이에 있으면 이동할 수 없도록 할 것
 
-        if (isMoving) return;
-
-        foreach (Edge edge in currentNode.Edges)
-        {
-            edge.isActive = true;
-        }
+        //possiblePath = pathfinder.FindBestPathForAI(currentNode, PathManager.instance.newNode, StartNode, EndNode);
 
 
-        if (!isReversing)
+        
+
+        foreach(Edge edge in currentNode.Edges)
         {
-            possiblePath = pathfinder.FindPath(currentNode, EndNode);
-            //시작 경로와 끝 경로를 구하지 말고 이동 가능한 최선의 경로를 구하는 것
-        }
-        else
-        {
-            possiblePath = pathfinder.FindPath(currentNode, StartNode);
+            if(lastNode == null)
+            {
+                Debug.LogWarning("previousNode is null");
+            }
+
+            if(edge.neighbor != lastNode)
+            {
+                if (edge.isActive)
+                {
+                    Debug.Log("활성화된 엣지");
+                    nextNode = edge.neighbor;
+                    
+                    break;
+                }
+                
+            }
+            else
+            {
+                Debug.Log("흠");
+                nextNode = edge.neighbor;
+            }
             
         }
+        lastNode = currentNode;
+        possiblePath = pathfinder.FindPath(currentNode, nextNode, isReversing, StartNode, EndNode);
+        currentNode = nextNode;
+        if (isMoving) return;
+
+        
+
 
 
         //StartPatrol();
-        if (possiblePath.Count > 1)
+        if (possiblePath.Count > 0)
         {
             StartCoroutine(FollowPathRoutine(possiblePath));
         }
@@ -132,6 +155,8 @@ public class AiNav : MonoBehaviour
                 // move to the next Node
                 yield return StartCoroutine(MoveToNodeRoutine(transform.position, nextNode));
             }
+
+
         }
 
         isMoving = false;

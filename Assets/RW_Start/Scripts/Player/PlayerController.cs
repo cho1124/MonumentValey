@@ -52,7 +52,7 @@ namespace RW.MonumentValley
         private Animator cursorAnimController;
 
         // pathfinding fields
-        private Clickable[] clickables;
+        //private Clickable[] clickables;
         [SerializeField] private Pathfinder pathfinder;
         private Graph graph;
         private Node currentNode;
@@ -66,7 +66,8 @@ namespace RW.MonumentValley
         private void Awake()
         {
             //  initialize fields
-            clickables = FindObjectsOfType<Clickable>();
+            //clickables = FindObjectsOfType<Clickable>();
+            //PathManager.clickables
             //pathfinder = FindObjectOfType<Pathfinder>();
             playerAnimation = GetComponent<PlayerAnimation>();
 
@@ -91,7 +92,7 @@ namespace RW.MonumentValley
             }
 
             //listen to all clickEvents
-            foreach (Clickable c in clickables)
+            foreach (Clickable c in PathManager.instance.clickables)
             {
                 c.clickAction += OnClick;
             }
@@ -100,7 +101,7 @@ namespace RW.MonumentValley
         private void OnDisable()
         {
             // unsubscribe from clickEvents when disabled
-            foreach (Clickable c in clickables)
+            foreach (Clickable c in PathManager.instance.clickables)
             {
                 c.clickAction -= OnClick;
             }

@@ -35,6 +35,7 @@ using UnityEngine.EventSystems;
 namespace RW.MonumentValley
 {
     // allows player to click on a block to set path goal
+    
     [RequireComponent(typeof(Collider))]
     public class Clickable : MonoBehaviour,IPointerDownHandler
     { 

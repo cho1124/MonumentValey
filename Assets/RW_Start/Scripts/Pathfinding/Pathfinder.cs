@@ -46,10 +46,10 @@ namespace RW.MonumentValley
         [SerializeField] private bool searchOnStart;
 
         // next Nodes to explore
-        private List<Node> frontierNodes;
+        [SerializeField] private List<Node> frontierNodes;
 
         // Nodes already explored
-        private List<Node> exploredNodes;
+        [SerializeField] private List<Node> exploredNodes;
 
         // Nodes that form a path to the goal Node (for Gizmo drawing)
         private List<Node> pathNodes;
@@ -142,11 +142,15 @@ namespace RW.MonumentValley
         public List<Node> FindPath()
         {
             List<Node> newPath = new List<Node>();
+            Node lastExploredNode = null;
+
 
             if (startNode == null || destinationNode == null || startNode == destinationNode)
             {
                 return newPath;
             }
+
+           
 
             // prevents infinite loop
             const int maxIterations = 100;
@@ -167,6 +171,7 @@ namespace RW.MonumentValley
                     Node currentNode = frontierNodes[0];
                     frontierNodes.RemoveAt(0);
 
+                    lastExploredNode = currentNode;
                     // and add to the exploredNodes
                     if (!exploredNodes.Contains(currentNode))
                     {
@@ -192,7 +197,28 @@ namespace RW.MonumentValley
                     isPathComplete = false;
                 }
             }
+
+            //if (newPath.Count == 0 && lastExploredNode != null)
+            //{
+            //    // 마지막으로 탐색된 노드를 반환하거나 처리할 수 있음
+            //    newPath.Add(lastExploredNode);
+            //}
+
             return newPath;
+        }
+        public List<Node> FindPath(Node start,Node nextNode, bool isReversed, Node startNode, Node endNode)
+        {
+            
+
+            foreach(Edge edge in start.Edges)
+            {
+                if (!edge.isActive) return null;
+            }
+
+            this.destinationNode = nextNode;
+            this.startNode = start;
+            
+            return FindPath();
         }
 
         public List<Node> FindPath(Node start, Node destination)
@@ -201,6 +227,16 @@ namespace RW.MonumentValley
             this.startNode = start;
             return FindPath();
         }
+
+
+
+        public List<Node> FindPathAI(Node start, Node destination)
+        {
+
+
+            return FindPath();
+        }
+
 
         // find the best path given a bunch of possible Node destinations
         public List<Node> FindBestPath(Node start, Node[] possibleDestinations)
@@ -212,6 +248,7 @@ namespace RW.MonumentValley
 
                 if (!isPathComplete && isSearchComplete)
                 {
+                    
                     continue;
                 }
 
@@ -237,6 +274,43 @@ namespace RW.MonumentValley
             return bestPath;
         }
 
+        public List<Node> FindBestPathForAI(Node start, Node[] possibleDestinations, Node MinNode, Node MaxNode)
+        {
+            List<Node> bestPath = new List<Node>();
+            Node currentNode = start;
+            foreach (Node n in possibleDestinations)
+            {
+                List<Node> possiblePath = FindPath(currentNode, n);
+
+                if (!isPathComplete && isSearchComplete)
+                {
+                    
+                    continue;
+                }
+
+                //bestPath = possiblePath;
+                bestPath.AddRange(possiblePath);
+
+                currentNode = n;
+
+
+            }
+
+           
+            if (bestPath.Count <= 1)
+            {
+                //여기
+                //Debug.Log("asd");
+                ClearPath();
+                return new List<Node>();
+            }
+
+            destinationNode = bestPath[bestPath.Count - 1];
+            pathNodes = bestPath;
+            return bestPath;
+        }
+
+        
         public void ClearPath()
         {
             startNode = null;
