@@ -21,13 +21,13 @@ public class AiNav : MonoBehaviour
     [SerializeField] private Node nextNode;
     [SerializeField] private Node lastNode;
     [SerializeField] private Node currentNode;
-
+    private Node hitNode;
     [SerializeField] private bool isReversing = false;
 
     [SerializeField] private Animator animator;
 
     private bool isMoving = false;
-    private bool canMove = true;
+    //private bool canMove = true;
     private float moveTime = 1.0f; // 이동 시간 변수
     private Camera mainCamera;
 
@@ -86,18 +86,50 @@ public class AiNav : MonoBehaviour
             }
         }
 
+        if (hitNode != null)
+        {
+            foreach (Edge edge in hitNode.Edges)
+            {
+                if (!edge.isActive)
+                {
+                    edge.isActive = true;
+                    break;
+                }
+            }
+        }
+
         RaycastHit hit;
         
         //UpdateAnimation("isStop", isStop);
-        if (Physics.Raycast(transform.position, transform.forward, out hit, maxDistance))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, maxDistance)) //개선방안 1. 이전처럼 노드의 isactive를 제어, 2. 
         {
+            //감지 버그 발생, 이거 레이캐스트 하면 안되고, 인접 노드를 탐색한 후 그 노드에 플레이어가 있는지를 개선하는것으로 바꿔야할 것(09.03.TODO) >>> 실제 게임도 정면에서만 감지하는 것이 아닌, 플레이어가 한칸 이내에 있으면 감지됨
+            //TODO : 내일 노드 연결된 모듈 테스트 해보기
+            //TODO : 진짜진짜 spinner 만들기
+            //TODO : 제발좀 놀지 말기, shadergraph를 통해 질감 살리기
+            //TODO : 진짜좀 제발좀 인트로 만들기
+            //TODO : UI도 제발 만들어야해
+
+
             if (hit.transform.CompareTag("Player"))
             {
-                
+                Debug.Log("player detected");
+                isMoving = false;
+                animator.SetBool("isMoving", isMoving);
+                hitNode = lastNode;
+                currentNode.EnableEdge(hitNode, false);
+
+               // currentNode.EnableEdge()
                 return;
             }
+            
         }
-        
+
+        //foreach (Edge edge in currentNode.Edges) //이거 안돼 저번이랑 똑같은 문제야 해결해야댐.. //위의 ai 멈추는 것에 더불어 플레이어만 경로를 끊든가 해야될듯?
+        //{
+        //    edge.isActive = true;
+        //}
+
         possiblePath = pathfinder.FindPath(currentNode, nextNode, lastNode, StartNode, EndNode);
         
         if (isMoving) return;
@@ -123,7 +155,8 @@ public class AiNav : MonoBehaviour
         }
         else
         {
-            UpdateAnimation("isMoving", isMoving);
+            //UpdateAnimation("isMoving", isMoving);
+            animator.SetBool("isMoving", isMoving);
 
             // loop through all Nodes
             // 코루틴 내에서 경로 재탐색 중요************************************
@@ -142,7 +175,7 @@ public class AiNav : MonoBehaviour
 
         }
         isMoving = false;
-        UpdateAnimation("isMoving", isMoving);
+        //UpdateAnimation("isMoving", isMoving);
     }
 
 
