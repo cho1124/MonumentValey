@@ -2,14 +2,15 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: RebuildWater_Mat
   m_Shader: {fileID: 4800000, guid: 77a26e6f16327e94996415597689c2db, type: 3}
-  m_ShaderKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -19,28 +20,29 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-      _ColourRamp0:
+    - _ColourRamp0:
         m_Texture: {fileID: 2800000, guid: 0caf2002c545f474999c3e6fa085e1f8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-      _DepthTex:
+    - _DepthTex:
         m_Texture: {fileID: 2800000, guid: 70c9154c45833c64f97d72a5e50bf0c7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
-      _Amount: 0
-      _Blend: 0
-      _LightMultiplier: 0.5
-      _Speed: 1
-      _Tim: -0.67
-      _WaveHeight: 0
-      _WaveHeightEnd: 0.4
-      _WaveLength: 3
+    - _Amount: 0
+    - _Blend: 0
+    - _LightMultiplier: 0.5
+    - _Speed: 1
+    - _Tim: -0.67
+    - _WaveHeight: 0
+    - _WaveHeightEnd: 0.4
+    - _WaveLength: 3
     m_Colors:
-      _Color: {r: 1, g: 1, b: 1, a: 1}
-      _DarkColour: {r: 0, g: 0, b: 0, a: 0}
-      _FoamColour: {r: 1, g: 1, b: 1, a: 0}
-      _LightColour0: {r: 1, g: 1, b: 1, a: 0}
-      _LightDir: {r: 0, g: -1, b: 0, a: 0}
-      _SpecularColour: {r: 1, g: 1, b: 1, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DarkColour: {r: 0, g: 0, b: 0, a: 0}
+    - _FoamColour: {r: 1, g: 1, b: 1, a: 0}
+    - _LightColour0: {r: 1, g: 1, b: 1, a: 0}
+    - _LightDir: {r: 0, g: -1, b: 0, a: 0}
+    - _SpecularColour: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []

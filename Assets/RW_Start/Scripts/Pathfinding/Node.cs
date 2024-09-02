@@ -35,6 +35,17 @@ using UnityEngine.Events;
 
 namespace RW.MonumentValley
 {
+
+    public enum NodeState
+    {
+        Front = 0,
+        Back,
+        Up,
+        Down,
+        Left,
+        Right
+    }
+
     public class Node : MonoBehaviour
     {
         // gizmo colors
@@ -57,6 +68,8 @@ namespace RW.MonumentValley
 
         // invoked when Player enters this node
         public UnityEvent gameEvent;
+
+        public NodeState currentNodeState = NodeState.Up;
 
         // properties
         

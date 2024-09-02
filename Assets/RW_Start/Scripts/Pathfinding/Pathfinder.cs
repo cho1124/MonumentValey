@@ -206,18 +206,23 @@ namespace RW.MonumentValley
 
             return newPath;
         }
-        public List<Node> FindPath(Node start,Node nextNode, bool isReversed, Node startNode, Node endNode)
+        public List<Node> FindPath(Node currentNode, Node nextNode, Node lastNode, Node startNode, Node endNode)
         {
             
-
-            foreach(Edge edge in start.Edges)
+            this.destinationNode = nextNode;
+            this.startNode = currentNode;
+            
+            if(currentNode == endNode)
             {
-                if (!edge.isActive) return null;
+                destinationNode = lastNode;
             }
 
-            this.destinationNode = nextNode;
-            this.startNode = start;
-            
+            if(currentNode == startNode)
+            {
+                destinationNode = lastNode;
+            }
+
+
             return FindPath();
         }
 

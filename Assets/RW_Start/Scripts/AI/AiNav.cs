@@ -58,8 +58,6 @@ public class AiNav : MonoBehaviour
         //possiblePath = pathfinder.FindBestPathForAI(currentNode, PathManager.instance.newNode, StartNode, EndNode);
 
 
-        
-
         foreach(Edge edge in currentNode.Edges)
         {
             if(lastNode == null)
@@ -67,46 +65,48 @@ public class AiNav : MonoBehaviour
                 Debug.LogWarning("previousNode is null");
             }
 
-            if(edge.neighbor != lastNode)
+            if(edge.neighbor == lastNode)
             {
-                if (edge.isActive)
+                if(isReversing)
                 {
-                    Debug.Log("활성화된 엣지");
-                    nextNode = edge.neighbor;
-                    
-                    break;
+                    nextNode = lastNode;
+                    isReversing = !isReversing;
                 }
-                
+
+                continue;
             }
-            else
+            if (edge.isActive)
             {
-                Debug.Log("흠");
                 nextNode = edge.neighbor;
+
+                break;
             }
-            
         }
-        lastNode = currentNode;
-        possiblePath = pathfinder.FindPath(currentNode, nextNode, isReversing, StartNode, EndNode);
-        currentNode = nextNode;
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, transform.forward, out hit, maxDistance))
+        {
+            if (hit.transform.CompareTag("Player"))
+            {
+                return;
+            }
+        }
+        
+        possiblePath = pathfinder.FindPath(currentNode, nextNode, lastNode, StartNode, EndNode);
+        
         if (isMoving) return;
 
-        
-
-
-
-        //StartPatrol();
         if (possiblePath.Count > 0)
         {
             StartCoroutine(FollowPathRoutine(possiblePath));
+            lastNode = currentNode;
         }
         else
         {
-            
             isReversing = !isReversing;
-        }
-        
+        }   
     }
-
     private IEnumerator FollowPathRoutine(List<Node> path)
     {
         // start moving
@@ -124,27 +124,6 @@ public class AiNav : MonoBehaviour
             // 코루틴 내에서 경로 재탐색 중요************************************
             for (int i = 0; i < path.Count; i++)
             {
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position, transform.forward, out hit, maxDistance))
-                {
-                    if (hit.transform.CompareTag("Player"))
-                    {
-                        foreach (Edge edge in currentNode.Edges)
-                        {
-                            edge.isActive = false;
-                        }
-                        //Debug.Log("Player");
-                        //StopPatrol 메서드 >>
-                        isMoving = false;
-                        
-                        yield break;
-                    }   
-                }
-                else
-                {
-                    canMove = true;
-                }
-
                 // use the current Node as the next waypoint
                 nextNode = path[i];
 
@@ -156,12 +135,9 @@ public class AiNav : MonoBehaviour
                 yield return StartCoroutine(MoveToNodeRoutine(transform.position, nextNode));
             }
 
-
         }
-
         isMoving = false;
         UpdateAnimation();
-
     }
 
     public void FaceNextPosition(Vector3 startPosition, Vector3 nextPosition)
@@ -256,11 +232,5 @@ public class AiNav : MonoBehaviour
         //    AIAniamtion.ToggleAnimation(isMoving);
         //}
     }
-
-    private void FindPathPossible()
-    {
-
-    }
-
 
 }

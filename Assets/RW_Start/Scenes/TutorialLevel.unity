@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44109416, g: 0.4898492, b: 0.569927, a: 1}
+  m_IndirectSpecularColor: {r: 0.44109386, g: 0.48984855, b: 0.56992626, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1379,17 +1379,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkAnimSpeed: 1
   animator: {fileID: 52842493}
---- !u!114 &925094113 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 575632585215634601, guid: 2342a2eb76274426aa3400faf2f325da, type: 3}
-  m_PrefabInstance: {fileID: 292733774}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e382c44da12f4d2a83df3044cc89bf8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &934517369
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1648,6 +1637,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a4dea7c64ee8e4b8a00fb82bf03ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickables: []
+  newNode: []
 --- !u!4 &966362784
 Transform:
   m_ObjectHideFlags: 0
@@ -3069,7 +3060,10 @@ MonoBehaviour:
   pathfinder: {fileID: 729248745}
   ChildTr: {fileID: 0}
   possiblePath: []
+  nextNode: {fileID: 0}
+  lastNode: {fileID: 0}
   isReversing: 0
+  currentNode: {fileID: 0}
 --- !u!4 &1844916591
 Transform:
   m_ObjectHideFlags: 0
@@ -3104,11 +3098,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistance: 1
   StartNode: {fileID: 1733110907}
-  EndNode: {fileID: 925094113}
+  EndNode: {fileID: 1804366664}
   pathfinder: {fileID: 729248745}
   ChildTr: {fileID: 824398815}
   possiblePath: []
+  nextNode: {fileID: 0}
+  lastNode: {fileID: 0}
   isReversing: 0
+  currentNode: {fileID: 0}
 --- !u!1001 &1919972583
 PrefabInstance:
   m_ObjectHideFlags: 0
