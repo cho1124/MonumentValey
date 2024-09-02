@@ -43,7 +43,8 @@ namespace RW.MonumentValley
         Up,
         Down,
         Left,
-        Right
+        Right,
+        Stair
     }
 
     public class Node : MonoBehaviour

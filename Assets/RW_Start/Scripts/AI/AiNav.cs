@@ -18,20 +18,23 @@ public class AiNav : MonoBehaviour
     public Transform ChildTr;
     private Graph graph;
     [SerializeField] private List<Node> possiblePath;
-
     [SerializeField] private Node nextNode;
     [SerializeField] private Node lastNode;
-    
+    [SerializeField] private Node currentNode;
+
     [SerializeField] private bool isReversing = false;
+
+    [SerializeField] private Animator animator;
+
     private bool isMoving = false;
     private bool canMove = true;
     private float moveTime = 1.0f; // 이동 시간 변수
-    [SerializeField] private Node currentNode;
     private Camera mainCamera;
 
     private void Start()
     {
         ChildTr.GetComponent<Collider>();
+        animator = ChildTr.GetComponent<Animator>();
         pathfinder.StartNode = StartNode;
         
         pathfinder.DestinationNode = EndNode;
@@ -84,11 +87,13 @@ public class AiNav : MonoBehaviour
         }
 
         RaycastHit hit;
-
+        
+        //UpdateAnimation("isStop", isStop);
         if (Physics.Raycast(transform.position, transform.forward, out hit, maxDistance))
         {
             if (hit.transform.CompareTag("Player"))
             {
+                
                 return;
             }
         }
@@ -118,7 +123,7 @@ public class AiNav : MonoBehaviour
         }
         else
         {
-            UpdateAnimation();
+            UpdateAnimation("isMoving", isMoving);
 
             // loop through all Nodes
             // 코루틴 내에서 경로 재탐색 중요************************************
@@ -137,8 +142,11 @@ public class AiNav : MonoBehaviour
 
         }
         isMoving = false;
-        UpdateAnimation();
+        UpdateAnimation("isMoving", isMoving);
     }
+
+
+
 
     public void FaceNextPosition(Vector3 startPosition, Vector3 nextPosition)
     {
@@ -225,8 +233,11 @@ public class AiNav : MonoBehaviour
         }
     }
 
-    private void UpdateAnimation()
+    private void UpdateAnimation(string ani_transition, bool isMoving)
     {
+
+        animator.SetBool(ani_transition, isMoving);
+
         //if (AIAniamtion != null)
         //{
         //    AIAniamtion.ToggleAnimation(isMoving);
