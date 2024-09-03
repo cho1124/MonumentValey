@@ -61,6 +61,8 @@ namespace RW.MonumentValley
         // Nodes specifically excluded from Edges
         [SerializeField] private List<Node> excludedNodes;
 
+        public bool isTeleport = false;
+
         // reference to the graph
         private Graph graph;
 
@@ -70,7 +72,7 @@ namespace RW.MonumentValley
         // invoked when Player enters this node
         public UnityEvent gameEvent;
 
-        public NodeState currentNodeState = NodeState.Up;
+        //public NodeState currentNodeState = NodeState.Up;
 
         // properties
         
@@ -86,6 +88,7 @@ namespace RW.MonumentValley
             new Vector3(-1f, 0f, 0f),
             new Vector3(0f, 0f, 1f),
             new Vector3(0f, 0f, -1f),
+            
         };
          
         private void Start()

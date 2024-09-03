@@ -212,16 +212,20 @@ namespace RW.MonumentValley
             this.destinationNode = nextNode;
             this.startNode = currentNode;
             
-            if(currentNode == endNode)
+            if(startNode != endNode)
             {
-                destinationNode = lastNode;
-            }
+                if (currentNode == endNode)
+                {
+                    destinationNode = lastNode;
+                }
 
-            if(currentNode == startNode)
-            {
-                destinationNode = lastNode;
+                if (currentNode == startNode)
+                {
+                    destinationNode = lastNode;
+                }
             }
-
+            //startNode와 endNode가 같을 때 즉 순환구조일 떄
+            //1. 
 
             return FindPath();
         }

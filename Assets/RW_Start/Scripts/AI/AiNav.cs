@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RW.MonumentValley;
+using DG.Tweening;
+
+
 
 public class AiNav : MonoBehaviour
 {
@@ -25,6 +28,10 @@ public class AiNav : MonoBehaviour
     [SerializeField] private bool isReversing = false;
 
     [SerializeField] private Animator animator;
+    public Vector2 testVec = new Vector2(90f, 0f);
+    public float speed;
+
+
 
     private bool isMoving = false;
     //private bool canMove = true;
@@ -33,6 +40,7 @@ public class AiNav : MonoBehaviour
 
     private void Start()
     {
+        
         ChildTr.GetComponent<Collider>();
         animator = ChildTr.GetComponent<Animator>();
         pathfinder.StartNode = StartNode;
@@ -42,8 +50,8 @@ public class AiNav : MonoBehaviour
         graph = pathfinder.GetComponent<Graph>();
         mainCamera = Camera.main;
         SnapToNearestNode();
+        //transform.localRotation = Quaternion.identity;
         
-
     }
 
     private void Update()
@@ -60,8 +68,8 @@ public class AiNav : MonoBehaviour
 
         //possiblePath = pathfinder.FindBestPathForAI(currentNode, PathManager.instance.newNode, StartNode, EndNode);
 
-
-        foreach(Edge edge in currentNode.Edges)
+        Rotator();
+        foreach (Edge edge in currentNode.Edges)
         {
             if(lastNode == null)
             {
@@ -178,9 +186,6 @@ public class AiNav : MonoBehaviour
         //UpdateAnimation("isMoving", isMoving);
     }
 
-
-
-
     public void FaceNextPosition(Vector3 startPosition, Vector3 nextPosition)
     {
         if (mainCamera == null)
@@ -207,7 +212,7 @@ public class AiNav : MonoBehaviour
             Vector3 directionToNextNode = nextPositionOnPlane - startPosition;
             if (directionToNextNode != Vector3.zero)
             {
-                transform.rotation = Quaternion.LookRotation(directionToNextNode);
+                //transform.rotation = Quaternion.LookRotation(directionToNextNode);
             }
         }
     }
@@ -215,32 +220,45 @@ public class AiNav : MonoBehaviour
     private IEnumerator MoveToNodeRoutine(Vector3 startPosition, Node targetNode)
     {
 
+        if(currentNode.isTeleport)
+        {
+            transform.position = targetNode.transform.position;
+            transform.parent = targetNode.transform;
+            currentNode = targetNode;
+            
+            targetNode.gameEvent.Invoke();
+
+            yield break;
+        }
+
+
+        float distance = Vector3.Distance(startPosition, targetNode.transform.position);
+
         float elapsedTime = 0;
 
         // validate move time
         moveTime = Mathf.Clamp(moveTime, 0.1f, 5f);
 
-        while (elapsedTime < moveTime && targetNode != null && !HasReachedNode(targetNode))
+        speed = distance / moveTime;
+        float step = speed * Time.deltaTime;
+        while (elapsedTime < moveTime && !HasReachedNode(targetNode))
         {
-
             elapsedTime += Time.deltaTime;
-            float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
+            float lerpValue = Mathf.Clamp01(elapsedTime / moveTime);
 
+            // 현재 위치를 목표 위치로 Lerp
             Vector3 targetPos = targetNode.transform.position;
             transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
 
-            // if over halfway, change parent to next node
+            // 이동 중간 지점에서 부모 노드 변경 및 이벤트 호출
             if (lerpValue > 0.51f)
             {
                 transform.parent = targetNode.transform;
                 currentNode = targetNode;
-
-                // invoke UnityEvent associated with next Node
                 targetNode.gameEvent.Invoke();
-                //Debug.Log("invoked GameEvent from targetNode: " + targetNode.name);
             }
 
-            // wait one frame
+            // 한 프레임 대기
             yield return null;
         }
     }
@@ -276,5 +294,24 @@ public class AiNav : MonoBehaviour
         //    AIAniamtion.ToggleAnimation(isMoving);
         //}
     }
+
+    private void Rotator()
+    {
+        //Quaternion newQ = Quaternion.Lerp(currentNode.transform.rotation, nextNode.transform.rotation, Time.deltaTime * 3f);
+
+        if(currentNode.transform.rotation != nextNode.transform.rotation)
+        {
+            transform.DORotateQuaternion(nextNode.transform.rotation, 0.7f);
+            Debug.Log("currentNode rotation : " + currentNode.transform.rotation.eulerAngles);
+            Debug.Log("nextNode rotation : " + nextNode.transform.rotation.eulerAngles);
+            //Debug.Log("newQ rotation : " + newQ.eulerAngles);
+        }
+
+        //currentNode.transform.rotation;
+        //Debug.Log("newQ" + newQ);
+        //transform.rotation = newQ;
+
+    }
+
 
 }
