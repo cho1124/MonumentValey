@@ -31,6 +31,7 @@ public class AiNav : MonoBehaviour
     public Vector2 testVec = new Vector2(90f, 0f);
     public float speed;
 
+    public bool Circulation = false;
 
 
     private bool isMoving = false;
@@ -212,7 +213,12 @@ public class AiNav : MonoBehaviour
             Vector3 directionToNextNode = nextPositionOnPlane - startPosition;
             if (directionToNextNode != Vector3.zero)
             {
-                //transform.rotation = Quaternion.LookRotation(directionToNextNode);
+                if(!Circulation)
+                {
+                    transform.rotation = Quaternion.LookRotation(directionToNextNode);
+
+                }
+                //transform.forward = directionToNextNode;
             }
         }
     }
@@ -301,9 +307,11 @@ public class AiNav : MonoBehaviour
 
         if(currentNode.transform.rotation != nextNode.transform.rotation)
         {
-            transform.DORotateQuaternion(nextNode.transform.rotation, 0.7f);
-            Debug.Log("currentNode rotation : " + currentNode.transform.rotation.eulerAngles);
-            Debug.Log("nextNode rotation : " + nextNode.transform.rotation.eulerAngles);
+            transform.DORotateQuaternion(nextNode.transform.rotation, 0.3f);
+
+            
+            //Debug.Log("currentNode rotation : " + currentNode.transform.rotation.eulerAngles);
+            //Debug.Log("nextNode rotation : " + nextNode.transform.rotation.eulerAngles);
             //Debug.Log("newQ rotation : " + newQ.eulerAngles);
         }
 

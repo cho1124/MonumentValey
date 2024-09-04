@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System;
+using Cinemachine;
 
 namespace RW.MonumentValley
 {
@@ -38,6 +39,10 @@ namespace RW.MonumentValley
         [HideInInspector] public float previousAngleToMouse;
         [HideInInspector] public bool isActive = true;
 
+
+        //private CinemachineVirtualCamera CinemachineVirtualCamera;
+        
+
         public void Initialize()
         {
             // 초기화 시 필요한 설정
@@ -48,6 +53,7 @@ namespace RW.MonumentValley
             isSpinning = true;
             if (transformationMode == TransformationMode.Rotation)
             {
+                
                 Vector3 directionToMouse = mousePosition - (Vector2)Camera.main.WorldToScreenPoint(pivot.position);
                 previousAngleToMouse = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
             }
@@ -85,6 +91,14 @@ namespace RW.MonumentValley
         private void MoveTarget(Vector2 mousePosition)
         {
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, Camera.main.WorldToScreenPoint(target.position).z));
+
+            Vector3 axisDirection = GetAxisDirection();
+            Vector3 newWordPos = Camera.main.ScreenToViewportPoint(new Vector3())
+
+
+            
+            //
+
             Vector3 offset = worldPosition - target.position;
             target.position += offset * moveSpeed * Time.deltaTime;
         }
