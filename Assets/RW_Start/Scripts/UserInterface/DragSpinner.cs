@@ -93,7 +93,7 @@ namespace RW.MonumentValley
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, Camera.main.WorldToScreenPoint(target.position).z));
 
             Vector3 axisDirection = GetAxisDirection();
-            Vector3 newWordPos = Camera.main.ScreenToViewportPoint(new Vector3())
+            //Vector3 newWordPos = Camera.main.ScreenToViewportPoint(new Vector3(axisDirection.x, ))
 
 
             
