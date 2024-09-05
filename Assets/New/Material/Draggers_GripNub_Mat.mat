@@ -21,15 +21,14 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Draggers_GripNub_Mat
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 3f0e6ffb7a8d7c646a1ba01c366b7fe2, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap:
-    RenderType: Opaque
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -63,6 +62,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -107,9 +110,12 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _GlowSize: 5
+    - _IsHighlighted: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
@@ -121,11 +127,14 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _AmbientColour1: {r: 0, g: 0, b: 0, a: 0}
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 0.9858491, b: 0.9858491, a: 1}
+    - _BaseEmission: {r: 0.754717, g: 0.7084372, b: 0.7084372, a: 0}
     - _BlendColour: {r: 1, g: 1, b: 1, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DisabledColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FogColour: {r: 0, g: 0, b: 0, a: 1}
+    - _GlowColor: {r: 1, g: 0.1745283, b: 0.1745283, a: 0}
     - _LightColour0: {r: 0.34299308, g: 0.46805274, b: 0.7647059, a: 0}
     - _LightColour1: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 0}
     - _LightColour2: {r: 0.5513084, g: 0.67209315, b: 0.75735295, a: 0}

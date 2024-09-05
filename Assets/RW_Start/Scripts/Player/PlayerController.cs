@@ -40,7 +40,6 @@ namespace RW.MonumentValley
     [RequireComponent(typeof(PlayerAnimation))]
     public class PlayerController : MonoBehaviour
     {
-
         //  time to move one unit
         [Range(0.25f, 2f)]
         [SerializeField] private float moveTime = 0.5f;
