@@ -67,12 +67,11 @@ namespace RW.MonumentValley
         [SerializeField] private Node testNode;
 
         //private CinemachineVirtualCamera CinemachineVirtualCamera;
-        
-        
+        private Camera mainCamera;
+
         public void Initialize()
         {
-
-            // 초기화 시 필요한 설정
+            mainCamera = Camera.main;
         }
 
         public void BeginDrag(Vector2 mousePosition)
@@ -112,7 +111,7 @@ namespace RW.MonumentValley
 
         private void MoveTotem(Vector2 mousePosition)
         {
-            Vector3 directionToMouse = mousePosition - (Vector2)Camera.main.WorldToScreenPoint(pivot.position);
+            Vector3 directionToMouse = mousePosition - (Vector2)mainCamera.WorldToScreenPoint(pivot.position);
             
             Vector3 newDir = new Vector3(directionToMouse.x,directionToMouse.y,directionToMouse.z);
 
@@ -121,7 +120,7 @@ namespace RW.MonumentValley
 
         private void RotateTarget(Vector2 mousePosition)
         {
-            Vector3 directionToMouse = mousePosition - (Vector2)Camera.main.WorldToScreenPoint(pivot.position);
+            Vector3 directionToMouse = mousePosition - (Vector2)mainCamera.WorldToScreenPoint(pivot.position);
             float angleToMouse = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
 
             if (directionToMouse.magnitude > minDragDist)
@@ -132,7 +131,7 @@ namespace RW.MonumentValley
 
                 float rotationDelta = Mathf.Abs(previousAngleToMouse - angleToMouse);
                 float rotationRatio = rotationDelta / 360f; // 전체 회전 각도에 대한 비율
-                Debug.Log("rotationRatio : " + rotationRatio);
+                //Debug.Log("rotationRatio : " + rotationRatio);
 
                 // 다른 오브젝트의 이동/회전 처리
                 if (aimedObjects.Length != 0)
@@ -159,7 +158,7 @@ namespace RW.MonumentValley
 
            
 
-            Vector3 directionToMouse = mousePosition - (Vector2)Camera.main.WorldToScreenPoint(pivot.position);
+            Vector3 directionToMouse = mousePosition - (Vector2)mainCamera.WorldToScreenPoint(pivot.position);
             Vector3 axisDirection = GetAxisDirection();
             Vector3 newDir = new Vector3(axisDirection.x * directionToMouse.x, axisDirection.y * directionToMouse.y, axisDirection.z * directionToMouse.z);
 
@@ -181,7 +180,7 @@ namespace RW.MonumentValley
             }
 
 
-            Debug.Log("ratio : " + ratio);
+            //Debug.Log("ratio : " + ratio);
 
         }
 
@@ -244,7 +243,7 @@ namespace RW.MonumentValley
        
         void Start()
         {
-            
+            settings.Initialize();
             EnableSpinner(true);
             
         }

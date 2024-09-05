@@ -75,7 +75,12 @@ namespace RW.MonumentValley
         //public NodeState currentNodeState = NodeState.Up;
 
         // properties
-        
+        // totem Move Node
+        [Header("토템 이동 가능 여부")]
+        public bool canTotemMove = false;
+
+
+
         public Node PreviousNode { get { return previousNode; } set { previousNode = value; } }
 
         
