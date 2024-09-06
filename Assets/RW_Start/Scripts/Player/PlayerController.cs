@@ -36,6 +36,8 @@ using UnityEngine;
 
 namespace RW.MonumentValley
 {
+
+  
     // handles Player input and movement
     [RequireComponent(typeof(PlayerAnimation))]
     public class PlayerController : MonoBehaviour
@@ -148,7 +150,7 @@ namespace RW.MonumentValley
 
 
 
-        private IEnumerator FollowPathRoutine(List<Node> path)
+        public IEnumerator FollowPathRoutine(List<Node> path)
         {
             // start moving
             isMoving = true;
@@ -219,7 +221,7 @@ namespace RW.MonumentValley
         // snap the Player to the nearest Node in Game view
         public void SnapToNearestNode()
         {
-            Node nearestNode = graph?.FindClosestNode(transform.position);
+            Node nearestNode = graph?.FindClosestNode(transform.position, false);
             if (nearestNode != null)
             {
                 currentNode = nearestNode;
@@ -228,7 +230,7 @@ namespace RW.MonumentValley
         }
 
         // turn face the next Node, always projected on a plane at the Player's feet
-        public void FaceNextPosition(Vector3 startPosition, Vector3 nextPosition)
+        private void FaceNextPosition(Vector3 startPosition, Vector3 nextPosition)
         {
             if (Camera.main == null)
             {

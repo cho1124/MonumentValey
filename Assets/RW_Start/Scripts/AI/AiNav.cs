@@ -14,6 +14,8 @@ public class AiNav : MonoBehaviour
 
     public float maxDistance = 1f;
 
+    
+
     [Header("시작과 끝 노드")]
     public Node StartNode;
     public Node EndNode;
@@ -282,7 +284,7 @@ public class AiNav : MonoBehaviour
     }
     public void SnapToNearestNode()
     {
-        Node nearestNode = graph?.FindClosestNode(transform.position);
+        Node nearestNode = graph?.FindClosestNode(transform.position, false);
         if (nearestNode != null)
         {
             currentNode = nearestNode;

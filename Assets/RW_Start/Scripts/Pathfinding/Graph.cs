@@ -94,11 +94,40 @@ namespace RW.MonumentValley
             return closestNode;
         }
 
-        // find the closest Node in the entire Graph
-        public Node FindClosestNode(Vector3 pos)
+        public Node FindClosestNodeByTotem(Node[] nodes, Vector3 pos)
         {
+            Node closestNode = null;
+            float closestDistanceSqr = Mathf.Infinity;
+
+            foreach (Node n in nodes)
+            {
+                Vector3 diff = n.transform.position - pos;
+
+                Vector3 nodeScreenPosition = Camera.main.WorldToScreenPoint(n.transform.position);
+                Vector3 screenPosition = Camera.main.WorldToScreenPoint(pos);
+                diff = nodeScreenPosition - screenPosition;
+
+                if (diff.sqrMagnitude < closestDistanceSqr)
+                {
+                    if (!n.canTotemMove) continue;
+
+                    closestNode = n;
+                    closestDistanceSqr = diff.sqrMagnitude;
+                }
+            }
+            return closestNode;
+        }
+        // find the closest Node in the entire Graph
+        public Node FindClosestNode(Vector3 pos, bool isTotem)
+        {
+            if(isTotem)
+            {
+                return FindClosestNodeByTotem(allNodes.ToArray(), pos);
+            }
             return FindClosestNode(allNodes.ToArray(), pos);
         }
+        
+        
 
         // clear breadcrumb trail
         public void ResetNodes()

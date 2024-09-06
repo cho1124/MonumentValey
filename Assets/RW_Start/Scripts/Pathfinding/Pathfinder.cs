@@ -239,14 +239,8 @@ namespace RW.MonumentValley
 
 
 
-        public List<Node> FindPathAI(Node start, Node destination)
-        {
 
-
-            return FindPath();
-        }
-
-
+       
         // find the best path given a bunch of possible Node destinations
         public List<Node> FindBestPath(Node start, Node[] possibleDestinations)
         {
@@ -319,7 +313,43 @@ namespace RW.MonumentValley
             return bestPath;
         }
 
-        
+
+        public List<Node> FindBestPathForTotem(Node start, Node[] possibleDestinations)
+        {
+            List<Node> bestPath = new List<Node>();
+            foreach (Node n in possibleDestinations)
+            {
+                List<Node> possiblePath = FindPath(start, n);
+
+                if (!isPathComplete && isSearchComplete)
+                {
+
+                    continue;
+                }
+
+                if (bestPath.Count == 0 && possiblePath.Count > 0)
+                {
+                    bestPath = possiblePath;
+                }
+
+                if (bestPath.Count > 0 && possiblePath.Count < bestPath.Count)
+                {
+                    bestPath = possiblePath;
+                }
+            }
+
+            if (bestPath.Count <= 1)
+            {
+                ClearPath();
+                return new List<Node>();
+            }
+
+            destinationNode = bestPath[bestPath.Count - 1];
+            pathNodes = bestPath;
+            return bestPath;
+        }
+
+
         public void ClearPath()
         {
             startNode = null;
@@ -385,7 +415,7 @@ namespace RW.MonumentValley
 
         public void SetStartNode(Vector3 position)
         {
-            StartNode = graph.FindClosestNode(position);
+            StartNode = graph.FindClosestNode(position, false);
         }
     }
 }
