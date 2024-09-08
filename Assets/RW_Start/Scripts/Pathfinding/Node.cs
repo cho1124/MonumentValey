@@ -54,6 +54,7 @@ namespace RW.MonumentValley
         [SerializeField] private Color defaultGizmoColor = Color.black;
         [SerializeField] private Color selectedGizmoColor = Color.blue;
         [SerializeField] private Color inactiveGizmoColor = Color.gray;
+        
 
         // neighboring nodes + active state
         [SerializeField] private List<Edge> edges = new List<Edge>();

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44109386, g: 0.48984855, b: 0.56992626, a: 1}
+  m_IndirectSpecularColor: {r: 0.44109416, g: 0.4898492, b: 0.569927, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -628,6 +628,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 575632585252440202, guid: 2342a2eb76274426aa3400faf2f325da, type: 3}
       propertyPath: canTotemMove
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 575632585252440202, guid: 2342a2eb76274426aa3400faf2f325da, type: 3}
+      propertyPath: inactiveGizmoColor.b
+      value: 0.23270434
+      objectReference: {fileID: 0}
+    - target: {fileID: 575632585252440202, guid: 2342a2eb76274426aa3400faf2f325da, type: 3}
+      propertyPath: inactiveGizmoColor.g
+      value: 0.23270434
+      objectReference: {fileID: 0}
+    - target: {fileID: 575632585252440202, guid: 2342a2eb76274426aa3400faf2f325da, type: 3}
+      propertyPath: inactiveGizmoColor.r
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 575632585332286795, guid: 2342a2eb76274426aa3400faf2f325da, type: 3}
@@ -2235,8 +2247,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01135ea881baf410691e4ad9347b10b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startNode: {fileID: 962415201}
-  destinationNode: {fileID: 1952341154}
+  startNode: {fileID: 0}
+  destinationNode: {fileID: 0}
   searchOnStart: 1
   frontierNodes: []
   exploredNodes: []
@@ -3496,46 +3508,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44e68179cc7e9de4ea454de7b70d9542, type: 3}
---- !u!1 &1147330086 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7032958260386954970, guid: 769f60d1aee7c9f4290f1e7abf01788c, type: 3}
-  m_PrefabInstance: {fileID: 1523152194}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1147330087 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7032958260386952112, guid: 769f60d1aee7c9f4290f1e7abf01788c, type: 3}
-  m_PrefabInstance: {fileID: 1523152194}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1147330088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1147330086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7a29d13c8373fc469177dd121fe12f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveTime: 0.5
-  totemSettings:
-    target: {fileID: 1803169960}
-    moveSpeed: 1
-    pivot: {fileID: 1147330087}
-    minDragDist: 10
-    snapEvent:
-      m_PersistentCalls:
-        m_Calls: []
-    previousAngleToMouse: 0
-    isActive: 1
-    pathfinder: {fileID: 835897035}
-    Nodes: []
-    currentNode: {fileID: 0}
-    nextNode: {fileID: 0}
-    moveTime: 1
-    speed: 0
-  isControlEnabled: 0
 --- !u!1 &1157120346
 GameObject:
   m_ObjectHideFlags: 0
@@ -5649,6 +5621,9 @@ MonoBehaviour:
     nextNode: {fileID: 0}
     moveTime: 1
     speed: 0
+  startNode: {fileID: 1952341154}
+  destNode: {fileID: 962415201}
+  canMoveNodes: []
   isControlEnabled: 0
 --- !u!1001 &1828724004
 PrefabInstance:

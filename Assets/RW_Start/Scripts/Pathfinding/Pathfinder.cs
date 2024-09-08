@@ -163,6 +163,7 @@ namespace RW.MonumentValley
             while (!isSearchComplete && frontierNodes != null && iterations < maxIterations)
             {
                 iterations++;
+                
 
                 // if we still have frontier Nodes to check
                 if (frontierNodes.Count > 0)
@@ -172,6 +173,84 @@ namespace RW.MonumentValley
                     frontierNodes.RemoveAt(0);
 
                     lastExploredNode = currentNode;
+                    // and add to the exploredNodes
+                    if (!exploredNodes.Contains(currentNode))
+                    {
+                        exploredNodes.Add(currentNode);
+                    }
+
+                    // add unexplored neighboring Nodes to frontier
+                    ExpandFrontier(currentNode);
+
+                    // if we have found the destination Node
+                    if (frontierNodes.Contains(destinationNode))
+                    {
+                        // generate the Path to the goal
+                        newPath = GetPathNodes();
+                        isSearchComplete = true;
+                        isPathComplete = true;
+                        
+                    }
+                }
+                // if whole graph explored but no path found
+                else
+                {
+                    
+                    isSearchComplete = true;
+                    isPathComplete = false;
+                }
+                
+            }
+
+            //if (newPath.Count == 0 && lastExploredNode != null)
+            //{
+            //    // 마지막으로 탐색된 노드를 반환하거나 처리할 수 있음
+            //    newPath.Add(lastExploredNode);
+            //}
+
+            return newPath;
+        }
+
+        public List<Node> FindPath(bool canTotemMove)
+        {
+            List<Node> newPath = new List<Node>();
+            Node lastExploredNode = null;
+
+
+            if (startNode == null || destinationNode == null || startNode == destinationNode)
+            {
+                return newPath;
+            }
+
+
+
+            // prevents infinite loop
+            const int maxIterations = 100;
+            int iterations = 0;
+
+            // initialize all Nodes
+            InitGraph();
+
+            // search the graph until goal is found or all nodes explored (or exceeding some limit)
+            while (!isSearchComplete && frontierNodes != null && iterations < maxIterations)
+            {
+                iterations++;
+
+                // if we still have frontier Nodes to check
+                if (frontierNodes.Count > 0)
+                {
+                    // remove the first Node
+                    Node currentNode = frontierNodes[0];
+                    frontierNodes.RemoveAt(0);
+
+                    lastExploredNode = currentNode;
+
+                    if (!currentNode.canTotemMove && canTotemMove)
+                    {
+                        continue; // 노드가 이동 불가능하다면 스킵
+                    }
+
+
                     // and add to the exploredNodes
                     if (!exploredNodes.Contains(currentNode))
                     {
@@ -206,6 +285,7 @@ namespace RW.MonumentValley
 
             return newPath;
         }
+
         public List<Node> FindPath(Node currentNode, Node nextNode, Node lastNode, Node startNode, Node endNode)
         {
             
@@ -235,6 +315,14 @@ namespace RW.MonumentValley
             this.destinationNode = destination;
             this.startNode = start;
             return FindPath();
+        }
+
+        public List<Node> FindPathForTotem(Node start, Node dest, bool canTotemMove)
+        {
+            destinationNode = dest;
+            startNode = start;
+
+            return FindPath(canTotemMove);
         }
 
 

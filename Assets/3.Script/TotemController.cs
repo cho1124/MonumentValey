@@ -30,7 +30,7 @@ namespace RW.MonumentValley
         //이 부분은 부모 객체에서 수행해야 할 부분
         private Camera mainCamera;
        
-        [SerializeField] private Pathfinder pathfinder;
+        [SerializeField] public Pathfinder pathfinder;
         private Graph graph;
         [SerializeField] private List<Node> Nodes;
         public Node currentNode;
@@ -66,18 +66,17 @@ namespace RW.MonumentValley
             
         }
 
+        public List<Node> FindPathStart(Node node)
+        {
+            return pathfinder.FindBestPathForTotem(node, Nodes.ToArray());
+        }
+
         public void BeginDrag(Vector2 mousePosition)
         {
             //isSpinning = true;
             //pivot들 중 가장 가까운 pivot을 찾기?
             
-            Vector3 directionToMouse = mousePosition - (Vector2)Camera.main.WorldToScreenPoint(pivot.position);
             
-
-            previousAngleToMouse = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
-
-            target.position = directionToMouse;
-            SnapToNearestNode(target, false);
         }
 
         public void Drag(Vector2 mousePosition)
@@ -89,6 +88,11 @@ namespace RW.MonumentValley
             
         }
 
+        public void EndDrag(Vector2 mousePosition)
+        {
+
+        }
+
         private void MoveTotem(Vector2 mousePosition)
         {
             
@@ -96,19 +100,35 @@ namespace RW.MonumentValley
 
             Node destNode = graph?.FindClosestNode(directionToMouse, true);
             //쓰레기메서드
-            Nodes = pathfinder.FindPath(currentNode, destNode);
+
+            //여기서 destNode가 현재 노드의 이웃 노드가 아니라면 리턴을 쌔려버리면 끝일거 같은데
+            //TODO: 추가적인 버튼과 timeline 공부하면서 문법 공부 다시하기
+            //레벨 셀렉션 시작하기
+            //맵 2단계까지 가능하면 끝내기
+
+
+            Vector3 newDir = destNode.transform.position - target.position;
+            //이 부분을 토템을 위한 경로 찾기로 해야핸
+            Nodes = pathfinder.FindPathForTotem(currentNode, destNode, true); // 이 부분 말이 안됨
 
 
 
-            target.position += directionToMouse * moveSpeed * Time.deltaTime;
+            //target.position += directionToMouse * moveSpeed * Time.deltaTime;
+
+
+            //target.position = Vector3.Lerp(target.position, destNode.transform.position, moveSpeed * 3f * Time.deltaTime);
+
+            target.position += newDir * moveSpeed * 5f * Time.deltaTime;
 
             currentNode = destNode;
-            SnapToNearestNode(target, false);
+            //SnapToNearestNode(target, false);
             //Debug.Log("destNode : " + destNode.transform.name);
             //Move(pathfinder.FindBestPath(currentNode, Nodes));
 
 
             //단순히 이동하는 것이 아닌, directionToMouse와 가장 가까운 Node를 찾기
+            //애당초 드래그로는 너무 불안정한 노드찾기\
+            //해결방안을 계속 생각해보니 그냥 노드를 찾는게 아닌 그냥 처음부터 토템이 이동 가능한 길을 만들고 거기서만 이동할 수 있도록 한다?
         }
 
         
@@ -125,7 +145,7 @@ namespace RW.MonumentValley
 
 
 
-        public void SnapToNearestNode(Transform _transform, bool isSmoothMove)
+        public Transform SnapToNearestNode(Transform _transform, bool isSmoothMove)
         {
             Node nearestNode = graph?.FindClosestNode(_transform.position, true);
             
@@ -148,7 +168,7 @@ namespace RW.MonumentValley
                     _transform.position = nearestNode.transform.position;
                 }
             }
-
+            return _transform;
             
         }
 
@@ -227,6 +247,10 @@ namespace RW.MonumentValley
        
         [Header("토템 세팅")]
         [SerializeField] private TotemSettings totemSettings;
+        [SerializeField] private Node startNode;
+        [SerializeField] private Node destNode;
+        [SerializeField] private List<Node> canMoveNodes;
+        
 
         [Header("컨트롤 제어권")]
         public bool isControlEnabled = false;
@@ -243,6 +267,8 @@ namespace RW.MonumentValley
         {
 
             totemSettings.SnapToNearestNode(transform, false);
+            //canMoveNodes = totemSettings.FindPathStart(startNode);
+            
 
             //Vector3.Slerp()
         }
