@@ -70,7 +70,7 @@ public class AiNav : MonoBehaviour
         //플레이어 또한 ai가 이동경로 사이에 있으면 이동할 수 없도록 할 것
 
         //possiblePath = pathfinder.FindBestPathForAI(currentNode, PathManager.instance.newNode, StartNode, EndNode);
-
+        //중간경로 >>> 순환 케이스 
         Rotator();
         foreach (Edge edge in currentNode.Edges)
         {

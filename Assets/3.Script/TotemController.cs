@@ -334,18 +334,13 @@ namespace RW.MonumentValley
         private void Awake()
         {
             totemSettings.Initialize();
-            //isMoving = false;
             isControlEnabled = true;
         }
 
         private void Start()
         {
-
             totemSettings.SnapToNearestNode(transform, false);
             canMoveNodes = totemSettings.FindPathStart(startNode);
-            
-
-            //Vector3.Slerp()
         }
 
         private void Update()
@@ -370,17 +365,7 @@ namespace RW.MonumentValley
             {
                 totemSettings.Drag(eventData.position);
 
-                //Debug.Log("totemSettings nextNode : " + totemSettings.nextNode);
-
                 List<Node> testNodes = totemSettings.pathfinder.FindPath(totemSettings.currentNode, totemSettings.nextNode);
-
-                
-
-
-                //Debug.Log("currentNode : " + totemSettings.currentNode);
-
-                Debug.Log("testNodes Count : " + testNodes.Count);
-
 
                 if(testNodes.Count > 1 && Vector3.Distance(transform.position, totemSettings.currentNode.transform.position) < 0.1f)
                 {
@@ -397,37 +382,26 @@ namespace RW.MonumentValley
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            
+
+            StopAllCoroutines();
+
+            transform.DOMove(totemSettings.SnapToNearestNode(transform, false).position, 0.5f);
             //나중에 쓸지도 아닐지도 쓸 가능성이 높을듯 >>> 아닌것같기도   
         }
         public IEnumerator FollowPathRoutine(List<Node> path)
         {
-            //isMoving = true;
-
             if (path == null || path.Count <= 1)
             {
                 Debug.Log("PLAYERCONTROLLER FollowPathRoutine: invalid path");
             }
             else
             {
-                
-
-                // loop through all Nodes
                 for (int i = 0; i < path.Count; i++)
                 {
-                    // use the current Node as the next waypoint
                     totemSettings.nextNode = path[i];
-
-                    
-
-
-                    // move to the next Node
                     yield return StartCoroutine(MoveToNodeRoutine(transform.position, totemSettings.nextNode));
                 }
             }
-
-            
-
         }
 
         //  lerp to another Node from current position
@@ -444,20 +418,15 @@ namespace RW.MonumentValley
 
                 elapsedTime += Time.deltaTime;
                 float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
-
                 Vector3 targetPos = targetNode.transform.position;
                 transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
 
-                // if over halfway, change parent to next node
                 if (lerpValue > 0.51f)
                 {
                     transform.parent = targetNode.transform;
                     totemSettings.currentNode = targetNode;
 
-                    
-                    // invoke UnityEvent associated with next Node
                     targetNode.gameEvent.Invoke();
-                    //Debug.Log("invoked GameEvent from targetNode: " + targetNode.name);
                 }
 
                 // wait one frame

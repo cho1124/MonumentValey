@@ -77,6 +77,7 @@ namespace RW.MonumentValley
         public void BeginDrag(Vector2 mousePosition)
         {
             isSpinning = true;
+            Debug.Log("Start"); 
             if (transformationMode == TransformationMode.Rotation)
             {
                 
@@ -250,6 +251,7 @@ namespace RW.MonumentValley
 
         public void OnBeginDrag(PointerEventData data)
         {
+            
             if (settings.isActive)
             {
                 settings.BeginDrag(data.position);
