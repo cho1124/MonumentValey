@@ -48,7 +48,10 @@ namespace RW.MonumentValley
         public float rotationSpeed = 1.0f; // 회전 속도
         public float moveSpeed = 1.0f; // 위치 변경 속도
         public Tween rotatorTweener;
-        
+
+        [Header("Rotator")]
+        [Range(0f, 1f)]
+        public float smoothDamp;
 
         public Transform pivot; // 피벗 포인트
         public int minDragDist = 10; // 최소 드래그 거리
@@ -177,17 +180,19 @@ namespace RW.MonumentValley
                     
                     
                     newRotationVector = -newRotationVector;
+                    newRotationVector = newRotationVector * smoothDamp;
 
                     
-                    Debug.Log("newRotationVector" + newRotationVector);
 
+                    Debug.Log("newRotationVector" + newRotationVector);
 
                     Rigidbody rb = fakeTarget.GetComponent<Rigidbody>();
                     
-                    rb.AddTorque(newRotationVector); //y축으로 AddTorque를 쏘는데 왜
+                    rb.AddTorque(newRotationVector, ForceMode.Force); //y축으로 AddTorque를 쏘는데 왜
                     //target.rotation = fakeTarget.rotation; //이 부분 update로 동기화
-                    
-
+                    //TODO: 레벨 셀렉션 해체분석 시작 >>>> 1레벨 부터 10레벨까지 존재 놀랍게도 
+                    //리팩토링 : 상속 구조로 나눠서 체계적으로 관리할 것 >> 코드가 너무 더러워
+                    //
                 }
 
             }
@@ -362,7 +367,7 @@ namespace RW.MonumentValley
 
         public void OnInitializePotentialDrag(PointerEventData data)
         {
-            Debug.Log("potential Debugger");
+            //Debug.Log("potential Debugger");
             if (settings.isActive)
             {
                 settings.BeginDrag(data.position);
