@@ -32,7 +32,6 @@ namespace RW.MonumentValley
             target.transform.position = Vector3.Lerp(startTr.position, endTr.position, ratio);
             target.transform.rotation = Quaternion.Lerp(startTr.rotation, endTr.rotation, ratio);
         }
-
     }
 
     [Serializable]
@@ -74,7 +73,7 @@ namespace RW.MonumentValley
         [SerializeField] private Node testNode;
 
         //private CinemachineVirtualCamera CinemachineVirtualCamera;
-        private Camera mainCamera;
+        protected Camera mainCamera;
         private float ratio = 0f;
         [SerializeField] private bool testDebugger = false;
         //[SerializeField] private Quaternion targetRot;
@@ -88,16 +87,18 @@ namespace RW.MonumentValley
         public void BeginDrag(Vector2 mousePosition)
         {
             isSpinning = true;
+            //Debug.Log(isSpinning);
             isSpinningDo = true;
             
             if (transformationMode == TransformationMode.Rotation)
             {
                 Vector3 directionToMouse = mousePosition - (Vector2)Camera.main.WorldToScreenPoint(pivot.position);
+                //Debug.Log("rotate Mode");
                 previousAngleToMouse = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
             }
         }
 
-        public void Drag(Vector2 mousePosition)
+        public virtual void Drag(Vector2 mousePosition)
         {
             if (isSpinning && isActive)
             {
@@ -130,78 +131,42 @@ namespace RW.MonumentValley
             target.position += newDir * moveSpeed * Time.deltaTime;
         }
 
-        private void RotateTarget(Vector2 mousePosition)
+        protected virtual void RotateTarget(Vector2 mousePosition)
         {
             Vector3 directionToMouse = mousePosition - (Vector2)mainCamera.WorldToScreenPoint(pivot.position);
             float angleToMouse = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
 
-
-
-            if(!testDebugger)
+            if (directionToMouse.magnitude > minDragDist)
             {
-                if (directionToMouse.magnitude > minDragDist)
+                Vector3 axisDirection = GetAxisDirection();
+                Vector3 newRotationVector = (previousAngleToMouse - angleToMouse) * axisDirection * rotationSpeed;
+                target.Rotate(newRotationVector);
+
+                float rotationDelta = Mathf.Abs(previousAngleToMouse - angleToMouse);
+                float rotationRatio = rotationDelta / 360f; // 전체 회전 각도에 대한 비율
+                                                            //Debug.Log("rotationRatio : " + rotationRatio);
+
+                // 다른 오브젝트의 이동/회전 처리
+                if (aimedObjects.Length != 0)
                 {
-                    Vector3 axisDirection = GetAxisDirection();
-                    Vector3 newRotationVector = (previousAngleToMouse - angleToMouse) * axisDirection * rotationSpeed;
-                    target.Rotate(newRotationVector);
-
-                    float rotationDelta = Mathf.Abs(previousAngleToMouse - angleToMouse);
-                    float rotationRatio = rotationDelta / 360f; // 전체 회전 각도에 대한 비율
-                                                                //Debug.Log("rotationRatio : " + rotationRatio);
-
-                    // 다른 오브젝트의 이동/회전 처리
-                    if (aimedObjects.Length != 0)
+                    for (int i = 0; i < aimedObjects.Length; i++)
                     {
-                        for (int i = 0; i < aimedObjects.Length; i++)
-                        {
-                            // 회전 비율에 따라 이동시키거나 회전시키는 로직 추가
-                            //
-                            aimedObjects[i].MoveByRatio(rotationRatio);
+                        // 회전 비율에 따라 이동시키거나 회전시키는 로직 추가
+                        //
+                        aimedObjects[i].MoveByRatio(rotationRatio);
 
-                            // 만약 회전시키려면:
-                            // aimedObjects[i].RotateByRatio(rotationRatio);
-                        }
+                        // 만약 회전시키려면:
+                        // aimedObjects[i].RotateByRatio(rotationRatio);
                     }
-
-                    previousAngleToMouse = angleToMouse;
-                }
-            }
-            else
-            {
-                if (directionToMouse.magnitude > minDragDist)
-                {
-                   
-                    Vector3 axisDirection = GetAxisDirection();
-                    //1. 방향 구하기
-                    //2. 방향만큼 흠 구하기
-                    
-                    
-                    Vector3 newRotationVector = (previousAngleToMouse - angleToMouse) * axisDirection * rotationSpeed; //y축 고정
-                    
-                    
-                    newRotationVector = -newRotationVector;
-                    newRotationVector = newRotationVector * smoothDamp;
-
-                    
-
-                    Debug.Log("newRotationVector" + newRotationVector);
-
-                    Rigidbody rb = fakeTarget.GetComponent<Rigidbody>();
-                    
-                    rb.AddTorque(newRotationVector, ForceMode.Force); //y축으로 AddTorque를 쏘는데 왜
-                    //target.rotation = fakeTarget.rotation; //이 부분 update로 동기화
-                    //TODO: 레벨 셀렉션 해체분석 시작 >>>> 1레벨 부터 10레벨까지 존재 놀랍게도 
-                    //리팩토링 : 상속 구조로 나눠서 체계적으로 관리할 것 >> 코드가 너무 더러워
-                    //
                 }
 
+                previousAngleToMouse = angleToMouse;
             }
 
 
         }
 
-        
-
+       
         private void MoveTarget(Vector2 mousePosition)
         {
             //TODO: Clamp 개선
@@ -235,7 +200,7 @@ namespace RW.MonumentValley
 
         }
 
-        private Vector3 GetAxisDirection()
+        protected Vector3 GetAxisDirection()
         {
             switch (spinAxis)
             {
@@ -250,51 +215,8 @@ namespace RW.MonumentValley
             }
         }
 
-        public void DoSnap()
-        {
-            
-            if (!testDebugger) return;
-
-            if (transformationMode == TransformationMode.Rotation)
-            {
-                Vector3 eulerAngles = fakeTarget.eulerAngles;
-                Vector3 newAngles = Vector3.zero;
-                float roundedXAngle = Mathf.Round(eulerAngles.x / 90f) * 90f;
-                float roundedYAngle = Mathf.Round(eulerAngles.y / 90f) * 90f;
-                float roundedZAngle = Mathf.Round(eulerAngles.z / 90f) * 90f;
-                Rigidbody rb = fakeTarget.GetComponent<Rigidbody>();
-
-
-                switch (spinAxis)
-                {
-                    case SpinAxis.X:
-                        newAngles = new Vector3(roundedXAngle, eulerAngles.y, eulerAngles.z);
-                        break;
-                    case SpinAxis.Y:
-                        newAngles = new Vector3(eulerAngles.x, roundedYAngle, eulerAngles.z);
-                        break;
-                    case SpinAxis.Z:
-                        newAngles = new Vector3(eulerAngles.x, eulerAngles.y, roundedZAngle);
-                        break;
-                }
-
-                //Debug.Log(newAngles);
-
-                if(!isSpinningDo && rb.angularVelocity.magnitude < 1f)
-                {
-                    fakeTarget.DORotate(newAngles, 0.5f);
-                    //rb.angularVelocity = Vector3.zero;
-                    
-                    return;
-                }
-
-
-                //target.DORotate(newAngles, 0.1f);
-   
-            }
-        }
-
-        public void Snap()
+        
+        public virtual void Snap()
         {
             isSpinning = false;
             isSpinningDo = false;
@@ -306,29 +228,18 @@ namespace RW.MonumentValley
                 float roundedYAngle = Mathf.Round(eulerAngles.y / 90f) * 90f;
                 float roundedZAngle = Mathf.Round(eulerAngles.z / 90f) * 90f;
 
-                if (testDebugger)
+                switch (spinAxis)
                 {
-                    
-
+                    case SpinAxis.X:
+                        target.eulerAngles = new Vector3(roundedXAngle, eulerAngles.y, eulerAngles.z);
+                        break;
+                    case SpinAxis.Y:
+                        target.eulerAngles = new Vector3(eulerAngles.x, roundedYAngle, eulerAngles.z);
+                        break;
+                    case SpinAxis.Z:
+                        target.eulerAngles = new Vector3(eulerAngles.x, eulerAngles.y, roundedZAngle);
+                        break;
                 }
-                else
-                {
-                    
-
-                    switch (spinAxis)
-                    {
-                        case SpinAxis.X:
-                            target.eulerAngles = new Vector3(roundedXAngle, eulerAngles.y, eulerAngles.z);
-                            break;
-                        case SpinAxis.Y:
-                            target.eulerAngles = new Vector3(eulerAngles.x, roundedYAngle, eulerAngles.z);
-                            break;
-                        case SpinAxis.Z:
-                            target.eulerAngles = new Vector3(eulerAngles.x, eulerAngles.y, roundedZAngle);
-                            break;
-                    }
-                }
-                
             }
             else if (transformationMode == TransformationMode.Position)
             {
@@ -343,54 +254,64 @@ namespace RW.MonumentValley
 
     // allows a target Transform to be rotated based on mouse click and drag
     [RequireComponent(typeof(Collider))]
-    public class DragSpinner : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IInitializePotentialDragHandler
+    public class DragSpinner : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         [SerializeField] private SpinnerSettings settings;
-        [SerializeField] private Quaternion quaternion;
-       
+        
         void Start()
         {
-            quaternion = transform.rotation;
             settings.Initialize();
             EnableSpinner(true);
             
         }
 
-        private void FixedUpdate()
+        private void OnMouseDown()
         {
-            if(settings.fakeTarget != null)
-            {
-                settings.target.rotation = settings.fakeTarget.rotation;
-            }
-            settings.DoSnap();
-        }
-
-        public void OnInitializePotentialDrag(PointerEventData data)
-        {
-            //Debug.Log("potential Debugger");
+            
             if (settings.isActive)
             {
-                settings.BeginDrag(data.position);
+                settings.BeginDrag(Input.mousePosition);
             }
         }
 
-        public void OnBeginDrag(PointerEventData data)
+        private void OnMouseDrag()
         {
-            
-            
+            settings.Drag(Input.mousePosition);
+            //SetQ();
         }
-
-        public void OnDrag(PointerEventData data)
-        {
-            settings.Drag(data.position);
-        }
-
-        public void OnEndDrag(PointerEventData data)
+        private void OnMouseUp()
         {
             if (settings.isActive)
             {
                 settings.Snap();
             }
+            
+        }
+
+
+
+        public void OnBeginDrag(PointerEventData data)
+        {
+            //Debug.Log("Drag Beginning");
+            //if (settings.isActive)
+            //{
+            //    settings.BeginDrag(data.position);
+            //}
+
+        }
+
+        public void OnDrag(PointerEventData data)
+        {
+            //settings.Drag(data.position);
+        }
+
+        public void OnEndDrag(PointerEventData data)
+        {
+            //Debug.Log("EndDrag");
+            //if (settings.isActive)
+            //{
+            //    settings.Snap();
+            //}
         }
 
         public void EnableSpinner(bool state)
