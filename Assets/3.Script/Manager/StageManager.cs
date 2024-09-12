@@ -40,7 +40,8 @@ public class StageManager : MonoBehaviour
 
             if (Physics.Raycast(directionToMouse, out hit, maxRaycastDistance, layerMask))
             {
-                Debug.Log("hit Name : " + hit.transform.name);
+                Selectable selectable = hit.transform.GetComponentInParent<Selectable>();
+                selectable.ChangeState(selectable.GetOpeningState());
             }
         }        
     }

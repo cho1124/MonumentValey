@@ -3,38 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 using System;
 using RW.MonumentValley;
 using DG.Tweening;
-
-public enum StageState
-{
-    Closed,
-    Opening,
-    Opened
-}
-
-[Serializable]
-public class Stage
-{
-    public int stageNum;
-    public string stageName;
-    public GameObject stageObj;
-    public StageState currentState = StageState.Closed;
-
-    public Stage(int num, string name)
-    {
-
-    }
-
-    public void CheckStageState()
-    {
-
-    }
-
-
-
-}
 
 [Serializable]
 public class LevelRotator : SpinnerSettings
@@ -124,7 +96,7 @@ public class LevelRotator : SpinnerSettings
     }
 }
 
-public class LevelSelectionContainer : MonoBehaviour
+public class LevelSelectionRotator : MonoBehaviour
 {
     
     public List<Stage> stages;
@@ -170,12 +142,12 @@ public class LevelSelectionContainer : MonoBehaviour
     private void FixedUpdate()
     {
         ObjRotate();
-        Checker();
 
         if (settings.fakeTarget != null)
         {
             settings.target.rotation = settings.fakeTarget.rotation;
         }
+        Checker();
         //ClampRot();
     }
 
@@ -323,6 +295,7 @@ public class LevelSelectionContainer : MonoBehaviour
         {
             if(i == num || i == num - 1 || i == num + 1)
             {
+                
                 stageObj[i].SetActive(true);
             }
             else
