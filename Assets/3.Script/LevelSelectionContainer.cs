@@ -7,13 +7,32 @@ using System;
 using RW.MonumentValley;
 using DG.Tweening;
 
+public enum StageState
+{
+    Closed,
+    Opening,
+    Opened
+}
+
 [Serializable]
 public class Stage
 {
     public int stageNum;
     public string stageName;
     public GameObject stageObj;
-    public bool isOpened;
+    public StageState currentState = StageState.Closed;
+
+    public Stage(int num, string name)
+    {
+
+    }
+
+    public void CheckStageState()
+    {
+
+    }
+
+
 
 }
 
@@ -45,8 +64,12 @@ public class LevelRotator : SpinnerSettings
 
             Rigidbody rb = fakeTarget.GetComponent<Rigidbody>();
 
-            rb.AddTorque(newRotationVector, ForceMode.Force);
 
+            fakeTarget.rotation = Quaternion.Euler(newRotationVector);
+
+            //rb.AddTorque(newRotationVector, ForceMode.Acceleration);
+            //fakeTarget.rotation = Quaternion.Euler(newRotationVector);
+            
         }
 
     }
@@ -77,7 +100,7 @@ public class LevelRotator : SpinnerSettings
             float roundedXAngle = Mathf.Round(eulerAngles.x / 90f) * 90f;
             float roundedYAngle = Mathf.Round(eulerAngles.y / 90f) * 90f;
             float roundedZAngle = Mathf.Round(eulerAngles.z / 90f) * 90f;
-            Rigidbody rb = fakeTarget.GetComponent<Rigidbody>();
+            //Rigidbody rb = fakeTarget.GetComponent<Rigidbody>();
 
             switch (spinAxis)
             {
@@ -92,32 +115,43 @@ public class LevelRotator : SpinnerSettings
                     break;
             }
 
-            if (rb.angularVelocity.magnitude < 1f)
-            {
-                fakeTarget.DORotate(newAngles, 0.5f);
-            }
+            Quaternion targetRotation = Quaternion.Euler(newAngles);
+
+            fakeTarget.rotation = Quaternion.Lerp(fakeTarget.rotation, targetRotation, Time.deltaTime * 5f);
+
+            //fakeTarget.DORotate(newAngles, 0.5f);
         }
     }
 }
-public class LevelSelectionContainer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+
+public class LevelSelectionContainer : MonoBehaviour
 {
-    //TODO: level class를 담?는 자료구조 만들기 >> 클래스 만들고 연결 부드럽게 하면 될듯, 그리고 정면에서 레이를 쏘는 것 혹은 1스테이지부터 각도 계속 중첩계산해서 해당하는 각도에 맞게 나오든가 혹은 레이를 쏘든가 알아서 하면 되긴 할듯
+    
+    public List<Stage> stages;
 
     [SerializeField] private LevelRotator settings;
     [SerializeField] private List<GameObject> stageObj;
     [SerializeField] private float totalRotation; // 누적된 회전값
     [SerializeField] private Transform stageTr;
-    public List<Stage> stages;
-    private int count = 0;
+    [SerializeField] private Vector3 currentVel;
+    [SerializeField] private float inertialDamping = 0.95f;
+    [SerializeField] private bool isDebug = false;
+    [SerializeField] private bool rotating = false;
+    [SerializeField] private float rotateSpeed = 30.0f;
+
     private Quaternion previousRotation; // 이전 프레임의 회전값
-    private int totalRevolutions; // 총 회전한 바퀴 수
-
-
+    Vector3 mousePos, offset, rotation;
+    
+    private float snapThreshold = 3f;  // 관성 회전과 스냅 사이의 임계값
+    private float stopThreshold = 0.1f;  // 회전이 완전히 멈출 최소 속도
+    
     private void Awake()
     {
         foreach (Stage stage in stages)
         {
+            //TODO: 이 부분에서 현재 진행 상태를 불러와서 
             GameObject gameObject = Instantiate(stage.stageObj, stageTr);
+            gameObject.GetComponentInChildren<Selectable>().stage = stage;
             stageObj.Add(gameObject);
             gameObject.SetActive(false);
         }
@@ -127,73 +161,109 @@ public class LevelSelectionContainer : MonoBehaviour, IBeginDragHandler, IDragHa
     {
         previousRotation = transform.rotation;
         totalRotation = 0f;
-        totalRevolutions = 0;
+        
         settings.Initialize();
         EnableSpinner(true);
+        
     }
 
     private void FixedUpdate()
     {
+        ObjRotate();
+        Checker();
+
         if (settings.fakeTarget != null)
         {
             settings.target.rotation = settings.fakeTarget.rotation;
         }
-        settings.DOSnap();
-
-        Checker();
-        TestQ();
-
+        //ClampRot();
     }
 
-    //private void OnMouseDown()
-    //{
-    //
-    //    if (settings.isActive)
-    //    {
-    //        settings.BeginDrag(Input.mousePosition);
-    //    }
-    //}
-    //
-    //private void OnMouseDrag()
-    //{
-    //    settings.Drag(Input.mousePosition);
-    //    //SetQ();
-    //}
-    //
-    //private void OnMouseUp()
-    //{
-    //    if (settings.isActive)
-    //    {
-    //        settings.Snap();
-    //    }
-    //
-    //}
-
-    public void OnBeginDrag(PointerEventData data)
+    private void OnMouseDown()
     {
-        //Debug.Log("Drag Beginning");
-        if (settings.isActive)
+       
+        int layer = gameObject.layer;
+        string layerName = LayerMask.LayerToName(layer);
+        Debug.Log("layerName : " + layerName);
+
+
+
+        if(layerName == "Stage")
         {
-            settings.BeginDrag(data.position);
+            Debug.Log(gameObject.name);
+            return;
         }
 
+        rotating = true;
+
+        mousePos = Input.mousePosition;
+
+        //if (settings.isActive)
+        //{
+        //    settings.BeginDrag(Input.mousePosition);
+        //}
+    }
+    
+    private void OnMouseDrag()
+    {
+        //settings.Drag(Input.mousePosition);
+        //SetQ();
+    }
+    
+    private void OnMouseUp()
+    {
+        rotating = false;
+
+        //if (settings.isActive)
+        //{
+        //    settings.Snap();
+        //}
+
     }
 
-    public void OnDrag(PointerEventData data)
+    private void ObjRotate()
     {
-        settings.Drag(data.position);
-    }
+        ClampRot();
 
-    public void OnEndDrag(PointerEventData data)
-    {
-        //Debug.Log("EndDrag");
-        if (settings.isActive)
+        if (rotating)
         {
-            settings.Snap();
-        }
-    }
+            offset = (Input.mousePosition - mousePos);
 
-    private void TestQ()
+            rotation.y = -(offset.x + offset.y) * Time.deltaTime * rotateSpeed;
+           
+            settings.fakeTarget.Rotate(rotation);
+
+            currentVel = rotation;
+
+            mousePos = Input.mousePosition;
+        }
+        else
+        {
+            // 관성으로 회전
+            settings.fakeTarget.Rotate(currentVel * Time.deltaTime * 3f);
+
+            // 점진적으로 회전 속도 감소
+            currentVel *= settings.smoothDamp;
+
+            // currentVel.magnitude가 특정 값 이하일 때 스냅 처리
+            if (currentVel.magnitude < snapThreshold)
+            {
+                // 너무 작은 속도가 되면 스냅 실행
+                if (currentVel.magnitude < stopThreshold)
+                {
+                    settings.DOSnap();  // 회전 멈추고 스냅 동작
+                    currentVel = Vector3.zero;  // 속도 초기화
+                }
+                else
+                {
+                    // 스냅 동작 없이 최소 회전 속도를 유지
+                    currentVel = currentVel.normalized * stopThreshold; // 최소 속도로 보정
+                }
+            }
+        }
+        
+    }
+    private void ClampRot()
     {
         Quaternion currentRotation = settings.target.rotation;
 
@@ -203,12 +273,37 @@ public class LevelSelectionContainer : MonoBehaviour, IBeginDragHandler, IDragHa
         // 누적 회전 각도에 추가
         totalRotation += angleDelta;
 
+        if(totalRotation < 0 || totalRotation > (stageObj.Count - 1) * 90f)
+        {
+            
+            if(totalRotation <= 0)
+            {
+                totalRotation = 0;
+                
+            }
+            
+            if(totalRotation > (stageObj.Count - 1) * 90f)
+            {
+                totalRotation = (stageObj.Count - 1) * 90f;
+            }
+
+            //settings.fakeTarget.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+            
+           
+
+            settings.DOSnap();  // 회전 멈추고 스냅 동작
+            currentVel = Vector3.zero;  // 속도 초기화
+
+
+        }
+
         previousRotation = currentRotation;
         
     }
 
     private void Checker()
     {
+        //이 부분 조건을 좀 더 정밀화
         int stageNum = Mathf.RoundToInt(totalRotation / 90f);
         
         if(stageNum == 0)

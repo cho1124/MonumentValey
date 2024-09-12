@@ -9840,6 +9840,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7393639500743011130}
+  - component: {fileID: 8143198833550586893}
   m_Layer: 11
   m_Name: LevelPortal4
   m_TagString: Untagged
@@ -9867,6 +9868,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 179.99997}
+--- !u!114 &8143198833550586893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7393639500743011129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f2080fb185721846a4b80adeb13d116, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stage:
+    stageNum: 0
+    stageName: 
+    stageObj: {fileID: 0}
+    currentState: 0
 --- !u!1 &7393639500766695740
 GameObject:
   m_ObjectHideFlags: 0

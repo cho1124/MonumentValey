@@ -7629,6 +7629,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3806052270572821714}
+  - component: {fileID: 5042723739305085421}
   m_Layer: 11
   m_Name: LevelPortal9
   m_TagString: Untagged
@@ -7643,7 +7644,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3806052270572821715}
-  m_LocalRotation: {x: -0.7071075, y: 0.00000004470348, z: 0.7071062, w: 0.000000052154057}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7655,7 +7656,24 @@ Transform:
   - {fileID: 3806052269407595111}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -179.99998, y: -89.99989, z: 0}
+  m_LocalEulerAnglesHint: {x: -180, y: 90, z: 0}
+--- !u!114 &5042723739305085421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3806052270572821715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f2080fb185721846a4b80adeb13d116, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stage:
+    stageNum: 0
+    stageName: 
+    stageObj: {fileID: 0}
+    currentState: 0
 --- !u!1 &3806052270687840858
 GameObject:
   m_ObjectHideFlags: 0

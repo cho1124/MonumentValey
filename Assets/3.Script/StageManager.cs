@@ -2,28 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class StageManager : MonoBehaviour
 {
-    public void SceneLoad(int a)
+    public static List<Stage> stages;
+
+    [SerializeField] private float maxRaycastDistance = 100f; // 최대 레이캐스트 거리
+
+    private Camera mainCamera;      // 카메라 캐싱
+    private int layerMask;          // 레이어 마스크 캐싱
+
+    public static void SceneLoad(int a)
     {
         SceneManager.LoadScene(a);
 
     }
-    public void SceneLoad(string s)
+
+    public static void SceneLoad(string s)
     {
         SceneManager.LoadScene(s);
     }
-    private void OnMouseDown()
+
+    private void Start()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, LayerMask.NameToLayer("Stage")))
-        {
-            Debug.Log("hitted num : " + hit.transform.GetComponent<Stage>().stageNum);
-            //SceneLoad(hit.transform.GetComponent<Stage>().stageNum);
-        }
-
+        mainCamera = Camera.main;
+        layerMask = LayerMask.GetMask("Stage");
     }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray directionToMouse = mainCamera.ScreenPointToRay(Input.mousePosition);
+            
+            RaycastHit hit;
+
+            if (Physics.Raycast(directionToMouse, out hit, maxRaycastDistance, layerMask))
+            {
+                Debug.Log("hit Name : " + hit.transform.name);
+            }
+        }        
+    }
+
 }
