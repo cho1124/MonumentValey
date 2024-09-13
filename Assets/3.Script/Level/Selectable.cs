@@ -6,60 +6,108 @@ using UnityEngine.Events;
 
 public class Selectable : MonoBehaviour
 {
-
     // Start is called before the first frame update
     public Stage stage;
-
-    public Animation ani;
+    public Animator ani;
     public string animationClipName;
 
-    private IState currentState; // 현재 상태 저장
+    [SerializeField] private IState currentState; // 현재 상태 저장
     private ClosedState closedState; // Idle 상태 객체
     private OpeningState openingState; // Opening 상태 객체
     private OpenedState openedState; // Opened 상태 객체
+    private AnimatorStateInfo currentAniStateInfo;
 
     public IState GetClosedState() => closedState;
     public IState GetOpeningState() => openingState;
     public IState GetOpenedState() => openedState;
     public IState GetCurrentState() => currentState;
 
-
-    private void Start()
+    private void Awake()
     {
-        ani = GetComponentInChildren<Animation>();
+        ani = GetComponentInChildren<Animator>();
 
-        
-        closedState = new ClosedState(this, ani);
-        openingState = new OpeningState(this, ani);
-        openedState = new OpenedState(this, ani);
+        //이 부분 수정 필요
+        closedState = new ClosedState(this, ani, "Closed");
+        openingState = new OpeningState(this, ani, "Unlocking");
+        openedState = new OpenedState(this, ani, "Open_4");
 
-        
         // 이 부분 json으로 불러오던지 어떤 방법이든지 써서 상태를 유동적으로 변환시키도록 할 것
+        currentState = closedState;
+
+    }
+    private void OnEnable()
+    {
+        ChangeState(currentState);
+    }
+
+    private void ChangeState(IState newState)
+    {
+        currentState?.Exit();
+
+        currentState = newState;
+
+        if (currentState is OpeningState)
+        {
+            currentState.Enter();
+            
+            StartCoroutine(OpeningSequence());
+        }
+        else
+        {
+            currentState.Enter();
+        }
+
+    }
+    public void Closed()
+    {
         ChangeState(closedState);
     }
 
-    public void ChangeState(IState newState)
+    public void Opening()
     {
-        // 현재 상태에서 나가기
-        currentState?.Exit();
-
-        // 새로운 상태로 진입
-        currentState = newState;
-        currentState.Enter();
+        ChangeState(openingState);
     }
 
-    
+    public void Open()
+    {
+        ChangeState(openedState);
+    }
 
-   
-    
+    private IEnumerator OpeningSequence()
+    {
+        //이 부분 조심해야할 것 특정한 이름이 아니면 무한루프 도니 항상 조심 또 조심, string에 대한 부분은 캐싱하는것도 나쁘지 않을 듯
+        while (true)
+        {
+            currentAniStateInfo = ani.GetCurrentAnimatorStateInfo(0);
+
+            if (currentAniStateInfo.IsName("Unlocking") && currentAniStateInfo.normalizedTime >= 0.9f)
+            {
+                break;
+            }
+
+            yield return null; // 다음 프레임까지 대기
+        }
+
+        Open();
+
+    }
+    public bool IsOpeningOrOpened()
+    {
+        return currentState is OpeningState || currentState is OpenedState;
+    }
+
+    public bool IsClosed()
+    {
+        return currentState is ClosedState;
+    }
 
 
 }
 #region StateMachine
+
 public interface IState
 {
     void Enter();
-    void Execute();
     void Exit();
 }
 
@@ -67,57 +115,47 @@ public interface IState
 public class ClosedState : IState
 {
     private Selectable selectable;
-    private Animation ani;
+    private Animator ani;
+    private string animationName;
 
-    public ClosedState(Selectable selectable, Animation ani)
+    public ClosedState(Selectable selectable, Animator ani, string animationName)
     {
         this.selectable = selectable;
         this.ani = ani;
+        this.animationName = animationName;
+
     }
 
     public void Enter()
     {
-        
-    }
-
-    public void Execute()
-    {
-        // Idle 상태 유지 중 처리할 로직
+        ani.Play(animationName);
     }
 
     public void Exit()
     {
-        
+
     }
 }
 
 public class OpeningState : IState
 {
     private Selectable selectable;
-    private Animation ani;
+    private Animator ani;
+    private string animationName;
 
-    public OpeningState(Selectable selectable, Animation ani)
+    public OpeningState(Selectable selectable, Animator ani, string animationName)
     {
         this.selectable = selectable;
         this.ani = ani;
+        this.animationName = animationName;
+
     }
 
     public void Enter()
     {
-        //Debug.Log("Opening 상태에 진입");
-        ani.Play("Unlocking");
-    }
+        Debug.Log("animationName : " + animationName);
+        ani.Play(animationName);
 
-    public void Execute()
-    {
-
-        // 애니메이션 진행 중일 때 로직
-        if (!ani.isPlaying)
-        {
-            // 애니메이션이 끝나면 Opened 상태로 전환
-            selectable.ChangeState(new OpenedState(selectable, ani));
-        }
-        
     }
 
     public void Exit()
@@ -130,28 +168,28 @@ public class OpeningState : IState
 public class OpenedState : IState
 {
     private Selectable selectable;
-    private Animation ani;
+    private Animator ani;
+    private string animationName;
 
-    public OpenedState(Selectable selectable, Animation ani)
+    public OpenedState(Selectable selectable, Animator ani, string animationName)
     {
         this.selectable = selectable;
         this.ani = ani;
+        this.animationName = animationName;
     }
 
     public void Enter()
     {
-        Debug.Log("Opened 상태에 진입");
-        ani.Play("Open_4");
+        //Debug.Log("Opened 상태에 진입");
+        //Debug.Log("animation name : " + animationName);
+        ani.Play(animationName);
     }
 
-    public void Execute()
-    {
-        // Opened 상태 유지 중 처리할 로직
-    }
+
 
     public void Exit()
     {
-        Debug.Log("Opened 상태에서 나감");
+        //Debug.Log("Opened 상태에서 나감");
     }
 }
 

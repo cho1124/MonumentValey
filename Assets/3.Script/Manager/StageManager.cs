@@ -8,10 +8,10 @@ public class StageManager : MonoBehaviour
 {
     public static List<Stage> stages;
 
-    [SerializeField] private float maxRaycastDistance = 100f; // 최대 레이캐스트 거리
+    [SerializeField] private float maxRaycastDistance = 100f;
 
-    private Camera mainCamera;      // 카메라 캐싱
-    private int layerMask;          // 레이어 마스크 캐싱
+    private Camera mainCamera;
+    private int layerMask;
 
     public static void SceneLoad(int a)
     {
@@ -41,7 +41,19 @@ public class StageManager : MonoBehaviour
             if (Physics.Raycast(directionToMouse, out hit, maxRaycastDistance, layerMask))
             {
                 Selectable selectable = hit.transform.GetComponentInParent<Selectable>();
-                selectable.ChangeState(selectable.GetOpeningState());
+
+                if(selectable.GetCurrentState() is ClosedState)
+                {
+                    selectable.Opening();
+                    
+                }
+                else
+                {
+                    Debug.Log("씬로드할예정");
+                    return;
+                }
+
+
             }
         }        
     }

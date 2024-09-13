@@ -131,7 +131,7 @@ public class LevelSelectionRotator : MonoBehaviour
 
     private void Start()
     {
-        previousRotation = transform.rotation;
+        previousRotation = transform.localRotation;
         totalRotation = 0f;
         
         settings.Initialize();
@@ -145,7 +145,7 @@ public class LevelSelectionRotator : MonoBehaviour
 
         if (settings.fakeTarget != null)
         {
-            settings.target.rotation = settings.fakeTarget.rotation;
+            settings.target.localRotation = settings.fakeTarget.rotation;
         }
         Checker();
         //ClampRot();
@@ -156,16 +156,7 @@ public class LevelSelectionRotator : MonoBehaviour
        
         int layer = gameObject.layer;
         string layerName = LayerMask.LayerToName(layer);
-        Debug.Log("layerName : " + layerName);
-
-
-
-        if(layerName == "Stage")
-        {
-            Debug.Log(gameObject.name);
-            return;
-        }
-
+        
         rotating = true;
 
         mousePos = Input.mousePosition;
@@ -237,7 +228,7 @@ public class LevelSelectionRotator : MonoBehaviour
     }
     private void ClampRot()
     {
-        Quaternion currentRotation = settings.target.rotation;
+        Quaternion currentRotation = settings.target.localRotation;
 
         // 이전 회전값과 현재 회전값의 차이를 구함 (Quaternion 간의 각도 차이)
         float angleDelta = Mathf.Sign(currentRotation.eulerAngles.magnitude - previousRotation.eulerAngles.magnitude) * Quaternion.Angle(previousRotation, currentRotation);
