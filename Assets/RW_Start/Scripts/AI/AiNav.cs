@@ -111,17 +111,11 @@ public class AiNav : MonoBehaviour
 
         RaycastHit hit;
         
+
+        //각 노드 칸마다 현재 플레이어 혹은 ai가 있는지 파악하는 로직 작성 >> 그 다음에 각 플레이어들에게 이웃 노드들에 이전에 만든 조건에 부합하면 해당 방향으로 이동 불가능하도록 할 것 >> 
         //UpdateAnimation("isStop", isStop);
         if (Physics.Raycast(transform.position, transform.forward, out hit, maxDistance)) //개선방안 1. 이전처럼 노드의 isactive를 제어, 2. 
         {
-            //감지 버그 발생, 이거 레이캐스트 하면 안되고, 인접 노드를 탐색한 후 그 노드에 플레이어가 있는지를 개선하는것으로 바꿔야할 것(09.03.TODO) >>> 실제 게임도 정면에서만 감지하는 것이 아닌, 플레이어가 한칸 이내에 있으면 감지됨
-            //TODO : 내일 노드 연결된 모듈 테스트 해보기
-            //TODO : 진짜진짜 spinner 만들기
-            //TODO : 제발좀 놀지 말기, shadergraph를 통해 질감 살리기
-            //TODO : 진짜좀 제발좀 인트로 만들기
-            //TODO : UI도 제발 만들어야해
-
-
             if (hit.transform.CompareTag("Player"))
             {
                 Debug.Log("player detected");
@@ -135,11 +129,6 @@ public class AiNav : MonoBehaviour
             }
             
         }
-
-        //foreach (Edge edge in currentNode.Edges) //이거 안돼 저번이랑 똑같은 문제야 해결해야댐.. //위의 ai 멈추는 것에 더불어 플레이어만 경로를 끊든가 해야될듯?
-        //{
-        //    edge.isActive = true;
-        //}
 
         possiblePath = pathfinder.FindPath(currentNode, nextNode, lastNode, StartNode, EndNode);
         
@@ -247,8 +236,7 @@ public class AiNav : MonoBehaviour
         // validate move time
         moveTime = Mathf.Clamp(moveTime, 0.1f, 5f);
 
-        speed = distance / moveTime;
-        float step = speed * Time.deltaTime;
+        
         while (elapsedTime < moveTime && !HasReachedNode(targetNode))
         {
             elapsedTime += Time.deltaTime;
@@ -307,21 +295,11 @@ public class AiNav : MonoBehaviour
     {
         //Quaternion newQ = Quaternion.Lerp(currentNode.transform.rotation, nextNode.transform.rotation, Time.deltaTime * 3f);
 
-        if(currentNode.transform.rotation != nextNode.transform.rotation)
+        if(Circulation && currentNode.transform.rotation != nextNode.transform.rotation)
         {
             transform.DORotateQuaternion(nextNode.transform.rotation, 0.3f);
-
             
-            //Debug.Log("currentNode rotation : " + currentNode.transform.rotation.eulerAngles);
-            //Debug.Log("nextNode rotation : " + nextNode.transform.rotation.eulerAngles);
-            //Debug.Log("newQ rotation : " + newQ.eulerAngles);
         }
-
-        //currentNode.transform.rotation;
-        //Debug.Log("newQ" + newQ);
-        //transform.rotation = newQ;
-
     }
-
 
 }

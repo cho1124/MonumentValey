@@ -53,6 +53,7 @@ namespace RW.MonumentValley
             {
                 // set AnimationClip speed
                 animator.SetFloat("walkSpeedMultiplier", walkAnimSpeed);
+                
             }
         }
 
@@ -61,7 +62,17 @@ namespace RW.MonumentValley
         {
             if (animator != null)
             {
-                animator?.SetBool("isMoving", state);
+                if(state)
+                {
+
+                    animator?.Play("Walk");
+                }
+                else
+                {
+                    animator?.Play("Idle");
+                }
+
+                //animator?.SetBool("isMoving", state);
             }
 
         }

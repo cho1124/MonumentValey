@@ -10,8 +10,7 @@ namespace RW.MonumentValley
     public enum TransformationMode
     {
         Rotation,
-        Position,
-        Totem
+        Position
     }
 
     public enum SpinAxis
@@ -38,45 +37,37 @@ namespace RW.MonumentValley
     public class SpinnerSettings
     {
         [Header("이동시킬 타겟")]
-        public Transform fakeTarget;
         public Transform target; // 변형시킬 Transform
         [Header("목표 타겟")]
         public AimedObject[] aimedObjects;
-        //public Transform aimedTarget;//TODO: 이동 타겟과 목표 타겟에 대한 최대 이동 거리와 최소 이동 거리에 대한 처리
+        [Header("회전 축")]
         public SpinAxis spinAxis = SpinAxis.X; // 회전 축 설정
+
+
+
         public float rotationSpeed = 1.0f; // 회전 속도
         public float moveSpeed = 1.0f; // 위치 변경 속도
-        public Tween rotatorTweener;
-
-        [Header("Rotator")]
-        [Range(0f, 1f)]
-        public float smoothDamp;
-
+        
         public Transform pivot; // 피벗 포인트
         public int minDragDist = 10; // 최소 드래그 거리
 
+        [Header("이동 타입")]
         public TransformationMode transformationMode = TransformationMode.Rotation; // 변형 모드 설정
         public UnityEvent snapEvent; // 스냅 이벤트
 
         // 상태 관리 변수들
         [HideInInspector] public bool isSpinning = false;
-        public bool isSpinningDo = false;
         [HideInInspector] public float previousAngleToMouse;
         [HideInInspector] public bool isActive = true;
 
-        
         [Header("position 이동 상태에서의 최소 최대 거리")]
         [SerializeField] private Vector3 minVector;
         [SerializeField] private Vector3 maxVector;
 
-        [Header("토템이 이동 가능한 노드")]
-        [SerializeField] private Node testNode;
-
-        //private CinemachineVirtualCamera CinemachineVirtualCamera;
+        
         protected Camera mainCamera;
-        private float ratio = 0f;
-        [SerializeField] private bool testDebugger = false;
-        //[SerializeField] private Quaternion targetRot;
+        
+        private float ratio = 0f; //mover를 움직이기 위한 비율
 
         public void Initialize()
         {
@@ -88,7 +79,7 @@ namespace RW.MonumentValley
         {
             isSpinning = true;
             //Debug.Log(isSpinning);
-            isSpinningDo = true;
+            
             
             if (transformationMode == TransformationMode.Rotation)
             {
@@ -110,10 +101,6 @@ namespace RW.MonumentValley
                     case TransformationMode.Position:
                         MoveTarget(mousePosition);
                         break;
-                    case TransformationMode.Totem:
-                        MoveTotem(mousePosition);
-                        
-                        break;
                     default:
                         Debug.LogError("트랜스폼 모드가 할당 안됨");
                         break;
@@ -122,15 +109,7 @@ namespace RW.MonumentValley
             }
         }
 
-        private void MoveTotem(Vector2 mousePosition)
-        {
-            Vector3 directionToMouse = mousePosition - (Vector2)mainCamera.WorldToScreenPoint(pivot.position);
-            
-            Vector3 newDir = new Vector3(directionToMouse.x,directionToMouse.y,directionToMouse.z);
-
-            target.position += newDir * moveSpeed * Time.deltaTime;
-        }
-
+       
         protected virtual void RotateTarget(Vector2 mousePosition)
         {
             Vector3 directionToMouse = mousePosition - (Vector2)mainCamera.WorldToScreenPoint(pivot.position);
@@ -169,11 +148,7 @@ namespace RW.MonumentValley
        
         private void MoveTarget(Vector2 mousePosition)
         {
-            //TODO: Clamp 개선
-            //TODO: ratio 비율에 따라 다른 오브젝트도 그에 맞게 이동?
-
-           
-
+            
             Vector3 directionToMouse = mousePosition - (Vector2)mainCamera.WorldToScreenPoint(pivot.position);
             Vector3 axisDirection = GetAxisDirection();
             Vector3 newDir = new Vector3(axisDirection.x * directionToMouse.x, axisDirection.y * directionToMouse.y, axisDirection.z * directionToMouse.z);
@@ -194,9 +169,6 @@ namespace RW.MonumentValley
                     aimedObjects[i].MoveByRatio(ratio);
                 }
             }
-
-
-            //Debug.Log("ratio : " + ratio);
 
         }
 
@@ -219,7 +191,7 @@ namespace RW.MonumentValley
         public virtual void Snap()
         {
             isSpinning = false;
-            isSpinningDo = false;
+            
             if (transformationMode == TransformationMode.Rotation)
             {
                 Vector3 eulerAngles = target.eulerAngles;
@@ -250,8 +222,6 @@ namespace RW.MonumentValley
         }
     }
 
-
-
     // allows a target Transform to be rotated based on mouse click and drag
     [RequireComponent(typeof(Collider))]
     public class DragSpinner : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -265,53 +235,28 @@ namespace RW.MonumentValley
             
         }
 
-        private void OnMouseDown()
-        {
-            
-            if (settings.isActive)
-            {
-                settings.BeginDrag(Input.mousePosition);
-            }
-        }
-
-        private void OnMouseDrag()
-        {
-            settings.Drag(Input.mousePosition);
-            //SetQ();
-        }
-        private void OnMouseUp()
-        {
-            if (settings.isActive)
-            {
-                settings.Snap();
-            }
-            
-        }
-
-
-
         public void OnBeginDrag(PointerEventData data)
         {
             //Debug.Log("Drag Beginning");
-            //if (settings.isActive)
-            //{
-            //    settings.BeginDrag(data.position);
-            //}
+            if (settings.isActive)
+            {
+                settings.BeginDrag(data.position);
+            }
 
         }
 
         public void OnDrag(PointerEventData data)
         {
-            //settings.Drag(data.position);
+            settings.Drag(data.position);
         }
 
         public void OnEndDrag(PointerEventData data)
         {
             //Debug.Log("EndDrag");
-            //if (settings.isActive)
-            //{
-            //    settings.Snap();
-            //}
+            if (settings.isActive)
+            {
+                settings.Snap();
+            }
         }
 
         public void EnableSpinner(bool state)

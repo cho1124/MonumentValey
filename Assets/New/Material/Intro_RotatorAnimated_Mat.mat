@@ -21,15 +21,14 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Intro_RotatorAnimated_Mat
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 3f0e6ffb7a8d7c646a1ba01c366b7fe2, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap:
-    RenderType: Opaque
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -63,6 +62,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -106,10 +109,13 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _GlowSize: 6
+    - _IsHighlighted: 0
     - _LightIntensity: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _ShadowRamp: 1
@@ -123,10 +129,13 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _AmbientColour1: {r: 0.1254902, g: 0.15294118, b: 0.13333334, a: 0}
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 0.9716981, g: 0.821971, b: 0.821971, a: 1}
+    - _BaseEmission: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 0}
     - _BlendColour: {r: 1, g: 1, b: 1, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DisabledColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _GlowColor: {r: 0.7138623, g: 0.13918063, b: 0.13918063, a: 0}
     - _LightColour0: {r: 0.4361246, g: 0.5372549, b: 0.4823234, a: 0}
     - _LightColour1: {r: 1, g: 0.9280067, b: 0.72794116, a: 1}
     - _LightColour2: {r: 0.7411765, g: 0.7254902, b: 0.5764706, a: 0}

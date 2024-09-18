@@ -57,8 +57,10 @@ namespace RW.MonumentValley
         }
 
         // locate the specific Node at target position within rounding error
+        // 이 부분을 노드가 아닌 boundary로 바꿀 것
         public Node FindNodeAt(Vector3 pos)
         {
+            
             foreach (Node n in allNodes)
             {
                 Vector3 diff = n.transform.position - pos;
@@ -70,6 +72,31 @@ namespace RW.MonumentValley
             }
             return null;
         }
+
+        public Node FindNodeAtBoundary(Vector3 pos, Node thisNode)
+        {
+            foreach(Node n in allNodes)
+            {
+                if(n.Equals(thisNode))
+                {
+                    continue;
+                }
+
+                foreach(Boundary boundary in n.boundaries)
+                {
+                    Vector3 diff = boundary.transform.position - pos;
+                    if(diff.sqrMagnitude < 0.01f)
+                    {
+                        //Debug.Log("test");
+                        return n;
+                    }
+                }
+ 
+            }
+
+            return null;
+        }
+
 
         // locate the closest Node in screen space, given an array of Nodes
         public Node FindClosestNode(Node[] nodes, Vector3 pos)
@@ -151,6 +178,7 @@ namespace RW.MonumentValley
         }
 
         // set neighbors for each Node; must run AFTER all Nodes are initialized
+        // 이게 자동적으로 이웃 노드를 연결하는 것이 아닌 직접 연결해주는 과정이니 이 부분을 맞게 수정하면 될 듯?
         private void InitNeighbors()
         {
             foreach (Node n in allNodes)

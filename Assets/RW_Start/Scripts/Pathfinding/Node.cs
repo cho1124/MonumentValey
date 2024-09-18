@@ -35,20 +35,18 @@ using UnityEngine.Events;
 
 namespace RW.MonumentValley
 {
-
-    public enum NodeState
-    {
-        Front = 0,
-        Back,
-        Up,
-        Down,
-        Left,
-        Right,
-        Stair
-    }
-
     public class Node : MonoBehaviour
     {
+        public enum NodeState
+        {
+            Flat,
+            Stair,
+            Ladder
+        }
+
+        [Header("노드 타입")]
+        [SerializeField] private NodeState nodeState = NodeState.Flat;
+
         // gizmo colors
         [SerializeField] private float gizmoRadius = 0.1f;
         [SerializeField] private Color defaultGizmoColor = Color.black;
@@ -84,7 +82,9 @@ namespace RW.MonumentValley
 
         public Node PreviousNode { get { return previousNode; } set { previousNode = value; } }
 
-        
+
+        public Boundary[] boundaries;
+
         public List<Edge> Edges => edges;
 
         // 3d compass directions to check for horizontal neighbors automatically(east/west/north/south)
@@ -96,14 +96,22 @@ namespace RW.MonumentValley
             new Vector3(0f, 0f, -1f),
             
         };
+
+        
+        
+
          
         private void Start()
         {
+            
             // automatic connect Edges with horizontal Nodes
             if (graph != null)
             {
                 FindNeighbors();
             }
+
+            boundaries = GetComponentsInChildren<Boundary>();
+
         }
 
         // draws a sphere gizmo
@@ -111,6 +119,22 @@ namespace RW.MonumentValley
         {
             Gizmos.color = defaultGizmoColor;
             Gizmos.DrawSphere(transform.position, gizmoRadius);
+
+            Gizmos.color = Color.blue;
+            foreach(Boundary boundary in boundaries)
+            {
+                Gizmos.DrawCube(boundary.transform.position, Vector3.one * 0.1f);
+            }
+
+            Gizmos.color = Color.green;
+
+            foreach(Edge edge in edges)
+            {
+                Gizmos.DrawCube(edge.connectionBoundary.transform.position, Vector3.one * 0.1f);
+            }
+
+
+
         }
 
         // draws a sphere gizmo in a different color when selected
@@ -119,32 +143,76 @@ namespace RW.MonumentValley
             Gizmos.color = selectedGizmoColor;
             Gizmos.DrawSphere(transform.position, gizmoRadius);
 
+
             // draws a line to each neighbor
             foreach (Edge e in edges)
             {
                 if (e.neighbor != null)
                 {
                     Gizmos.color = (e.isActive) ? selectedGizmoColor : inactiveGizmoColor;
-                    Gizmos.DrawLine(transform.position, e.neighbor.transform.position);
+                    Gizmos.DrawLine(transform.position, e.connectionBoundary.transform.position);
                 }
             }
+
+            
+
         }
 
         // fill out edge connections to neighboring nodes automatically
         public void FindNeighbors()
         {
+            //노드 타입이 flat일때만
+            //
             // search through possible neighbor offsets
-            foreach (Vector3 direction in neighborDirections)
-            {
-                Node newNode = graph?.FindNodeAt(transform.position + direction);
+            //링커 개선할 것 
+            //아이디어 1. 현재 노드와 이웃 노드 사이의 중간 지점을 하나 만들기
+            //그래서 이동할 때 연결된 중간 지점을 통해 이동하기
+            //원본처럼 노드의 자식 객체로 경계 만들고 그 경계와 이웃 노드의 경계의 distance가 0.01보다 작은지 파악하면 자동적으로 사라사락 
 
-                // add to edges list if not already included and not excluded specifically
+            foreach(Boundary boundary in boundaries)
+            {
+                Node newNode = graph?.FindNodeAtBoundary(boundary.transform.position, this);
+                if(newNode != null)
+                {
+                    Debug.Log("currentNode's name : " + transform.name + " newNode's name : " + newNode.name);
+                }
                 if (newNode != null && !HasNeighbor(newNode) && !excludedNodes.Contains(newNode))
                 {
-                    Edge newEdge = new Edge { neighbor = newNode, isActive = true };
+
+                    Edge newEdge = new Edge { neighbor = newNode, isActive = true, connectionBoundary = boundary};
                     edges.Add(newEdge);
                 }
+
             }
+
+
+
+            //foreach (Vector3 direction in neighborDirections)
+            //{
+            //    //이 부분 바꾸기
+            //    Node newNode = graph?.FindNodeAt(transform.position + direction);
+            //    //Debug.Log("newNode's Name : " + newNode.name);
+            //
+            //    
+            //
+            //    // add to edges list if not already included and not excluded specifically
+            //    if (newNode != null && !HasNeighbor(newNode) && !excludedNodes.Contains(newNode))
+            //    {
+            //
+            //        Edge newEdge = new Edge { neighbor = newNode, isActive = true};
+            //        edges.Add(newEdge);
+            //    }
+            //}
+
+            //현재 노드와 엣지에서의 이웃 노드들의 바운더리를 각각 구해서 그 값이 0과 유사할 때 특정한 무언가에 넣고 이동할 때 먼저 그 무언가로 이동한 뒤에 넘어가도록 할 것
+
+            foreach(Edge edge in edges)
+            {
+                
+            }
+
+
+
         }
 
         // is a Node already in the Edges List?

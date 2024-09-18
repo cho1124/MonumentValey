@@ -12,6 +12,11 @@ using DG.Tweening;
 public class LevelRotator : SpinnerSettings
 {
     public Vector3 newAngles = Vector3.zero;
+    [Range(0, 1f)]
+    public float smoothDamp;
+    public Transform fakeTarget;
+    [SerializeField] private bool isSpinningDo;
+
 
     protected override void RotateTarget(Vector2 mousePosition)
     {
