@@ -108,12 +108,20 @@ namespace RW.MonumentValley
             }
         }
 
+        private void Update()
+        {
+
+            UpdateAnimation();
+
+        }
+
         private void OnClick(Clickable clickable, Vector3 position)
         {
             if (!isControlEnabled || clickable == null || pathfinder == null)
             {
                 return;
             }
+            
 
             // find the best path to the any Nodes under the Clickable; gives the user some flexibility
             List<Node> newPath = pathfinder.FindBestPath(currentNode, clickable.ChildNodes);
@@ -127,8 +135,8 @@ namespace RW.MonumentValley
             // show a marker for the mouse click
             if (cursor != null)
             {
-                
                 cursor.ShowCursor(position);
+
             }
             else
             {
@@ -144,7 +152,9 @@ namespace RW.MonumentValley
             {
                 // otherwise, invalid path, stop movement
                 isMoving = false;
-                UpdateAnimation();
+
+                //여기서 idle상태들 확인
+                
             }
         }
 
@@ -155,13 +165,15 @@ namespace RW.MonumentValley
             // start moving
             isMoving = true;
 
+
             if (path == null || path.Count <= 1)
             {
                 Debug.Log("PLAYERCONTROLLER FollowPathRoutine: invalid path");
             }
             else
             {
-                UpdateAnimation();
+                //여기서 이동 상태들 확인
+                
 
                 // loop through all Nodes
                 for (int i = 0; i < path.Count; i++)
@@ -169,6 +181,7 @@ namespace RW.MonumentValley
                     // use the current Node as the next waypoint
                     nextNode = path[i];
 
+                    //Debug.Log("nextNode's name : " + nextNode.name);
                     // aim at the Node after that to minimize flipping
                     int nextAimIndex = Mathf.Clamp(i + 1, 0, path.Count - 1);
                     Node aimNode = path[nextAimIndex];
@@ -180,7 +193,8 @@ namespace RW.MonumentValley
             }
 
             isMoving = false;
-            UpdateAnimation();
+            //코루틴 끝나면 다시 idle상태 확인
+            
 
         }
 
@@ -190,8 +204,53 @@ namespace RW.MonumentValley
 
             float elapsedTime = 0;
 
+            Boundary dirBoundary = currentNode.FindEdge(targetNode);
+            
+            if(dirBoundary == null)
+            {
+                yield break;   
+            }
+
             // validate move time
             moveTime = Mathf.Clamp(moveTime, 0.1f, 5f);
+
+            
+            while (elapsedTime < moveTime && targetNode != null && !HasReachedBoundary(dirBoundary))
+            {
+                
+                elapsedTime += Time.deltaTime;
+                float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
+
+                Vector3 targetPos = dirBoundary.transform.position;
+                transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
+
+                yield return null;
+
+            }
+
+            if (dirBoundary.isTeleport)
+            {
+                Boundary revDirBoundary = targetNode.FindEdge(currentNode);
+
+
+                transform.position = revDirBoundary.transform.position;
+            }
+            
+
+
+            transform.parent = targetNode.transform;
+            currentNode = targetNode;
+
+            // invoke UnityEvent associated with next Node
+            targetNode.gameEvent.Invoke();
+            //Debug.Log("invoked GameEvent from targetNode: " + targetNode.name);
+
+            startPosition = transform.position;
+            elapsedTime = 0;
+
+            
+
+
 
             while (elapsedTime < moveTime && targetNode != null && !HasReachedNode(targetNode))
             {
@@ -201,17 +260,6 @@ namespace RW.MonumentValley
 
                 Vector3 targetPos = targetNode.transform.position;
                 transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
-
-                // if over halfway, change parent to next node
-                if (lerpValue > 0.51f)
-                {
-                    transform.parent = targetNode.transform;
-                    currentNode = targetNode;
-
-                    // invoke UnityEvent associated with next Node
-                    targetNode.gameEvent.Invoke();
-                    //Debug.Log("invoked GameEvent from targetNode: " + targetNode.name);
-                }
 
                 // wait one frame
                 yield return null;
@@ -261,13 +309,83 @@ namespace RW.MonumentValley
             }
         }
 
+        private void UpdateIdleAnimation()
+        {
+            switch(currentNode.NodeType)
+            {
+                case Node.NodeState.Flat:
+                    playerAnimation.StartAnimation("Idle");
+                    break;
+                case Node.NodeState.Ladder:
+                    playerAnimation.StartAnimation("LadderUpIdle");
+                    break;
+                case Node.NodeState.Stair:
+                    Debug.Log("CurrentState is Stair");
+                    break;
+                default:
+                    Debug.Log("State is null");
+                    break;
+            }
+
+
+        }
+
+
         // toggle between Idle and Walk animations
         private void UpdateAnimation()
         {
+            if(currentNode.NodeType is Node.NodeState.Ladder)
+            {
+                Debug.Log("currentNode is Ladder");
+            }
+
+            if(nextNode != null)
+            {
+                Debug.Log("nextNode's NodeType is : " + nextNode.NodeType);
+            }
+
+            
+
+            
+
+
+
             if (playerAnimation != null)
             {
-                playerAnimation.ToggleAnimation(isMoving);
+                if (currentNode.NodeType is Node.NodeState.Ladder || nextNode?.NodeType is Node.NodeState.Ladder)
+                {
+                    if(nextNode.NodeType is Node.NodeState.Flat)
+                    {
+                        playerAnimation.StartAnimationParameter("isLadder", false);
+                        playerAnimation.StartAnimationParameter("isDown", false);
+                    }
+                    else
+                    {
+                        playerAnimation.StartAnimationParameter("isLadder", true);
+                    }
+                    
+
+
+
+
+                }
+
+
+                if (currentNode.transform.position.y < nextNode?.transform.position.y)
+                {
+                    playerAnimation.StartAnimationParameter("isDown", false);
+
+
+                }
+                //upTodown
+                else if (currentNode.transform.position.y > nextNode?.transform.position.y)
+                {
+                    playerAnimation.StartAnimationParameter("isDown", true);
+                }
+                
+                
             }
+            playerAnimation.StartAnimationParameter("isMoving", isMoving);
         }
 
         // have we reached a specific Node?
@@ -279,6 +397,18 @@ namespace RW.MonumentValley
             }
 
             float distanceSqr = (node.transform.position - transform.position).sqrMagnitude;
+
+            return (distanceSqr < 0.01f);
+        }
+
+        public bool HasReachedBoundary(Boundary boundary)
+        {
+            if (pathfinder == null || graph == null || boundary == null)
+            {
+                return false;
+            }
+
+            float distanceSqr = (boundary.transform.position - transform.position).sqrMagnitude;
 
             return (distanceSqr < 0.01f);
         }

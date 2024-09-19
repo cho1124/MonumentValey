@@ -32,49 +32,133 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEditor.Animations;  // AnimatorController를 가져오기 위해 필요
 
 namespace RW.MonumentValley
 {
     public class PlayerAnimation : MonoBehaviour
     {
+        private Animator animator;
 
-        // multiplier for walk AnimationClip
-        [Range(0.5f, 3f)]
-        [SerializeField] private float walkAnimSpeed = 1f;
-
-        // player Animator component
-        [SerializeField] private Animator animator;
-
+        // 애니메이션 상태 이름과 해시값을 저장하는 딕셔너리
+        private Dictionary<string, int> animationHashes;
+        private Dictionary<string, int> parameterHashes;
 
         void Start()
         {
+            //animator = GetComponentinChildren<Animator>();
+            animator = GetComponentInChildren<Animator>();
+
             if (animator != null)
             {
-                // set AnimationClip speed
-                animator.SetFloat("walkSpeedMultiplier", walkAnimSpeed);
-                
+                // 특정 레이어의 모든 애니메이션 클립을 자동으로 딕셔너리에 추가
+                AddAllAnimationsToDictionary();
+                AddAllParametersToDictionary();
             }
         }
 
-        //  toggle between idle and walking animation
-        public void ToggleAnimation(bool state)
+        private void AddAllAnimationsToDictionary()
         {
-            if (animator != null)
+            animationHashes = new Dictionary<string, int>();
+
+            // Animator의 컨트롤러 가져오기
+            AnimatorController animatorController = animator.runtimeAnimatorController as AnimatorController;
+
+            if (animatorController != null)
             {
-                if(state)
+                // Animator 레이어들을 순회
+                for (int layerIndex = 0; layerIndex < animatorController.layers.Length; layerIndex++)
                 {
+                    AnimatorStateMachine stateMachine = animatorController.layers[layerIndex].stateMachine;
 
-                    animator?.Play("Walk");
-                }
-                else
-                {
-                    animator?.Play("Idle");
-                }
+                    // 각 레이어의 상태(State)들을 순회
+                    foreach (var state in stateMachine.states)
+                    {
+                        string animationName = state.state.name;
+                        int hash = Animator.StringToHash(animationName);
 
-                //animator?.SetBool("isMoving", state);
+                        // 애니메이션 이름과 해시값을 딕셔너리에 추가
+                        if (!animationHashes.ContainsKey(animationName))
+                        {
+                            animationHashes.Add(animationName, hash);
+                            Debug.Log($"애니메이션 추가됨: {animationName}, 해시값: {hash}");
+                        }
+                    }
+                }
             }
-
         }
+        private void AddAllParametersToDictionary()
+        {
+            parameterHashes = new Dictionary<string, int>();
+
+            // Animator의 컨트롤러 가져오기
+            AnimatorController animatorController = animator.runtimeAnimatorController as AnimatorController;
+
+            if (animatorController != null)
+            {
+                // Animator의 파라미터를 순회
+                foreach (var parameter in animator.parameters)
+                {
+                    string parameterName = parameter.name;
+                    int parameterHash = Animator.StringToHash(parameterName);
+
+                    // 파라미터 이름과 해시값을 딕셔너리에 추가
+                    if (!parameterHashes.ContainsKey(parameterName))
+                    {
+                        parameterHashes.Add(parameterName, parameterHash);
+                        Debug.Log($"애니메이터 파라미터 추가됨: {parameterName}, 해시값: {parameterHash}");
+                    }
+                }
+            }
+        }
+
+        // 문자열로 애니메이션을 시작하는 메서드
+        public void StartAnimation(string animationName)
+        {
+            if (animationHashes.TryGetValue(animationName, out int hash))
+            {
+                
+                animator?.Play(hash);  // 해시된 트리거로 애니메이션 실행
+            }
+            else
+            {
+                Debug.LogWarning($"애니메이션 '{animationName}'을 찾을 수 없습니다.");
+            }
+        }
+
+
+        //trigger
+        public void StartAnimationParameter(string parameterName)
+        {
+            if(parameterHashes.TryGetValue(parameterName, out int hash))
+            {
+                animator.SetTrigger(hash);
+            }
+        }
+        //bool
+        public void StartAnimationParameter(string parameterName, bool boolValue)
+        {
+            if (parameterHashes.TryGetValue(parameterName, out int hash))
+            {
+                animator.SetBool(hash, boolValue);
+            }
+        }
+        //float
+        public void StartAnimationParameter(string parameterName, float floatValue)
+        {
+            if (parameterHashes.TryGetValue(parameterName, out int hash))
+            {
+                animator.SetFloat(hash, floatValue);
+            }
+        }
+        //int
+        public void StartAnimationParameter(string parameterName, int intvalue)
+        {
+            if (parameterHashes.TryGetValue(parameterName, out int hash))
+            {
+                animator.SetInteger(hash, intvalue);
+            }
+        }
+
     }
 }

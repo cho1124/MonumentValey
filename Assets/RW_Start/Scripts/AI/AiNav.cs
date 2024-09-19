@@ -216,17 +216,17 @@ public class AiNav : MonoBehaviour
 
     private IEnumerator MoveToNodeRoutine(Vector3 startPosition, Node targetNode)
     {
-
-        if(currentNode.isTeleport)
-        {
-            transform.position = targetNode.transform.position;
-            transform.parent = targetNode.transform;
-            currentNode = targetNode;
-            
-            targetNode.gameEvent.Invoke();
-
-            yield break;
-        }
+        //이 부분 boundary로 맞게 수정해야해요
+        //if(currentNode.isTeleport)
+        //{
+        //    transform.position = targetNode.transform.position;
+        //    transform.parent = targetNode.transform;
+        //    currentNode = targetNode;
+        //    
+        //    targetNode.gameEvent.Invoke();
+        //
+        //    yield break;
+        //}
 
 
         float distance = Vector3.Distance(startPosition, targetNode.transform.position);
