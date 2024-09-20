@@ -204,7 +204,8 @@ public class AiNav : MonoBehaviour
             Vector3 directionToNextNode = nextPositionOnPlane - startPosition;
             if (directionToNextNode != Vector3.zero)
             {
-                if(!Circulation)
+                
+                if (!Circulation)
                 {
                     transform.rotation = Quaternion.LookRotation(directionToNextNode);
 
@@ -216,47 +217,102 @@ public class AiNav : MonoBehaviour
 
     private IEnumerator MoveToNodeRoutine(Vector3 startPosition, Node targetNode)
     {
-        //이 부분 boundary로 맞게 수정해야해요
-        //if(currentNode.isTeleport)
-        //{
-        //    transform.position = targetNode.transform.position;
-        //    transform.parent = targetNode.transform;
-        //    currentNode = targetNode;
-        //    
-        //    targetNode.gameEvent.Invoke();
-        //
-        //    yield break;
-        //}
-
-
+        
         float distance = Vector3.Distance(startPosition, targetNode.transform.position);
 
         float elapsedTime = 0;
 
+        Boundary dirBoundary = currentNode.FindEdge(targetNode);
+
+        if (dirBoundary == null)
+        {
+            yield break;
+        }
+
         // validate move time
         moveTime = Mathf.Clamp(moveTime, 0.1f, 5f);
 
-        
-        while (elapsedTime < moveTime && !HasReachedNode(targetNode))
-        {
-            elapsedTime += Time.deltaTime;
-            float lerpValue = Mathf.Clamp01(elapsedTime / moveTime);
 
-            // 현재 위치를 목표 위치로 Lerp
+
+
+        while (elapsedTime < moveTime && targetNode != null && !HasReachedBoundary(dirBoundary))
+        {
+
+            elapsedTime += Time.deltaTime;
+            float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
+
+            Vector3 targetPos = dirBoundary.transform.position;
+            transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
+            
+            
+            yield return null;
+
+        }
+
+
+        //노드에서 노드로 직접 이동?
+        Boundary revDirBoundary = targetNode.FindEdge(currentNode);
+
+        if (dirBoundary.isTeleport)
+        {
+            transform.position = revDirBoundary.transform.position;
+            //currentNode = targetNode;
+        }
+
+        
+        //Vector3 dir = dirBoundary.transform.position - transform.position;
+
+        //transform.LookAt(dirBoundary.transform);
+
+
+        if(nextNode != null)
+        {
+            transform.DORotateQuaternion(nextNode.transform.rotation, 0.3f);
+        }
+
+        
+        transform.parent = targetNode.transform;
+        currentNode = targetNode;
+
+        // invoke UnityEvent associated with next Node
+        targetNode.gameEvent.Invoke();
+        //Debug.Log("invoked GameEvent from targetNode: " + targetNode.name);
+
+        startPosition = transform.position;
+        elapsedTime = 0;
+
+
+
+
+        if(dirBoundary.isTeleport)
+        {
+            yield break;
+        }
+
+        while (elapsedTime < moveTime && targetNode != null && !HasReachedNode(targetNode))
+        {
+
+            elapsedTime += Time.deltaTime;
+            float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
+
             Vector3 targetPos = targetNode.transform.position;
             transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
-
-            // 이동 중간 지점에서 부모 노드 변경 및 이벤트 호출
-            if (lerpValue > 0.51f)
-            {
-                transform.parent = targetNode.transform;
-                currentNode = targetNode;
-                targetNode.gameEvent.Invoke();
-            }
-
-            // 한 프레임 대기
+            
+            // wait one frame
             yield return null;
         }
+    }
+
+    public bool HasReachedBoundary(Boundary boundary)
+    {
+        if (pathfinder == null || graph == null || boundary == null)
+        {
+            return false;
+        }
+
+        float distanceSqr = (boundary.transform.position - transform.position).sqrMagnitude;
+
+        return (distanceSqr < 0.01f);
     }
 
     public bool HasReachedNode(Node node)
@@ -295,11 +351,15 @@ public class AiNav : MonoBehaviour
     {
         //Quaternion newQ = Quaternion.Lerp(currentNode.transform.rotation, nextNode.transform.rotation, Time.deltaTime * 3f);
 
-        if(Circulation && currentNode.transform.rotation != nextNode.transform.rotation)
-        {
-            transform.DORotateQuaternion(nextNode.transform.rotation, 0.3f);
-            
-        }
+
+
+
+
+        //if(nextNode != null && Circulation && currentNode.transform.rotation != nextNode.transform.rotation)
+        //{
+        //    transform.DORotateQuaternion(nextNode.transform.rotation, 0.3f);
+        //    
+        //}
     }
 
 }

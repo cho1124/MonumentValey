@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using System.Collections.Generic;
+
 namespace RW.MonumentValley
 {
     // class to activate/deactivate special Edges between Nodes based on rotation
@@ -11,7 +13,11 @@ namespace RW.MonumentValley
 
         // euler angle needed to activate link
         public Vector3 activeEulerAngle;
+        [Header("활성화시켜야 하는 포지션에서의 값")]
+        public Vector3 activateWorldPosition;
+
         [Header("Nodes to activate")]
+        
         public Node nodeA;
         public Node nodeB;
     }
@@ -36,15 +42,18 @@ namespace RW.MonumentValley
         {
             foreach (RotationLink l in rotationLinks)
             {
+                
                 if (l.linkedTransform == null || l.nodeA == null || l.nodeB == null)
                     continue;
 
                 // check difference between desired and current angle
                 Quaternion targetAngle = Quaternion.Euler(l.activeEulerAngle);
                 float angleDiff = Quaternion.Angle(l.linkedTransform.rotation, targetAngle);
+                Vector3 targetPosition = l.activateWorldPosition;
+                
 
                 // enable the linked Edges if the angle matches; otherwise disable
-                if (Mathf.Abs(angleDiff) < 0.01f)
+                if (Mathf.Abs(angleDiff) < 0.01f && Vector3.Distance(targetPosition, l.linkedTransform.position) < 0.01f)
                 {
                     EnableLink(l.nodeA, l.nodeB, true);
                 }

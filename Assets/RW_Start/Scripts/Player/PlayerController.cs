@@ -92,6 +92,11 @@ namespace RW.MonumentValley
                 pathfinder.SetStartNode(transform.position);
             }
 
+            if(PathManager.instance.clickables.Length == 0)
+            {
+                Debug.Log("Shit");
+            }
+
             //listen to all clickEvents
             foreach (Clickable c in PathManager.instance.clickables)
             {
@@ -339,16 +344,7 @@ namespace RW.MonumentValley
                 Debug.Log("currentNode is Ladder");
             }
 
-            if(nextNode != null)
-            {
-                Debug.Log("nextNode's NodeType is : " + nextNode.NodeType);
-            }
-
             
-
-            
-
-
 
             if (playerAnimation != null)
             {
@@ -363,13 +359,8 @@ namespace RW.MonumentValley
                     {
                         playerAnimation.StartAnimationParameter("isLadder", true);
                     }
-                    
-
-
-
 
                 }
-
 
                 if (currentNode.transform.position.y < nextNode?.transform.position.y)
                 {

@@ -108,6 +108,7 @@ public class Selectable : MonoBehaviour
 public interface IState
 {
     void Enter();
+
     void Exit();
 }
 
@@ -135,6 +136,8 @@ public class ClosedState : IState
     {
 
     }
+
+    
 }
 
 public class OpeningState : IState
