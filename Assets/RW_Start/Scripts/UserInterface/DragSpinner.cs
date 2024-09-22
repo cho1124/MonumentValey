@@ -64,7 +64,10 @@ namespace RW.MonumentValley
         [SerializeField] private Transform minTransform;
         [SerializeField] private Transform maxTransform;
 
-        
+
+        [Header("뒤틀린 축 방지")]
+        [SerializeField] private bool isCrossed = false;
+
         protected Camera mainCamera;
         
         private float ratio = 0f; //mover를 움직이기 위한 비율
@@ -119,7 +122,24 @@ namespace RW.MonumentValley
             {
                 Vector3 axisDirection = GetAxisDirection();
                 Vector3 newRotationVector = (previousAngleToMouse - angleToMouse) * axisDirection * rotationSpeed;
-                target.Rotate(newRotationVector);
+
+
+                //뒤틀린 축 있는거 방지
+                //if(target.rotation.z.Equals(90f))
+                //{
+                //    
+                //}
+
+                
+                if(isCrossed)
+                {
+                    newRotationVector = -newRotationVector;
+                }
+
+
+
+                target.Rotate(newRotationVector, Space.World);
+                
 
                 float rotationDelta = Mathf.Abs(previousAngleToMouse - angleToMouse);
                 float rotationRatio = rotationDelta / 360f; // 전체 회전 각도에 대한 비율
