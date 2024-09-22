@@ -119,20 +119,24 @@ namespace RW.MonumentValley
                 Gizmos.DrawCube(boundary.transform.position, Vector3.one * 0.1f);
             }
 
-            Gizmos.color = Color.green;
+            
 
             foreach(Edge edge in edges)
             {
-                if(edge.connectionBoundary != null)
+                
+                Boundary revDirBoundary = edge.neighbor.FindEdge(this);
+                if (edge.connectionBoundary != null)
                 {
+                    Gizmos.color = Color.green;
                     Gizmos.DrawCube(edge.connectionBoundary.transform.position, Vector3.one * 0.1f);
+                    Gizmos.DrawCube(revDirBoundary.transform.position, Vector3.one * 0.1f);
                 }
 
-                
                 if (edge.neighbor != null)
                 {
+
                     Gizmos.color = (edge.isActive) ? selectedGizmoColor : inactiveGizmoColor;
-                    Gizmos.DrawLine(transform.position, edge.connectionBoundary.transform.position);
+                    Gizmos.DrawLine(revDirBoundary.transform.position, edge.connectionBoundary.transform.position);
                 }
             }
         }

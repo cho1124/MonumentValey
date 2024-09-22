@@ -61,8 +61,8 @@ namespace RW.MonumentValley
         [HideInInspector] public bool isActive = true;
 
         [Header("position 이동 상태에서의 최소 최대 거리")]
-        [SerializeField] private Vector3 minVector;
-        [SerializeField] private Vector3 maxVector;
+        [SerializeField] private Transform minTransform;
+        [SerializeField] private Transform maxTransform;
 
         
         protected Camera mainCamera;
@@ -155,17 +155,20 @@ namespace RW.MonumentValley
 
             target.position += newDir * moveSpeed * Time.deltaTime; // 직접적인 위치값 제한 혹은
 
-            target.position = new Vector3(Mathf.Clamp(target.position.x, minVector.x, maxVector.x),
-                Mathf.Clamp(target.position.y, minVector.y, maxVector.y),
-                Mathf.Clamp(target.position.z, minVector.z, maxVector.z));
+            target.position = new Vector3(Mathf.Clamp(target.position.x, minTransform.position.x, maxTransform.position.x),
+                Mathf.Clamp(target.position.y, minTransform.position.y, maxTransform.position.y),
+                Mathf.Clamp(target.position.z, minTransform.position.z, maxTransform.position.z));
 
-            ratio = (target.position - minVector).magnitude / (maxVector - minVector).magnitude;
+            ratio = (target.position - minTransform.position).magnitude / (maxTransform.position - minTransform.position).magnitude;
+            //
 
            
             if(aimedObjects.Length != 0)
             {
                 for(int i = 0; i < aimedObjects.Length; i++)
                 {
+                    //개얼탱이슈
+                    //
                     aimedObjects[i].MoveByRatio(ratio);
                 }
             }

@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
-
+using System;
 using System.Collections.Generic;
 
 namespace RW.MonumentValley
 {
     // class to activate/deactivate special Edges between Nodes based on rotation
-    [System.Serializable]
+    [Serializable]
     public class RotationLink
     {
+        [Header("Base Rotation이랑 Base Position 다 넣어야 해요.")]
         // transform to check
         public Transform linkedTransform;
+        
 
         // euler angle needed to activate link
+        
         public Vector3 activeEulerAngle;
         [Header("활성화시켜야 하는 포지션에서의 값")]
         public Vector3 activateWorldPosition;
@@ -21,6 +24,13 @@ namespace RW.MonumentValley
         public Node nodeA;
         public Node nodeB;
     }
+
+    [Serializable]
+    public class MoverLink
+    {
+        
+    }
+
 
     // activates or deactivates special Edges between Nodes
     public class Linker : MonoBehaviour
