@@ -25,12 +25,24 @@ namespace RW.MonumentValley
         public Transform target;
         public Transform startTr;
         public Transform endTr;
+        public bool isMover = true;
 
         public void MoveByRatio(float ratio)
         {
             target.transform.position = Vector3.Lerp(startTr.position, endTr.position, ratio);
             target.transform.rotation = Quaternion.Lerp(startTr.rotation, endTr.rotation, ratio);
         }
+
+        public void RotateByRatio(float rotationRatio)
+        {
+            // rotationRatio를 실제 각도로 변환
+            float rotationAmount = 360f * rotationRatio;  // 전체 회전 비율을 각도로 변환
+            Vector3 rotationAxis = Vector3.forward; // 예시로 Y축을 회전축으로 사용
+
+            // 회전 적용 (속도를 곱해줘서 조정 가능)
+            target.transform.Rotate(rotationAxis, rotationAmount, Space.World);
+        }
+
     }
 
     [Serializable]
@@ -50,6 +62,9 @@ namespace RW.MonumentValley
         
         public Transform pivot; // 피벗 포인트
         public int minDragDist = 10; // 최소 드래그 거리
+
+        
+
 
         [Header("이동 타입")]
         public TransformationMode transformationMode = TransformationMode.Rotation; // 변형 모드 설정
@@ -103,6 +118,7 @@ namespace RW.MonumentValley
                         break;
                     case TransformationMode.Position:
                         MoveTarget(mousePosition);
+                        //MoveTargetFake(mousePosition);
                         break;
                     default:
                         Debug.LogError("트랜스폼 모드가 할당 안됨");
@@ -112,7 +128,23 @@ namespace RW.MonumentValley
             }
         }
 
-       
+        private void MoveTargetFake(Vector2 mousePosition)
+        {
+
+           
+
+
+            // 피봇과 마우스 월드 좌표 간의 방향 계산
+            Vector3 pivotScreenPosition = mainCamera.WorldToScreenPoint(pivot.position);
+
+            // 피봇과 마우스 위치 간의 방향 계산 (2D 평면 상에서)
+            Vector3 directionToMouse = (Vector3)mousePosition - pivotScreenPosition;
+
+            //target.transform.position = ;
+
+            //throw new NotImplementedException();
+        }
+
         protected virtual void RotateTarget(Vector2 mousePosition)
         {
             Vector3 directionToMouse = mousePosition - (Vector2)mainCamera.WorldToScreenPoint(pivot.position);
@@ -152,27 +184,43 @@ namespace RW.MonumentValley
                     {
                         // 회전 비율에 따라 이동시키거나 회전시키는 로직 추가
                         //
-                        aimedObjects[i].MoveByRatio(rotationRatio);
+
+                        if(aimedObjects[i].isMover)
+                        {
+                            aimedObjects[i].MoveByRatio(rotationRatio);
+
+                        }
+                        else
+                        {
+                            aimedObjects[i].RotateByRatio(rotationRatio);
+                        }
+
 
                         // 만약 회전시키려면:
-                        // aimedObjects[i].RotateByRatio(rotationRatio);
+                        
                     }
                 }
-
                 previousAngleToMouse = angleToMouse;
             }
-
-
         }
 
-       
+
         private void MoveTarget(Vector2 mousePosition)
         {
-            
-            Vector3 directionToMouse = mousePosition - (Vector2)mainCamera.WorldToScreenPoint(pivot.position);
-            Vector3 axisDirection = GetAxisDirection();
-            Vector3 newDir = new Vector3(axisDirection.x * directionToMouse.x, axisDirection.y * directionToMouse.y, axisDirection.z * directionToMouse.z);
 
+            // 피봇과 마우스 월드 좌표 간의 방향 계산
+            Vector3 pivotScreenPosition = (Vector2)mainCamera.WorldToScreenPoint(pivot.localPosition); 
+           
+            // 피봇과 마우스 위치 간의 방향 계산 (2D 평면 상에서)
+            Vector3 directionToMouse = (Vector3)mousePosition - pivotScreenPosition;
+
+            // z축을 기준으로 축 방향을 설정
+            Vector3 axisDirection = GetAxisDirection(); // z축 (0, 0, z)
+
+            // 각 축별로 계산된 방향에 따라 이동할 양 계산
+            Vector3 newDir = new Vector3(axisDirection.x * directionToMouse.x,
+                                         axisDirection.y * directionToMouse.y,
+                                         axisDirection.z * directionToMouse.z);
             target.position += newDir * moveSpeed * Time.deltaTime; // 직접적인 위치값 제한 혹은
 
             target.position = new Vector3(Mathf.Clamp(target.position.x, minTransform.position.x, maxTransform.position.x),
@@ -180,15 +228,12 @@ namespace RW.MonumentValley
                 Mathf.Clamp(target.position.z, minTransform.position.z, maxTransform.position.z));
 
             ratio = (target.position - minTransform.position).magnitude / (maxTransform.position - minTransform.position).magnitude;
-            //
-
-           
+            
             if(aimedObjects.Length != 0)
             {
                 for(int i = 0; i < aimedObjects.Length; i++)
                 {
-                    //개얼탱이슈
-                    //
+                    
                     aimedObjects[i].MoveByRatio(ratio);
                 }
             }
@@ -210,8 +255,7 @@ namespace RW.MonumentValley
             }
         }
 
-        
-        public virtual void Snap()
+        public virtual void Snap()             
         {
             isSpinning = false;
             
@@ -225,7 +269,7 @@ namespace RW.MonumentValley
 
                 switch (spinAxis)
                 {
-                    case SpinAxis.X:
+                    case SpinAxis.X:                                                   
                         target.eulerAngles = new Vector3(roundedXAngle, eulerAngles.y, eulerAngles.z);
                         break;
                     case SpinAxis.Y:
@@ -250,13 +294,22 @@ namespace RW.MonumentValley
     public class DragSpinner : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         [SerializeField] private SpinnerSettings settings;
-        
+
+        public SpinnerSettings asd;
+
         void Start()
         {
+            
             settings.Initialize();
             EnableSpinner(true);
             
         }
+
+        private void OnMouseDrag()
+        {
+            
+        }
+
 
         public void OnBeginDrag(PointerEventData data)
         {

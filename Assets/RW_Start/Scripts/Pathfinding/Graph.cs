@@ -88,6 +88,7 @@ namespace RW.MonumentValley
                     if(diff.sqrMagnitude < 0.01f)
                     {
                         //Debug.Log("test");
+                        
                         return n;
                     }
                 }

@@ -32,7 +32,6 @@ public class LevelRotator : SpinnerSettings
             //1. 방향 구하기
             //2. 방향만큼 흠 구하기
 
-
             Vector3 newRotationVector = (previousAngleToMouse - angleToMouse) * axisDirection * rotationSpeed; //y축 고정
 
             newRotationVector = -newRotationVector;
@@ -150,7 +149,12 @@ public class LevelSelectionRotator : MonoBehaviour
 
         if (settings.fakeTarget != null)
         {
-            settings.target.localRotation = settings.fakeTarget.rotation;
+            foreach(Transform tr in settings.target)
+            {
+                tr.localRotation = settings.fakeTarget.rotation;
+            }
+
+            
         }
         Checker();
         //ClampRot();
@@ -233,7 +237,7 @@ public class LevelSelectionRotator : MonoBehaviour
     }
     private void ClampRot()
     {
-        Quaternion currentRotation = settings.target.localRotation;
+        Quaternion currentRotation = settings.fakeTarget.localRotation;
 
         // 이전 회전값과 현재 회전값의 차이를 구함 (Quaternion 간의 각도 차이)
         float angleDelta = Mathf.Sign(currentRotation.eulerAngles.magnitude - previousRotation.eulerAngles.magnitude) * Quaternion.Angle(previousRotation, currentRotation);
