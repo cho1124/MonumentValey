@@ -204,24 +204,51 @@ namespace RW.MonumentValley
             }
         }
 
+        private void test()
+        {
+            
+        }
+
 
         private void MoveTarget(Vector2 mousePosition)
         {
 
+            Vector3 CurrentDragPos = new Vector3(mousePosition.x, mousePosition.y, Camera.main.WorldToScreenPoint(pivot.position).z);
+            Vector3 CurrentDragWorldPos = Camera.main.ScreenToWorldPoint(CurrentDragPos);
+
+
+
+            
+            // 마우스 움직임에 따른 차이 계산
+
+
+
+
+            
+
+            // 카메라의 우측 벡터를 사용하여 X축으로 이동
+            //Vector3 cameraRight = Camera.main.transform.forward;
+            //Vector3 newPos = initialObjectPos + cameraRight * PosDiff.x;
+
+            // 오브젝트 위치 업데이트
+            
+
             // 피봇과 마우스 월드 좌표 간의 방향 계산
-            Vector3 pivotScreenPosition = (Vector2)mainCamera.WorldToScreenPoint(pivot.localPosition); 
-           
-            // 피봇과 마우스 위치 간의 방향 계산 (2D 평면 상에서)
-            Vector3 directionToMouse = (Vector3)mousePosition - pivotScreenPosition;
+            //Vector3 pivotScreenPosition = (Vector2)mainCamera.WorldToScreenPoint(pivot.localPosition); 
+            //
+            //// 피봇과 마우스 위치 간의 방향 계산 (2D 평면 상에서)
+            //Vector3 directionToMouse = (Vector3)mousePosition - pivotScreenPosition;
 
             // z축을 기준으로 축 방향을 설정
             Vector3 axisDirection = GetAxisDirection(); // z축 (0, 0, z)
 
             // 각 축별로 계산된 방향에 따라 이동할 양 계산
-            Vector3 newDir = new Vector3(axisDirection.x * directionToMouse.x,
-                                         axisDirection.y * directionToMouse.y,
-                                         axisDirection.z * directionToMouse.z);
-            target.position += newDir * moveSpeed * Time.deltaTime; // 직접적인 위치값 제한 혹은
+            Vector3 newDir = new Vector3(axisDirection.x * CurrentDragWorldPos.x,
+                                         axisDirection.y * CurrentDragWorldPos.y,
+                                         axisDirection.z * CurrentDragWorldPos.z);
+            Debug.Log(newDir);
+            //target.position += newDir * moveSpeed * Time.deltaTime; // 직접적인 위치값 제한 혹은
+            target.position = newDir;
 
             target.position = new Vector3(Mathf.Clamp(target.position.x, minTransform.position.x, maxTransform.position.x),
                 Mathf.Clamp(target.position.y, minTransform.position.y, maxTransform.position.y),
