@@ -8,11 +8,10 @@ namespace RW.MonumentValley
     [Serializable]
     public class RotationLink
     {
-        [Header("Base Rotation이랑 Base Position 다 넣어야 해요.")]
+        [Header("Base Rotation이랑 Base Position 다 넣어야 해요. 아마도??")]
         // transform to check
         public Transform linkedTransform;
-        
-
+       
         // euler angle needed to activate link
         
         public Vector3 activeEulerAngle;
@@ -29,13 +28,25 @@ namespace RW.MonumentValley
     public class MoverLink
     {
         
+        public Vector3 activeEulerAngle;
+        public SpinAxis activeSpinAxis = SpinAxis.X;
+
+        public Transform targetObject;
+        public DragSpinner spinnerSetter;
+
+        
+
+        
+
     }
 
 
+    
     // activates or deactivates special Edges between Nodes
     public class Linker : MonoBehaviour
     {
-        [SerializeField] public RotationLink[] rotationLinks;
+        [SerializeField] private RotationLink[] rotationLinks;
+        [SerializeField] private MoverLink[] moverLinks;
 
         // toggle active state of Edge between neighbor Nodes
         public void EnableLink(Node nodeA, Node nodeB, bool state)
@@ -50,6 +61,7 @@ namespace RW.MonumentValley
         // enable/disable based on transform's euler angles
         public void UpdateRotationLinks()
         {
+            Debug.Log("asdsadsad");
             foreach (RotationLink l in rotationLinks)
             {
                 
@@ -61,7 +73,6 @@ namespace RW.MonumentValley
                 float angleDiff = Quaternion.Angle(l.linkedTransform.rotation, targetAngle);
                 Vector3 targetPosition = l.activateWorldPosition;
                 
-
                 // enable the linked Edges if the angle matches; otherwise disable
                 if (Mathf.Abs(angleDiff) < 0.01f && Vector3.Distance(targetPosition, l.linkedTransform.position) < 0.01f)
                 {
@@ -72,7 +83,25 @@ namespace RW.MonumentValley
                     EnableLink(l.nodeA, l.nodeB, false);
                 }
             }
+
+            foreach(MoverLink d in moverLinks)
+            {
+                Quaternion targetAngle = Quaternion.Euler(d.activeEulerAngle);
+                float angleDiff = Quaternion.Angle(d.targetObject.rotation, targetAngle);
+
+                if (Mathf.Abs(angleDiff) < 0.01f)
+                {
+                    Debug.Log("asdsad");
+                    d.spinnerSetter.settings.spinAxis = d.activeSpinAxis;
+                    d.spinnerSetter.settings.CompareAndSwap();
+                }
+                
+
+            }
+
         }
+
+
 
         // update links when we begin
         private void Start()
