@@ -210,6 +210,13 @@ namespace RW.MonumentValley
 
             float elapsedTime = 0;
 
+            Boundary dirBoundary = totemSettings.currentNode.FindEdge(targetNode);
+
+            if (dirBoundary == null)
+            {
+                yield break;
+            }
+
             // validate move time
             moveTime = Mathf.Clamp(moveTime, 0.1f, 5f);
 

@@ -7,7 +7,7 @@ public class AddPrefabToMultipleParents : MonoBehaviour
     static void AddPrefabToSelected()
     {
         // 넣고자 하는 프리팹을 지정합니다.
-        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/2.Model/Prefabs/ClickableNodes.prefab");
+        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/2.Model/Prefabs/FlatNode.prefab");
 
         // 선택된 부모 오브젝트 가져오기
         GameObject[] selectedObjects = Selection.gameObjects;
