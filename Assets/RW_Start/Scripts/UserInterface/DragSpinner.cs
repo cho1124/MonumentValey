@@ -106,12 +106,15 @@ namespace RW.MonumentValley
 
         // 상태 관리 변수들
         [HideInInspector] public bool isSpinning = false;
-        [HideInInspector] public float previousAngleToMouse;
         [HideInInspector] public bool isActive = true;
+        [HideInInspector] public float previousAngleToMouse;
 
         [Header("position 이동 상태에서의 최소 최대 거리")]
         [SerializeField] private Transform minTransform;
         [SerializeField] private Transform maxTransform;
+
+        public Transform MinTransform => minTransform;
+        public Transform MaxTransform => maxTransform;
 
 
         [Header("뒤틀린 축 방지")]
@@ -127,7 +130,7 @@ namespace RW.MonumentValley
             //targetRot = target.transform.rotation;
         }
 
-        public void BeginDrag(Vector2 mousePosition)
+        public virtual void BeginDrag(Vector2 mousePosition)
         {
             isSpinning = true;
             //Debug.Log(isSpinning);
@@ -227,6 +230,7 @@ namespace RW.MonumentValley
         private void MoveTarget(Vector2 mousePosition)
         {
 
+           
             Vector3 CurrentDragPos = new Vector3(mousePosition.x, mousePosition.y, Camera.main.WorldToScreenPoint(pivot.position).z);
             Vector3 CurrentDragWorldPos = Camera.main.ScreenToWorldPoint(CurrentDragPos);
 
@@ -242,7 +246,12 @@ namespace RW.MonumentValley
                 Mathf.Clamp(target.position.y, minTransform.position.y, maxTransform.position.y),
                 Mathf.Clamp(target.position.z, minTransform.position.z, maxTransform.position.z));
 
+
+
+
+
             ratio = (target.position - minTransform.position).magnitude / (maxTransform.position - minTransform.position).magnitude;
+            
             
             if(aimedObjects.Length != 0)
             {
@@ -293,7 +302,6 @@ namespace RW.MonumentValley
                     return;
             }
 
-            
         }
 
         private void Swap(float minPosition, float maxPosition)
@@ -306,7 +314,6 @@ namespace RW.MonumentValley
             }
         }
 
-
         public virtual void Snap()             
         {
             isSpinning = false;
@@ -315,13 +322,11 @@ namespace RW.MonumentValley
             {
                 Snapping(target, spinAxis);
 
-                
                 foreach(AimedObject a in aimedObjects)
                 {
                     Snapping(a.target, a.spinAxis);
                     
                 }
-
             }
             else if (transformationMode == TransformationMode.Position)
             {
@@ -373,30 +378,20 @@ namespace RW.MonumentValley
                 angle += 360f; // 음수일 경우 0~360도로 변환
             return angle;
         }
-
-
     }
-
-    
-
-
     
     public class DragSpinner : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         [SerializeField] public SpinnerSettings settings;
 
-        
-
         void Start()
-        {
-            
+        {            
             settings.Initialize();
             EnableSpinner(true);
             
         }
 
-        
-        public void OnBeginDrag(PointerEventData data)
+        public virtual void OnBeginDrag(PointerEventData data)
         {
             //Debug.Log("Drag Beginning");
             if (settings.isActive)
@@ -405,12 +400,12 @@ namespace RW.MonumentValley
             }
         }
 
-        public void OnDrag(PointerEventData data)
+        public virtual void OnDrag(PointerEventData data)
         {
             settings.Drag(data.position);
         }
 
-        public void OnEndDrag(PointerEventData data)
+        public virtual void OnEndDrag(PointerEventData data)
         {
             //Debug.Log("EndDrag");
             if (settings.isActive)

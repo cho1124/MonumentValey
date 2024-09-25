@@ -59,6 +59,8 @@ namespace RW.MonumentValley
         }
 
         // enable/disable based on transform's euler angles
+
+        //각 바뀔때 UpdateRotation Links 다시 달기
         public void UpdateRotationLinks()
         {
             Debug.Log("asdsadsad");
