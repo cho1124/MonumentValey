@@ -15,6 +15,8 @@ public class ButtonPress : MonoBehaviour
     [SerializeField] private bool isPressed = false;
     [SerializeField] private Animator animator;
     [SerializeField] private Node parentNode;
+    [Header("영향받는 오브젝트")]
+    [SerializeField] private List<Transform> MoveTransform;
 
     public ButtonType ButtonType => buttonType;
     public bool IsPressed => isPressed;
@@ -32,13 +34,13 @@ public class ButtonPress : MonoBehaviour
 
         if(parentNode.isStacked)
         {
-            isPressed = !isPressed;
+            isPressed = true;
         }
         else
         {
             if(buttonType == ButtonType.Multiple)
             {
-                isPressed = !isPressed;
+                isPressed = false;
             }
         }
 
