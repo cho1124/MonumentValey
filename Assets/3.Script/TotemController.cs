@@ -29,9 +29,10 @@ namespace RW.MonumentValley
         [Header("이동 가능한 노드에 대한 부분")]
         [SerializeField] private Node[] Nodes;
 
-        private Graph graph;
+        public Graph graph;
         public Pathfinder pathfinder;
         public Node currentNode;
+        public Node lastNode;
         public Node nextNode;
         public void Initialize()
         {
@@ -92,6 +93,9 @@ namespace RW.MonumentValley
 
         public Transform SnapToNearestNode(Transform _transform, bool isSmoothMove)
         {
+
+            
+
             Node nearestNode = graph?.FindClosestNode(_transform.position, true);
             
             if(isSmoothMove)
@@ -99,6 +103,7 @@ namespace RW.MonumentValley
                 if (nearestNode != null && nearestNode.canTotemMove)
                 {
                     currentNode = nearestNode;
+                    currentNode.isStacked = true;
                     
                     _transform.DOMove(currentNode.transform.position, 0.2f);
                     //_transform.position = nearestNode.transform.position;
@@ -109,6 +114,7 @@ namespace RW.MonumentValley
                 if (nearestNode != null && nearestNode.canTotemMove)
                 {
                     currentNode = nearestNode;
+                    currentNode.isStacked = true;
                     //_transform.DOMove(currentNode.transform.position, 1f);
                     _transform.position = nearestNode.transform.position;
                 }
@@ -121,7 +127,7 @@ namespace RW.MonumentValley
 
     public class TotemController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
-        [Range(0.25f, 2f)]
+        [Range(0.1f, 2f)]
         [SerializeField] private float moveTime = 0.5f;
 
        
@@ -176,7 +182,6 @@ namespace RW.MonumentValley
                     isMoving = false;
                 }
 
-                
             }
         }
 
@@ -218,9 +223,8 @@ namespace RW.MonumentValley
             }
 
             // validate move time
-            moveTime = Mathf.Clamp(moveTime, 0.1f, 5f);
-
-            while (elapsedTime < moveTime && targetNode != null && !HasReachedNode(targetNode))
+            
+            while (elapsedTime < moveTime && targetNode != null && !HasReachedBoundary(dirBoundary))
             {
 
                 elapsedTime += Time.deltaTime;
@@ -228,17 +232,47 @@ namespace RW.MonumentValley
                 Vector3 targetPos = targetNode.transform.position;
                 transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
 
-                if (lerpValue > 0.51f)
-                {
-                    transform.parent = targetNode.transform;
-                    totemSettings.currentNode = targetNode;
+                
+                // wait one frame
+                yield return null;
+            }
 
-                    targetNode.gameEvent.Invoke();
-                }
+            if (dirBoundary.isTeleport)
+            {
+                Boundary revDirBoundary = targetNode.FindEdge(totemSettings.currentNode);
+
+
+                transform.position = revDirBoundary.transform.position;
+            }
+
+
+
+            transform.parent = targetNode.transform;
+            totemSettings.currentNode.isStacked = false;
+            totemSettings.currentNode = targetNode;
+            totemSettings.currentNode.isStacked = true;
+
+            // invoke UnityEvent associated with next Node
+            targetNode.gameEvent.Invoke();
+            //Debug.Log("invoked GameEvent from targetNode: " + targetNode.name);
+
+            startPosition = transform.position;
+            elapsedTime = 0;
+
+
+            while (elapsedTime < moveTime && targetNode != null && !HasReachedNode(targetNode))
+            {
+
+                elapsedTime += Time.deltaTime;
+                float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
+
+                Vector3 targetPos = targetNode.transform.position;
+                transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
 
                 // wait one frame
                 yield return null;
             }
+
         }
         public bool HasReachedNode(Node node)
         {
@@ -248,6 +282,18 @@ namespace RW.MonumentValley
             }
 
             float distanceSqr = (node.transform.position - transform.position).sqrMagnitude;
+
+            return (distanceSqr < 0.01f);
+        }
+
+        public bool HasReachedBoundary(Boundary boundary)
+        {
+            if (totemSettings.pathfinder == null || totemSettings.graph == null || boundary == null)
+            {
+                return false;
+            }
+
+            float distanceSqr = (boundary.transform.position - transform.position).sqrMagnitude;
 
             return (distanceSqr < 0.01f);
         }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44109416, g: 0.4898492, b: 0.569927, a: 1}
+  m_IndirectSpecularColor: {r: 0.44109386, g: 0.48984855, b: 0.56992626, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4147,7 +4147,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7593379128503866567, guid: 2342a2eb76274426aa3400faf2f325da, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8267055794681485845, guid: 2342a2eb76274426aa3400faf2f325da, type: 3}
       propertyPath: m_Layer
@@ -7740,6 +7740,7 @@ MonoBehaviour:
     activateWorldPosition: {x: 0, y: 0, z: 0}
     nodeA: {fileID: 198960099}
     nodeB: {fileID: 1628035953}
+  moverLinks: []
 --- !u!4 &518387450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6374139949356371548, guid: 7dcee8c4445ca4dac9b9b389dddbceb8, type: 3}
@@ -8108,6 +8109,10 @@ PrefabInstance:
     - target: {fileID: 3044589738314492191, guid: 881a93d1ff7e59249a6805162b6c2f59, type: 3}
       propertyPath: m_Name
       value: FlatNode (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3044589738314492191, guid: 881a93d1ff7e59249a6805162b6c2f59, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 881a93d1ff7e59249a6805162b6c2f59, type: 3}
@@ -9628,7 +9633,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   testVec: {x: 90, y: 0}
   speed: 0
-  Circulation: 1
+  Circulation: 0
 --- !u!1 &670874036
 GameObject:
   m_ObjectHideFlags: 0
@@ -13032,7 +13037,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4125098053640251614, guid: 2ddb388d636d24391ae03e944a9a8a65, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4125098053640251615, guid: 2ddb388d636d24391ae03e944a9a8a65, type: 3}
       propertyPath: m_RootOrder
@@ -15279,7 +15284,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5790093395637586882, guid: 02d152b12869049ccbae5c1962a70c55, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6673176404741715938, guid: 02d152b12869049ccbae5c1962a70c55, type: 3}
       propertyPath: m_Layer
@@ -15796,7 +15801,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 272409885668435541, guid: 19ceaf68996a54e719faef687e45312b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 615897990776896751, guid: 19ceaf68996a54e719faef687e45312b, type: 3}
       propertyPath: m_RootOrder
@@ -15925,7 +15930,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1117902073
 Transform:
   m_ObjectHideFlags: 0
@@ -17458,7 +17463,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 272409885668435541, guid: 19ceaf68996a54e719faef687e45312b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 615897990776896751, guid: 19ceaf68996a54e719faef687e45312b, type: 3}
       propertyPath: m_RootOrder
@@ -17968,7 +17973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3044589738314492191, guid: 881a93d1ff7e59249a6805162b6c2f59, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 881a93d1ff7e59249a6805162b6c2f59, type: 3}
@@ -18751,7 +18756,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   testVec: {x: 90, y: 0}
   speed: 0
-  Circulation: 1
+  Circulation: 0
 --- !u!1001 &1352132329
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24240,7 +24245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3908948490301210055, guid: b67ca5eba6a234f98bdce250187c58b1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4250894611569942768, guid: b67ca5eba6a234f98bdce250187c58b1, type: 3}
       propertyPath: m_Layer
@@ -25091,7 +25096,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   testVec: {x: 90, y: 0}
   speed: 0
-  Circulation: 1
+  Circulation: 0
 --- !u!1 &1817838580
 GameObject:
   m_ObjectHideFlags: 0
@@ -31532,7 +31537,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1001 &5370869847464506804
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -244,7 +244,9 @@ namespace RW.MonumentValley
 
 
             transform.parent = targetNode.transform;
+            currentNode.isStacked = false;
             currentNode = targetNode;
+            currentNode.isStacked = true;
 
             // invoke UnityEvent associated with next Node
             targetNode.gameEvent.Invoke();
@@ -278,6 +280,7 @@ namespace RW.MonumentValley
             if (nearestNode != null)
             {
                 currentNode = nearestNode;
+                currentNode.isStacked = true;
                 transform.position = nearestNode.transform.position;
             }
         }

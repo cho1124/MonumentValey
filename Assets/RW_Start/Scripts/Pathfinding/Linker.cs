@@ -93,11 +93,10 @@ namespace RW.MonumentValley
 
                 if (Mathf.Abs(angleDiff) < 0.01f)
                 {
-                    Debug.Log("asdsad");
+                    
                     d.spinnerSetter.settings.spinAxis = d.activeSpinAxis;
                     d.spinnerSetter.settings.CompareAndSwap();
                 }
-                
 
             }
 

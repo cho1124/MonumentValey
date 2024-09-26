@@ -79,6 +79,9 @@ namespace RW.MonumentValley
         [Header("토템 이동 가능 여부")]
         public bool canTotemMove = false;
 
+        [Header("어떤 오브젝트건 위에 있는지 여부")]
+        public bool isStacked = false;
+
         public Node PreviousNode { get { return previousNode; } set { previousNode = value; } }
 
         public Boundary[] boundaries;

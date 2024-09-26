@@ -70215,6 +70215,9 @@ MonoBehaviour:
     - target: {fileID: 2059}
       startTr: {fileID: 1569781358}
       endTr: {fileID: 266725480}
+      isMover: 1
+      spinAxis: 0
+    chainedObjects: []
     spinAxis: 1
     rotationSpeed: 1
     moveSpeed: 1
@@ -70225,10 +70228,11 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     isSpinning: 0
-    previousAngleToMouse: 0
     isActive: 1
+    previousAngleToMouse: 0
     minTransform: {fileID: 2051}
     maxTransform: {fileID: 3117}
+    isCrossed: 0
 --- !u!65 &4219
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -70286,6 +70290,9 @@ MonoBehaviour:
     - target: {fileID: 2630}
       startTr: {fileID: 953795983}
       endTr: {fileID: 1067309212}
+      isMover: 1
+      spinAxis: 0
+    chainedObjects: []
     spinAxis: 1
     rotationSpeed: 1
     moveSpeed: 1
@@ -70296,10 +70303,11 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     isSpinning: 0
-    previousAngleToMouse: 0
     isActive: 1
+    previousAngleToMouse: 0
     minTransform: {fileID: 2458}
     maxTransform: {fileID: 2205}
+    isCrossed: 0
 --- !u!102 &4223
 TextMesh:
   serializedVersion: 3
@@ -105331,7 +105339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 685417712145938008, guid: 20c9ed34a1676294b9562e6051ea060c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 685417712145940287, guid: 20c9ed34a1676294b9562e6051ea060c, type: 3}
       propertyPath: m_RootOrder
@@ -106795,6 +106803,7 @@ MonoBehaviour:
   settings:
     target: {fileID: 1377888639}
     aimedObjects: []
+    chainedObjects: []
     spinAxis: 1
     rotationSpeed: 1
     moveSpeed: 1
@@ -106817,10 +106826,11 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
     isSpinning: 0
-    previousAngleToMouse: 0
     isActive: 1
+    previousAngleToMouse: 0
     minTransform: {fileID: 356555849}
     maxTransform: {fileID: 958435280}
+    isCrossed: 0
 --- !u!114 &473051404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107799,6 +107809,7 @@ MonoBehaviour:
   settings:
     target: {fileID: 3197}
     aimedObjects: []
+    chainedObjects: []
     spinAxis: 0
     rotationSpeed: 1
     moveSpeed: 1
@@ -107821,10 +107832,11 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
     isSpinning: 0
-    previousAngleToMouse: 0
     isActive: 1
+    previousAngleToMouse: 0
     minTransform: {fileID: 2206}
     maxTransform: {fileID: 2200}
+    isCrossed: 0
 --- !u!114 &811293177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109105,7 +109117,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1165243378 stripped
 MonoBehaviour:
@@ -109980,6 +109992,52 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 893047e13b2b5c141a8edbaca3e35d93, type: 3}
+--- !u!1 &1401015977
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1401015979}
+  - component: {fileID: 1401015978}
+  m_Layer: 0
+  m_Name: PathManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1401015978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401015977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5a4dea7c64ee8e4b8a00fb82bf03ce7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickables: []
+  newNode: []
+--- !u!4 &1401015979
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401015977}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1412900992 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5370869849168517923, guid: 893047e13b2b5c141a8edbaca3e35d93, type: 3}
@@ -111040,7 +111098,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1569781357
 GameObject:
@@ -111712,8 +111770,8 @@ MonoBehaviour:
   - linkedTransform: {fileID: 852910785}
     activeEulerAngle: {x: 0, y: 0, z: 0}
     activateWorldPosition: {x: -10.5, y: 8.5, z: -30.5}
-    nodeA: {fileID: 1165243378}
-    nodeB: {fileID: 1977961248}
+    nodeA: {fileID: 262489138}
+    nodeB: {fileID: 717675421}
   - linkedTransform: {fileID: 1377888639}
     activeEulerAngle: {x: 0, y: 0, z: 0}
     activateWorldPosition: {x: -10.5, y: 11.5, z: -23.5}
@@ -111724,6 +111782,12 @@ MonoBehaviour:
     activateWorldPosition: {x: -10.5, y: 7.5, z: -23.5}
     nodeA: {fileID: 1165243378}
     nodeB: {fileID: 1962651475}
+  - linkedTransform: {fileID: 1377888639}
+    activeEulerAngle: {x: 0, y: 0, z: 0}
+    activateWorldPosition: {x: -10.5, y: 7.5, z: -23.5}
+    nodeA: {fileID: 1165243378}
+    nodeB: {fileID: 1962651475}
+  moverLinks: []
 --- !u!4 &1751365879
 Transform:
   m_ObjectHideFlags: 0
@@ -111737,7 +111801,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1772937009
 PrefabInstance:
@@ -113648,6 +113712,7 @@ MonoBehaviour:
   settings:
     target: {fileID: 852910785}
     aimedObjects: []
+    chainedObjects: []
     spinAxis: 0
     rotationSpeed: 1
     moveSpeed: 1
@@ -113670,10 +113735,11 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
     isSpinning: 0
-    previousAngleToMouse: 0
     isActive: 1
+    previousAngleToMouse: 0
     minTransform: {fileID: 1601127614}
     maxTransform: {fileID: 883734358}
+    isCrossed: 0
 --- !u!114 &4423395178571956114
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -48,6 +48,9 @@ namespace RW.MonumentValley
         private void Awake()
         {
             allNodes = FindObjectsOfType<Node>().ToList();
+
+            Debug.Log("allNodes Count : " + allNodes.Count);
+
             InitNodes();
         }
 
@@ -143,6 +146,8 @@ namespace RW.MonumentValley
                     closestDistanceSqr = diff.sqrMagnitude;
                 }
             }
+
+            
             return closestNode;
         }
         // find the closest Node in the entire Graph
@@ -150,6 +155,8 @@ namespace RW.MonumentValley
         {
             if(isTotem)
             {
+               
+                
                 return FindClosestNodeByTotem(allNodes.ToArray(), pos);
             }
             return FindClosestNode(allNodes.ToArray(), pos);

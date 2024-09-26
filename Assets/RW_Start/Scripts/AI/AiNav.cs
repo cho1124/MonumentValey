@@ -46,6 +46,7 @@ public class AiNav : MonoBehaviour
         
         ChildTr.GetComponent<Collider>();
         animator = ChildTr.GetComponent<Animator>();
+        //pathfinder.Fin
         pathfinder.StartNode = StartNode;
         
         pathfinder.DestinationNode = EndNode;
@@ -71,7 +72,7 @@ public class AiNav : MonoBehaviour
 
         //possiblePath = pathfinder.FindBestPathForAI(currentNode, PathManager.instance.newNode, StartNode, EndNode);
         //중간경로 >>> 순환 케이스 
-        Rotator();
+        
         foreach (Edge edge in currentNode.Edges)
         {
             if(lastNode == null)
@@ -108,6 +109,9 @@ public class AiNav : MonoBehaviour
                 }
             }
         }
+
+        
+
 
         RaycastHit hit;
         
@@ -168,7 +172,7 @@ public class AiNav : MonoBehaviour
                 // aim at the Node after that to minimize flipping
                 int nextAimIndex = Mathf.Clamp(i + 1, 0, path.Count - 1);
                 Node aimNode = path[nextAimIndex];
-                FaceNextPosition(transform.position, aimNode.transform.position);
+                //FaceNextPosition(transform.position, aimNode.transform.position);
                 // move to the next Node
                 yield return StartCoroutine(MoveToNodeRoutine(transform.position, nextNode));
             }
@@ -178,43 +182,7 @@ public class AiNav : MonoBehaviour
         //UpdateAnimation("isMoving", isMoving);
     }
 
-    public void FaceNextPosition(Vector3 startPosition, Vector3 nextPosition)
-    {
-        if (mainCamera == null)
-        {
-            return;
-        }
-
-        // convert next Node world space to screen space
-        Vector3 nextPositionScreen = mainCamera.WorldToScreenPoint(nextPosition);
-
-        // convert next Node screen point to Ray
-        Ray rayToNextPosition = mainCamera.ScreenPointToRay(nextPositionScreen);
-
-        // plane at player's feet
-        Plane plane = new Plane(Vector3.up, startPosition);
-
-        // distance from camera (used for projecting point onto plane)
-        float cameraDistance = 0f;
-
-        // project the nextNode onto the plane and face toward projected point
-        if (plane.Raycast(rayToNextPosition, out cameraDistance))
-        {
-            Vector3 nextPositionOnPlane = rayToNextPosition.GetPoint(cameraDistance);
-            Vector3 directionToNextNode = nextPositionOnPlane - startPosition;
-            if (directionToNextNode != Vector3.zero)
-            {
-                
-                if (!Circulation)
-                {
-                    transform.rotation = Quaternion.LookRotation(directionToNextNode);
-
-                }
-                //transform.forward = directionToNextNode;
-            }
-        }
-    }
-
+    
     private IEnumerator MoveToNodeRoutine(Vector3 startPosition, Node targetNode)
     {
         
@@ -242,7 +210,10 @@ public class AiNav : MonoBehaviour
             float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
 
             Vector3 targetPos = dirBoundary.transform.position;
-            transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
+
+            
+            transform.position = Vector3.MoveTowards(startPosition, targetPos, lerpValue);
+            transform.forward = targetPos - startPosition;
             
             
             yield return null;
@@ -262,6 +233,7 @@ public class AiNav : MonoBehaviour
         
         //Vector3 dir = dirBoundary.transform.position - transform.position;
 
+        //transform.forward = dir;
         //transform.LookAt(dirBoundary.transform);
 
 
@@ -272,7 +244,9 @@ public class AiNav : MonoBehaviour
 
         
         transform.parent = targetNode.transform;
+        currentNode.isStacked = false;
         currentNode = targetNode;
+        currentNode.isStacked = true;
 
         // invoke UnityEvent associated with next Node
         targetNode.gameEvent.Invoke();
@@ -296,8 +270,9 @@ public class AiNav : MonoBehaviour
             float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
 
             Vector3 targetPos = targetNode.transform.position;
-            transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
-            
+            transform.position = Vector3.MoveTowards(startPosition, targetPos, lerpValue);
+            transform.forward = targetPos - startPosition;
+
             // wait one frame
             yield return null;
         }
@@ -332,6 +307,7 @@ public class AiNav : MonoBehaviour
         if (nearestNode != null)
         {
             currentNode = nearestNode;
+            currentNode.isStacked = true;
             transform.position = nearestNode.transform.position;
         }
     }
@@ -347,19 +323,6 @@ public class AiNav : MonoBehaviour
         //}
     }
 
-    private void Rotator()
-    {
-        //Quaternion newQ = Quaternion.Lerp(currentNode.transform.rotation, nextNode.transform.rotation, Time.deltaTime * 3f);
-
-
-
-
-
-        //if(nextNode != null && Circulation && currentNode.transform.rotation != nextNode.transform.rotation)
-        //{
-        //    transform.DORotateQuaternion(nextNode.transform.rotation, 0.3f);
-        //    
-        //}
-    }
+    
 
 }
