@@ -32,7 +32,7 @@ using UnityEngine;
 
 namespace RW.MonumentValley
 {
-    [RequireComponent(typeof(Animator))]
+    
     // marker identifying mouse clicks 
     public class Cursor : MonoBehaviour
     {
@@ -41,8 +41,11 @@ namespace RW.MonumentValley
 
         [SerializeField] private Camera cam;
 
+        [SerializeField] private GameObject Cursorobj;
+
+
         // cursor AnimationController
-        [SerializeField] private Animator animController;
+        
 
         private void Awake()
         {
@@ -50,7 +53,7 @@ namespace RW.MonumentValley
             {
                 cam = Camera.main;
             }
-            animController = GetComponent<Animator>();
+            
         }
 
         // always look at camera
@@ -68,13 +71,15 @@ namespace RW.MonumentValley
         // show cursor at a position with an optional offset toward camera
         public void ShowCursor(Vector3 position)
         {
-            if (cam != null && animController != null)
+            if (cam != null)
             {
                 Vector3 cameraForwardOffset = cam.transform.rotation * new Vector3(0f, 0f, offsetDistance);
                 transform.position = position - cameraForwardOffset;
-                
-                animController.SetTrigger("ClickTrigger");
-                
+                GameObject obj = Instantiate(Cursorobj, transform.position, Cursorobj.transform.rotation);
+
+                Destroy(obj, 0.5f);
+                //풀링으로 개선
+
             }
         }
     }

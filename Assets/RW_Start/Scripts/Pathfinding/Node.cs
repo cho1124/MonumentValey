@@ -81,6 +81,8 @@ namespace RW.MonumentValley
 
         [Header("어떤 오브젝트건 위에 있는지 여부")]
         public bool isStacked = false;
+        [Header("문 안 트릭")]
+        public bool isDoor = false;
 
         public Node PreviousNode { get { return previousNode; } set { previousNode = value; } }
 

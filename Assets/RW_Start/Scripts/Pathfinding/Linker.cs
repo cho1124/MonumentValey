@@ -14,9 +14,9 @@ namespace RW.MonumentValley
        
         // euler angle needed to activate link
         
-        public Vector3 activeEulerAngle;
-        [Header("활성화시켜야 하는 포지션에서의 값")]
-        public Vector3 activateWorldPosition;
+        
+        [Header("활성화시켜야 하는 트랜스폼 값")]
+        public Transform activeTr;
 
         [Header("Nodes to activate")]
         
@@ -35,9 +35,6 @@ namespace RW.MonumentValley
         public DragSpinner spinnerSetter;
 
         
-
-        
-
     }
 
 
@@ -63,7 +60,7 @@ namespace RW.MonumentValley
         //각 바뀔때 UpdateRotation Links 다시 달기
         public void UpdateRotationLinks()
         {
-            Debug.Log("asdsadsad");
+            
             foreach (RotationLink l in rotationLinks)
             {
                 
@@ -71,10 +68,17 @@ namespace RW.MonumentValley
                     continue;
 
                 // check difference between desired and current angle
-                Quaternion targetAngle = Quaternion.Euler(l.activeEulerAngle);
+
+                if (l.activeTr == null) continue;
+
+                Quaternion targetAngle = l.activeTr.rotation;
                 float angleDiff = Quaternion.Angle(l.linkedTransform.rotation, targetAngle);
-                Vector3 targetPosition = l.activateWorldPosition;
+                Vector3 targetPosition = l.activeTr.position;
                 
+
+                
+
+
                 // enable the linked Edges if the angle matches; otherwise disable
                 if (Mathf.Abs(angleDiff) < 0.01f && Vector3.Distance(targetPosition, l.linkedTransform.position) < 0.01f)
                 {

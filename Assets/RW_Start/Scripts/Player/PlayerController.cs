@@ -29,6 +29,7 @@
  * THE SOFTWARE.
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -52,6 +53,12 @@ namespace RW.MonumentValley
         // cursor AnimationController
         private Animator cursorAnimController;
 
+        // layer
+        private LayerMask levelLayer;
+        private LayerMask playerLayer;
+        [SerializeField] private GameObject RenderPlayerObj;
+
+
         // pathfinding fields
         //private Clickable[] clickables;
         [SerializeField] private Pathfinder pathfinder;
@@ -63,13 +70,11 @@ namespace RW.MonumentValley
         private bool isMoving;
         private bool isControlEnabled;
         private PlayerAnimation playerAnimation;
+        
 
         private void Awake()
         {
-            //  initialize fields
-            //clickables = FindObjectsOfType<Clickable>();
-            //PathManager.clickables
-            //pathfinder = FindObjectOfType<Pathfinder>();
+            
             playerAnimation = GetComponent<PlayerAnimation>();
 
             if (pathfinder != null)
@@ -79,6 +84,8 @@ namespace RW.MonumentValley
 
             isMoving = false;
             isControlEnabled = true;
+            
+
         }
 
         private void Start()
@@ -102,6 +109,9 @@ namespace RW.MonumentValley
             {
                 c.clickAction += OnClick;
             }
+
+            levelLayer = LayerMask.NameToLayer("Level");
+            playerLayer = LayerMask.NameToLayer("Player");
         }
 
         private void OnDisable()
@@ -117,7 +127,24 @@ namespace RW.MonumentValley
         {
 
             UpdateAnimation();
+            CheckInDoor();
 
+           
+        }
+
+        private void CheckInDoor()
+        {
+            
+            if(currentNode.isDoor)
+            {
+                RenderPlayerObj.layer = levelLayer;
+                
+            }
+            else
+            {
+                RenderPlayerObj.layer = playerLayer;
+            }
+            
         }
 
         private void OnClick(Clickable clickable, Vector3 position)
@@ -163,8 +190,6 @@ namespace RW.MonumentValley
             }
         }
 
-
-
         public IEnumerator FollowPathRoutine(List<Node> path)
         {
             // start moving
@@ -190,7 +215,7 @@ namespace RW.MonumentValley
                     // aim at the Node after that to minimize flipping
                     int nextAimIndex = Mathf.Clamp(i + 1, 0, path.Count - 1);
                     Node aimNode = path[nextAimIndex];
-                    FaceNextPosition(transform.position, aimNode.transform.position);
+                    //FaceNextPosition(transform.position, aimNode.transform.position);
 
                     // move to the next Node
                     yield return StartCoroutine(MoveToNodeRoutine(transform.position, nextNode));
@@ -210,8 +235,9 @@ namespace RW.MonumentValley
             float elapsedTime = 0;
 
             Boundary dirBoundary = currentNode.FindEdge(targetNode);
-            
-            if(dirBoundary == null)
+
+           
+            if (dirBoundary == null)
             {
                 yield break;   
             }
@@ -226,8 +252,19 @@ namespace RW.MonumentValley
                 elapsedTime += Time.deltaTime;
                 float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
 
-                Vector3 targetPos = dirBoundary.transform.position;
+                Vector3 localTargetPos = dirBoundary.transform.localPosition;  // 타겟의 로컬 좌표
+                Vector3 targetPos = dirBoundary.transform.parent.TransformPoint(localTargetPos);
+
+
+                Vector3 newDir = targetPos - transform.position;
+
                 transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
+
+                if (newDir != Vector3.zero)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                }
 
                 yield return null;
 
@@ -242,7 +279,6 @@ namespace RW.MonumentValley
             }
             
 
-
             transform.parent = targetNode.transform;
             currentNode.isStacked = false;
             currentNode = targetNode;
@@ -256,9 +292,6 @@ namespace RW.MonumentValley
             elapsedTime = 0;
 
             
-
-
-
             while (elapsedTime < moveTime && targetNode != null && !HasReachedNode(targetNode))
             {
 
@@ -267,6 +300,15 @@ namespace RW.MonumentValley
 
                 Vector3 targetPos = targetNode.transform.position;
                 transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
+
+                Vector3 newDir = targetPos - transform.position;
+
+
+                if (newDir != Vector3.zero)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                }
 
                 // wait one frame
                 yield return null;
@@ -284,6 +326,15 @@ namespace RW.MonumentValley
                 transform.position = nearestNode.transform.position;
             }
         }
+
+        public void MoveNextStartNode(Node StartNode)
+        {
+            currentNode.isStacked = false;
+            currentNode = StartNode;
+            currentNode.isStacked = true;
+            transform.position = currentNode.transform.position;
+        }
+
 
         // turn face the next Node, always projected on a plane at the Player's feet
         private void FaceNextPosition(Vector3 startPosition, Vector3 nextPosition)
@@ -312,33 +363,13 @@ namespace RW.MonumentValley
                 Vector3 directionToNextNode = nextPositionOnPlane - startPosition;
                 if (directionToNextNode != Vector3.zero)
                 {
-                    transform.rotation = Quaternion.LookRotation(directionToNextNode);
+                    //transform.rotation = Quaternion.LookRotation(directionToNextNode);
+                    transform.forward = directionToNextNode;
                 }
             }
         }
 
-        private void UpdateIdleAnimation()
-        {
-            switch(currentNode.NodeType)
-            {
-                case Node.NodeState.Flat:
-                    playerAnimation.StartAnimation("Idle");
-                    break;
-                case Node.NodeState.Ladder:
-                    playerAnimation.StartAnimation("LadderUpIdle");
-                    break;
-                case Node.NodeState.Stair:
-                    Debug.Log("CurrentState is Stair");
-                    break;
-                default:
-                    Debug.Log("State is null");
-                    break;
-            }
-
-
-        }
-
-
+        
         // toggle between Idle and Walk animations
         private void UpdateAnimation()
         {
@@ -348,7 +379,6 @@ namespace RW.MonumentValley
             }
 
             
-
             if (playerAnimation != null)
             {
                 if (currentNode.NodeType is Node.NodeState.Ladder || nextNode?.NodeType is Node.NodeState.Ladder)
