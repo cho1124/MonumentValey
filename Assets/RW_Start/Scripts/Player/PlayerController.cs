@@ -137,12 +137,12 @@ namespace RW.MonumentValley
             
             if(currentNode.isDoor)
             {
-                RenderPlayerObj.layer = levelLayer;
+                RenderPlayerObj.layer = playerLayer;
                 
             }
             else
             {
-                RenderPlayerObj.layer = playerLayer;
+                RenderPlayerObj.layer = levelLayer;
             }
             
         }
@@ -262,8 +262,20 @@ namespace RW.MonumentValley
 
                 if (newDir != Vector3.zero)
                 {
-                    Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+
+                    if(currentNode.NodeType is Node.NodeState.Ladder || dirBoundary.isTeleport)
+                    {
+                        //Quaternion targetRotation = Quaternion.LookRotation(newDir);
+                        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                        FaceNextPosition(transform.position, targetPos);
+                    }
+                    else
+                    {
+                        Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                    }
+
+                    
                 }
 
                 yield return null;
@@ -306,8 +318,16 @@ namespace RW.MonumentValley
 
                 if (newDir != Vector3.zero)
                 {
-                    Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                    if (currentNode.NodeType is Node.NodeState.Ladder || dirBoundary.isTeleport)
+                    {
+                        
+                        FaceNextPosition(transform.position, targetPos);
+                    }
+                    else
+                    {
+                        Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                    }
                 }
 
                 // wait one frame
@@ -327,12 +347,17 @@ namespace RW.MonumentValley
             }
         }
 
-        public void MoveNextStartNode(Node StartNode)
+        public void MoveNextStartNode(Node StartNode, Node NextNode)
         {
+            StopAllCoroutines();
+            
+            Debug.Log("test");
             currentNode.isStacked = false;
             currentNode = StartNode;
             currentNode.isStacked = true;
             transform.position = currentNode.transform.position;
+            StartCoroutine(MoveToNodeRoutine(transform.position, NextNode));
+            isMoving = false;
         }
 
 

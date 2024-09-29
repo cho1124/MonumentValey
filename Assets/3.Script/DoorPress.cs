@@ -9,6 +9,7 @@ public class DoorPress : CommonPress
     private Animator animator;
     private Node thisNode;
     [SerializeField] private Node nextStartNode;
+    [SerializeField] private Node nextMovetoNode;
     
 
     private void Start()
@@ -29,7 +30,7 @@ public class DoorPress : CommonPress
                 Debug.Log("player is null!!@!");
             }
             
-            player.MoveNextStartNode(nextStartNode);
+            player.MoveNextStartNode(nextStartNode, nextMovetoNode);
 
             if(!hasExecuted)
             {

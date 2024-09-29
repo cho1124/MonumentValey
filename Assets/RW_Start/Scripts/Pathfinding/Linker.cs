@@ -37,7 +37,6 @@ namespace RW.MonumentValley
         
     }
 
-
     
     // activates or deactivates special Edges between Nodes
     public class Linker : MonoBehaviour
@@ -71,16 +70,13 @@ namespace RW.MonumentValley
 
                 if (l.activeTr == null) continue;
 
-                Quaternion targetAngle = l.activeTr.rotation;
-                float angleDiff = Quaternion.Angle(l.linkedTransform.rotation, targetAngle);
-                Vector3 targetPosition = l.activeTr.position;
-                
-
-                
+                Quaternion targetAngle = l.activeTr.localRotation;
+                float angleDiff = Quaternion.Angle(l.linkedTransform.localRotation, targetAngle);
+                Vector3 targetPosition = l.activeTr.localPosition;
 
 
-                // enable the linked Edges if the angle matches; otherwise disable
-                if (Mathf.Abs(angleDiff) < 0.01f && Vector3.Distance(targetPosition, l.linkedTransform.position) < 0.01f)
+
+                if (Mathf.Abs(angleDiff) < 0.05f && Vector3.Distance(targetPosition, l.linkedTransform.localPosition) < 0.05f)
                 {
                     EnableLink(l.nodeA, l.nodeB, true);
                 }
@@ -111,6 +107,7 @@ namespace RW.MonumentValley
         // update links when we begin
         private void Start()
         {
+            Debug.Log("StartedObj : " + transform.name);
             UpdateRotationLinks();
         }
     }

@@ -107169,6 +107169,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5370869848772594903, guid: 893047e13b2b5c141a8edbaca3e35d93, type: 3}
   m_PrefabInstance: {fileID: 1420829141}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &644824721 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2423906599848667255, guid: 1a4ea91619c2c48b99dc4648f2819953, type: 3}
+  m_PrefabInstance: {fileID: 2004813610}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &655369902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -111753,38 +111758,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationLinks:
   - linkedTransform: {fileID: 3197}
-    activeEulerAngle: {x: 0, y: 0, z: 0}
-    activateWorldPosition: {x: -10.5, y: 7.5, z: -31.5}
+    activeTr: {fileID: 0}
     nodeA: {fileID: 142594835}
     nodeB: {fileID: 386842869}
   - linkedTransform: {fileID: 3197}
-    activeEulerAngle: {x: 0, y: 0, z: 0}
-    activateWorldPosition: {x: -18.5, y: 7.5, z: -31.5}
+    activeTr: {fileID: 0}
     nodeA: {fileID: 943801673}
     nodeB: {fileID: 895366702}
   - linkedTransform: {fileID: 852910785}
-    activeEulerAngle: {x: 0, y: 0, z: 0}
-    activateWorldPosition: {x: -16.5, y: 8.5, z: -30.5}
+    activeTr: {fileID: 0}
     nodeA: {fileID: 1895103652}
     nodeB: {fileID: 1283794214}
   - linkedTransform: {fileID: 852910785}
-    activeEulerAngle: {x: 0, y: 0, z: 0}
-    activateWorldPosition: {x: -10.5, y: 8.5, z: -30.5}
+    activeTr: {fileID: 0}
     nodeA: {fileID: 262489138}
     nodeB: {fileID: 717675421}
   - linkedTransform: {fileID: 1377888639}
-    activeEulerAngle: {x: 0, y: 0, z: 0}
-    activateWorldPosition: {x: -10.5, y: 11.5, z: -23.5}
+    activeTr: {fileID: 0}
     nodeA: {fileID: 1165243378}
     nodeB: {fileID: 1977961248}
   - linkedTransform: {fileID: 1377888639}
-    activeEulerAngle: {x: 0, y: 0, z: 0}
-    activateWorldPosition: {x: -10.5, y: 7.5, z: -23.5}
+    activeTr: {fileID: 0}
     nodeA: {fileID: 1165243378}
     nodeB: {fileID: 1962651475}
   - linkedTransform: {fileID: 1377888639}
-    activeEulerAngle: {x: 0, y: 0, z: 0}
-    activateWorldPosition: {x: -10.5, y: 7.5, z: -23.5}
+    activeTr: {fileID: 0}
     nodeA: {fileID: 1165243378}
     nodeB: {fileID: 1962651475}
   moverLinks: []
@@ -112769,6 +112767,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2423906599848667261, guid: 1a4ea91619c2c48b99dc4648f2819953, type: 3}
+      propertyPath: Cursorobj
+      value: 
+      objectReference: {fileID: 644824721}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a4ea91619c2c48b99dc4648f2819953, type: 3}
 --- !u!114 &2004813611 stripped
@@ -112776,7 +112778,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2423906599848667261, guid: 1a4ea91619c2c48b99dc4648f2819953, type: 3}
   m_PrefabInstance: {fileID: 2004813610}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 644824721}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 199b6cc31a2814e72a2d9ba5473cb33c, type: 3}

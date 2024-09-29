@@ -72,7 +72,7 @@ namespace RW.MonumentValley
             target.transform.rotation = rotation * target.transform.rotation;
         }
 
-
+        
         public void SnapByRatio(Vector3 originVec)
         {
             target.transform.rotation = Quaternion.Euler(originVec);
@@ -192,8 +192,8 @@ namespace RW.MonumentValley
 
                 target.Rotate(newRotationVector, Space.World);
                 
-
-                float rotationDelta = Mathf.Abs(previousAngleToMouse - angleToMouse);
+                
+                float rotationDelta = previousAngleToMouse - angleToMouse;
                 float rotationRatio = rotationDelta / 360f; // 전체 회전 각도에 대한 비율
                                                             //Debug.Log("rotationRatio : " + rotationRatio);
 

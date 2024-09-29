@@ -11,46 +11,39 @@ public class AiNav : MonoBehaviour
     //1. patrol을 돌 시작 노드와 끝 노드를 결정
     //2. patrol 도중 이동할 다음 노드의 연결이 끊겨있으면 돌아가기
     //3. 도중 플레이어를 만나면 patrol 일시 정지
-
-    public float maxDistance = 1f;
-
     
+    [Header("플레이어 감지 범위")]
+    public float maxDistance = 1f;
 
     [Header("시작과 끝 노드")]
     public Node StartNode;
     public Node EndNode;
     public Pathfinder pathfinder;
-    public Transform ChildTr;
-    private Graph graph;
+    
     [SerializeField] private List<Node> possiblePath;
     [SerializeField] private Node nextNode;
     [SerializeField] private Node lastNode;
     [SerializeField] private Node currentNode;
-    private Node hitNode;
     [SerializeField] private bool isReversing = false;
-
     [SerializeField] private Animator animator;
-    public Vector2 testVec = new Vector2(90f, 0f);
-    public float speed;
+    
+    [SerializeField] private float moveTime = 1.0f; // 이동 시간 변수
 
-    public bool Circulation = false;
-
-
+    private Graph graph;
+    private Node hitNode;
     private bool isMoving = false;
-    //private bool canMove = true;
-    private float moveTime = 1.0f; // 이동 시간 변수
     private Camera mainCamera;
 
     private void Start()
     {
         
-        ChildTr.GetComponent<Collider>();
-        animator = ChildTr.GetComponent<Animator>();
+        
+        animator = GetComponentInChildren<Animator>();
         //pathfinder.Fin
         pathfinder.StartNode = StartNode;
         
         pathfinder.DestinationNode = EndNode;
-        nextNode = StartNode;
+        //nextNode = StartNode;
         graph = pathfinder.GetComponent<Graph>();
         mainCamera = Camera.main;
         SnapToNearestNode();
@@ -111,8 +104,6 @@ public class AiNav : MonoBehaviour
         }
 
         
-
-
         RaycastHit hit;
         
 
@@ -122,7 +113,6 @@ public class AiNav : MonoBehaviour
         {
             if (hit.transform.CompareTag("Player"))
             {
-                Debug.Log("player detected");
                 isMoving = false;
                 animator.SetBool("isMoving", isMoving);
                 hitNode = lastNode;
@@ -209,59 +199,55 @@ public class AiNav : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
 
-            Vector3 targetPos = dirBoundary.transform.position;
+            Vector3 localTargetPos = dirBoundary.transform.localPosition;  // 타겟의 로컬 좌표
+            Vector3 targetPos = dirBoundary.transform.parent.TransformPoint(localTargetPos);
 
-            
-            transform.position = Vector3.MoveTowards(startPosition, targetPos, lerpValue);
-            transform.forward = targetPos - startPosition;
-            
-            
+
+            Vector3 newDir = targetPos - transform.position;
+
+            transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
+            if (newDir != Vector3.zero)
+            {
+
+                if (currentNode.NodeType is Node.NodeState.Ladder || dirBoundary.isTeleport)
+                {
+                    //Quaternion targetRotation = Quaternion.LookRotation(newDir);
+                    //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                    FaceNextPosition(transform.position, targetPos);
+                }
+                else
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                }
+
+
+            }
+
+
             yield return null;
 
         }
 
 
         //노드에서 노드로 직접 이동?
-        Boundary revDirBoundary = targetNode.FindEdge(currentNode);
-
         if (dirBoundary.isTeleport)
         {
+            Boundary revDirBoundary = targetNode.FindEdge(currentNode);
+
+
             transform.position = revDirBoundary.transform.position;
-            //currentNode = targetNode;
         }
 
-        
-        //Vector3 dir = dirBoundary.transform.position - transform.position;
-
-        //transform.forward = dir;
-        //transform.LookAt(dirBoundary.transform);
-
-
-        if(nextNode != null)
-        {
-            transform.DORotateQuaternion(nextNode.transform.rotation, 0.3f);
-        }
-
-        
         transform.parent = targetNode.transform;
         currentNode.isStacked = false;
         currentNode = targetNode;
         currentNode.isStacked = true;
 
-        // invoke UnityEvent associated with next Node
         targetNode.gameEvent.Invoke();
-        //Debug.Log("invoked GameEvent from targetNode: " + targetNode.name);
 
         startPosition = transform.position;
         elapsedTime = 0;
-
-
-
-
-        if(dirBoundary.isTeleport)
-        {
-            yield break;
-        }
 
         while (elapsedTime < moveTime && targetNode != null && !HasReachedNode(targetNode))
         {
@@ -271,7 +257,21 @@ public class AiNav : MonoBehaviour
 
             Vector3 targetPos = targetNode.transform.position;
             transform.position = Vector3.MoveTowards(startPosition, targetPos, lerpValue);
-            transform.forward = targetPos - startPosition;
+            Vector3 newDir = targetPos - transform.position;
+
+            if (newDir != Vector3.zero)
+            {
+                if (currentNode.NodeType is Node.NodeState.Ladder || dirBoundary.isTeleport)
+                {
+
+                    FaceNextPosition(transform.position, targetPos);
+                }
+                else
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                }
+            }
 
             // wait one frame
             yield return null;
@@ -322,7 +322,39 @@ public class AiNav : MonoBehaviour
         //    AIAniamtion.ToggleAnimation(isMoving);
         //}
     }
+    private void FaceNextPosition(Vector3 startPosition, Vector3 nextPosition)
+    {
+        if (Camera.main == null)
+        {
+            return;
+        }
 
-    
+        // convert next Node world space to screen space
+        Vector3 nextPositionScreen = Camera.main.WorldToScreenPoint(nextPosition);
+
+        // convert next Node screen point to Ray
+        Ray rayToNextPosition = Camera.main.ScreenPointToRay(nextPositionScreen);
+
+        // plane at player's feet
+        Plane plane = new Plane(Vector3.up, startPosition);
+
+        // distance from camera (used for projecting point onto plane)
+        float cameraDistance = 0f;
+
+        // project the nextNode onto the plane and face toward projected point
+        if (plane.Raycast(rayToNextPosition, out cameraDistance))
+        {
+            Vector3 nextPositionOnPlane = rayToNextPosition.GetPoint(cameraDistance);
+            Vector3 directionToNextNode = nextPositionOnPlane - startPosition;
+            if (directionToNextNode != Vector3.zero)
+            {
+                //transform.rotation = Quaternion.LookRotation(directionToNextNode);
+                transform.forward = directionToNextNode;
+            }
+        }
+    }
+
+
+
 
 }

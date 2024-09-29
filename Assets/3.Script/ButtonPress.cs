@@ -45,7 +45,7 @@ public class ButtonPress : CommonPress
 
     private void Update()
     {
-        Debug.Log(sequenceTuples[0].target.transform.rotation.eulerAngles);
+        //Debug.Log(sequenceTuples[0].target.transform.position);
 
         // parentNode.isStacked에 따른 버튼 상태 변경
         if (parentNode.isStacked)
@@ -76,16 +76,34 @@ public class ButtonPress : CommonPress
     protected override void ExecuteButtonAction()
     {
         if (sequenceTuples.Count == 0) return;
+        
 
-        foreach(SequenceTuple s in sequenceTuples)
+        StartCoroutine(ExecuteSequencesSequentially());
+    }
+
+    // 시퀀스를 순차적으로 실행하는 코루틴
+    private IEnumerator ExecuteSequencesSequentially()
+    {
+        foreach (SequenceTuple s in sequenceTuples)
         {
-            // 시퀀스 실행
+            bool sequenceCompleted = false;
+
+            // 시퀀스가 끝난 뒤에 sequenceCompleted를 true로 설정
             if (s.sequenceManager != null)
             {
-                s.sequenceManager.ExecuteSequence(s.target, () => { Debug.Log("Action"); snappingEvent?.Invoke(); });  // 시퀀스 실행
+                s.sequenceManager.ExecuteSequence(s.target, () =>
+                {
+                    Debug.Log("Action Completed");
+                    snappingEvent?.Invoke();  // 이벤트 호출
+                    sequenceCompleted = true;  // 시퀀스 완료
+                });
             }
-            
+
+            // 시퀀스가 완료될 때까지 대기
+            yield return new WaitUntil(() => sequenceCompleted);
         }
+
+        Debug.Log("All sequences completed.");
     }
 
 
