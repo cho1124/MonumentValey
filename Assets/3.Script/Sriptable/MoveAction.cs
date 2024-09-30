@@ -1,5 +1,5 @@
 using UnityEngine;
-using DG.Tweening;  // DoTween 네임스페이스
+using DG.Tweening; 
 
 [CreateAssetMenu(menuName = "SequenceActions/MoveAction")]
 public class MoveAction : SequenceAction

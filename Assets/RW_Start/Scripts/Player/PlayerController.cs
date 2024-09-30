@@ -33,6 +33,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 
 namespace RW.MonumentValley
@@ -413,7 +414,7 @@ namespace RW.MonumentValley
                         playerAnimation.StartAnimationParameter("isLadder", false);
                         playerAnimation.StartAnimationParameter("isDown", false);
                     }
-                    else
+                    else 
                     {
                         playerAnimation.StartAnimationParameter("isLadder", true);
                     }

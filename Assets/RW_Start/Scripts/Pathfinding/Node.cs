@@ -81,8 +81,14 @@ namespace RW.MonumentValley
 
         [Header("어떤 오브젝트건 위에 있는지 여부")]
         public bool isStacked = false;
+        [Header("플레이어가 위에 있는지")]
+        public bool isPlayerStacked = false;
         [Header("문 안 트릭")]
         public bool isDoor = false;
+        
+        public bool canAccessPlayer = true;
+        public bool canAccessAI = true;
+        public bool canAccessTotem = true;
 
         public Node PreviousNode { get { return previousNode; } set { previousNode = value; } }
 

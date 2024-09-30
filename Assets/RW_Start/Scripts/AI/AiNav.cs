@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RW.MonumentValley;
 using DG.Tweening;
-
-
+using UnityEngine.Events;
 
 public class AiNav : MonoBehaviour
 {
@@ -14,6 +13,8 @@ public class AiNav : MonoBehaviour
     
     [Header("플레이어 감지 범위")]
     public float maxDistance = 1f;
+    [Header("플레이어")]
+    [SerializeField] PlayerController player;
 
     [Header("시작과 끝 노드")]
     public Node StartNode;
@@ -30,15 +31,19 @@ public class AiNav : MonoBehaviour
     [SerializeField] private float moveTime = 1.0f; // 이동 시간 변수
 
     private Graph graph;
-    private Node hitNode;
-    private bool isMoving = false;
+    [SerializeField] private Node hitNode;
+    [SerializeField] private bool isMoving = false;
     private Camera mainCamera;
+    private bool isPlayerDetected = false;
+
+    public UnityEvent<Node, Node, bool> linkerEvent;
+
+
 
     private void Start()
     {
-        
-        
         animator = GetComponentInChildren<Animator>();
+        player = FindAnyObjectByType<PlayerController>();
         //pathfinder.Fin
         pathfinder.StartNode = StartNode;
         
@@ -53,8 +58,12 @@ public class AiNav : MonoBehaviour
 
     private void Update()
     {
+        DetectPlayer();
         AIPatrol();
+
     }
+
+
 
     private void AIPatrol()
     {
@@ -65,7 +74,14 @@ public class AiNav : MonoBehaviour
 
         //possiblePath = pathfinder.FindBestPathForAI(currentNode, PathManager.instance.newNode, StartNode, EndNode);
         //중간경로 >>> 순환 케이스 
-        
+
+
+        if (isPlayerDetected)
+        {
+            return; // 플레이어가 감지되면 이동 중지
+        }
+
+
         foreach (Edge edge in currentNode.Edges)
         {
             if(lastNode == null)
@@ -83,7 +99,7 @@ public class AiNav : MonoBehaviour
 
                 continue;
             }
-            if (edge.isActive)
+            if (edge.isActive && edge.neighbor.NodeType == Node.NodeState.Flat) //지정 경로 외의 경로 이동 불가
             {
                 nextNode = edge.neighbor;
 
@@ -104,25 +120,12 @@ public class AiNav : MonoBehaviour
         }
 
         
-        RaycastHit hit;
+        
         
 
         //각 노드 칸마다 현재 플레이어 혹은 ai가 있는지 파악하는 로직 작성 >> 그 다음에 각 플레이어들에게 이웃 노드들에 이전에 만든 조건에 부합하면 해당 방향으로 이동 불가능하도록 할 것 >> 
         //UpdateAnimation("isStop", isStop);
-        if (Physics.Raycast(transform.position, transform.forward, out hit, maxDistance)) //개선방안 1. 이전처럼 노드의 isactive를 제어, 2. 
-        {
-            if (hit.transform.CompareTag("Player"))
-            {
-                isMoving = false;
-                animator.SetBool("isMoving", isMoving);
-                hitNode = lastNode;
-                currentNode.EnableEdge(hitNode, false);
-
-               // currentNode.EnableEdge()
-                return;
-            }
-            
-        }
+        
 
         possiblePath = pathfinder.FindPath(currentNode, nextNode, lastNode, StartNode, EndNode);
         
@@ -130,6 +133,8 @@ public class AiNav : MonoBehaviour
 
         if (possiblePath.Count > 0)
         {
+            
+            //FollowPath(possiblePath);
             StartCoroutine(FollowPathRoutine(possiblePath));
             lastNode = currentNode;
         }
@@ -138,6 +143,50 @@ public class AiNav : MonoBehaviour
             isReversing = !isReversing;
         }   
     }
+
+    private void DetectPlayer()
+    {
+        
+        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+        //저장될 노드들
+
+        
+        if (distanceToPlayer <= maxDistance)
+        {
+            StopAllCoroutines();
+
+            isMoving = false;
+
+            animator.SetBool("isMoving", isMoving);
+
+            // 플레이어가 위치한 노드
+            hitNode = player.GetComponentInParent<Node>();
+
+            linkerEvent?.Invoke(currentNode, hitNode, false);
+
+            //ai가 있는 노드와 플레이어가 있는 노드 사이를 비활성화
+            // 플레이어가 감지되었을 때 엣지를 비활성화
+            
+            isPlayerDetected = true;
+            return;
+        }
+        else
+        {
+            if (isPlayerDetected)
+            {
+                // 플레이어가 감지되지 않으면 모든 엣지를 다시 활성화
+                Debug.Log("Player lost! Re-enabling edges.");
+
+                linkerEvent?.Invoke(currentNode, hitNode, true);
+
+                isPlayerDetected = false;
+            }
+        }
+
+
+
+    }
+
     private IEnumerator FollowPathRoutine(List<Node> path)
     {
         // start moving
@@ -186,6 +235,10 @@ public class AiNav : MonoBehaviour
         {
             yield break;
         }
+
+        
+
+
 
         // validate move time
         moveTime = Mathf.Clamp(moveTime, 0.1f, 5f);
@@ -277,6 +330,106 @@ public class AiNav : MonoBehaviour
             yield return null;
         }
     }
+
+
+    private void MoveToNode(Vector3 startPosition, Node targetNode)
+    {
+
+        float distance = Vector3.Distance(startPosition, targetNode.transform.position);
+
+        float elapsedTime = 0;
+
+        Boundary dirBoundary = currentNode.FindEdge(targetNode);
+
+        if (dirBoundary == null)
+        {
+            return;
+        }
+
+        // validate move time
+        moveTime = Mathf.Clamp(moveTime, 0.1f, 5f);
+
+        while (elapsedTime < moveTime && targetNode != null && !HasReachedBoundary(dirBoundary))
+        {
+
+            elapsedTime += Time.deltaTime;
+            float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
+
+            Vector3 localTargetPos = dirBoundary.transform.localPosition;  // 타겟의 로컬 좌표
+            Vector3 targetPos = dirBoundary.transform.parent.TransformPoint(localTargetPos);
+
+
+            Vector3 newDir = targetPos - transform.position;
+
+            transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
+            if (newDir != Vector3.zero)
+            {
+
+                if (currentNode.NodeType is Node.NodeState.Ladder || dirBoundary.isTeleport)
+                {
+                    //Quaternion targetRotation = Quaternion.LookRotation(newDir);
+                    //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                    FaceNextPosition(transform.position, targetPos);
+                }
+                else
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                }
+
+
+            }
+
+
+        }
+
+
+        //노드에서 노드로 직접 이동?
+        if (dirBoundary.isTeleport)
+        {
+            Boundary revDirBoundary = targetNode.FindEdge(currentNode);
+
+
+            transform.position = revDirBoundary.transform.position;
+        }
+
+        transform.parent = targetNode.transform;
+        currentNode.isStacked = false;
+        currentNode = targetNode;
+        currentNode.isStacked = true;
+
+        targetNode.gameEvent.Invoke();
+
+        startPosition = transform.position;
+        elapsedTime = 0;
+
+        while (elapsedTime < moveTime && targetNode != null && !HasReachedNode(targetNode))
+        {
+
+            elapsedTime += Time.deltaTime;
+            float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
+
+            Vector3 targetPos = targetNode.transform.position;
+            transform.position = Vector3.MoveTowards(startPosition, targetPos, lerpValue);
+            Vector3 newDir = targetPos - transform.position;
+
+            if (newDir != Vector3.zero)
+            {
+                if (currentNode.NodeType is Node.NodeState.Ladder || dirBoundary.isTeleport)
+                {
+
+                    FaceNextPosition(transform.position, targetPos);
+                }
+                else
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                }
+            }
+
+        }
+    }
+
 
     public bool HasReachedBoundary(Boundary boundary)
     {

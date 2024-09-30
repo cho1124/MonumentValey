@@ -30,6 +30,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace RW.MonumentValley
 {
@@ -304,8 +305,8 @@ namespace RW.MonumentValley
                     destinationNode = lastNode;
                 }
             }
-            //startNode와 endNode가 같을 때 즉 순환구조일 떄
-            //1. 
+            
+            
 
             return FindPath();
         }
@@ -317,6 +318,7 @@ namespace RW.MonumentValley
             return FindPath();
         }
 
+
         public List<Node> FindPathForTotem(Node start, Node dest, bool canTotemMove)
         {
             destinationNode = dest;
@@ -325,10 +327,6 @@ namespace RW.MonumentValley
             return FindPath(canTotemMove);
         }
 
-
-
-
-       
         // find the best path given a bunch of possible Node destinations
         public List<Node> FindBestPath(Node start, Node[] possibleDestinations)
         {
@@ -340,6 +338,11 @@ namespace RW.MonumentValley
                 if (!isPathComplete && isSearchComplete)
                 {
                     
+                    continue;
+                }
+
+                if (!possiblePath.All(node => node.canAccessPlayer))
+                {
                     continue;
                 }
 
@@ -365,43 +368,6 @@ namespace RW.MonumentValley
             return bestPath;
         }
 
-        public List<Node> FindBestPathForAI(Node start, Node[] possibleDestinations, Node MinNode, Node MaxNode)
-        {
-            List<Node> bestPath = new List<Node>();
-            Node currentNode = start;
-            foreach (Node n in possibleDestinations)
-            {
-                List<Node> possiblePath = FindPath(currentNode, n);
-
-                if (!isPathComplete && isSearchComplete)
-                {
-                    
-                    continue;
-                }
-
-                //bestPath = possiblePath;
-                bestPath.AddRange(possiblePath);
-
-                currentNode = n;
-
-
-            }
-
-           
-            if (bestPath.Count <= 1)
-            {
-                //여기
-                //Debug.Log("asd");
-                ClearPath();
-                return new List<Node>();
-            }
-
-            destinationNode = bestPath[bestPath.Count - 1];
-            pathNodes = bestPath;
-            return bestPath;
-        }
-
-
         public List<Node> FindBestPathForTotem(Node start, Node[] possibleDestinations)
         {
             List<Node> bestPath = new List<Node>();
@@ -414,6 +380,12 @@ namespace RW.MonumentValley
 
                     continue;
                 }
+
+                if (!possiblePath.All(node => node.canAccessPlayer))
+                {
+                    continue;
+                }
+
 
                 if (bestPath.Count == 0 && possiblePath.Count > 0)
                 {

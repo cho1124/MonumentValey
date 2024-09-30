@@ -26,6 +26,8 @@ public abstract class CommonPress : MonoBehaviour
 
     protected abstract void ExecuteButtonAction();
 
+    
+
 }
 
 public class ButtonPress : CommonPress
@@ -34,7 +36,10 @@ public class ButtonPress : CommonPress
     [SerializeField] private bool isPressed = false;
     [SerializeField] private Animator animator;
     [SerializeField] private Node parentNode;
-    
+    [SerializeField] private bool isSim = false;
+    [SerializeField] private float delayTime = 0.5f;
+    [SerializeField] private Animator targetAnimator;
+
 
     private void Start()
     {
@@ -76,9 +81,22 @@ public class ButtonPress : CommonPress
     protected override void ExecuteButtonAction()
     {
         if (sequenceTuples.Count == 0) return;
-        
 
-        StartCoroutine(ExecuteSequencesSequentially());
+        if(targetAnimator != null)
+        {
+            targetAnimator.SetBool("isOpen", true);
+        }
+
+
+        if(isSim)
+        {
+            StartCoroutine(ExecuteSequencesSimulately());
+        }
+        else
+        {
+            StartCoroutine(ExecuteSequencesSequentially());
+        }
+
     }
 
     // 시퀀스를 순차적으로 실행하는 코루틴
@@ -105,6 +123,33 @@ public class ButtonPress : CommonPress
 
         Debug.Log("All sequences completed.");
     }
+
+    private IEnumerator ExecuteSequencesSimulately()
+    {
+        foreach (SequenceTuple s in sequenceTuples)
+        {
+            
+
+            // 시퀀스가 끝난 뒤에 sequenceCompleted를 true로 설정
+            if (s.sequenceManager != null)
+            {
+                s.sequenceManager.ExecuteSequence(s.target, () =>
+                {
+                    Debug.Log("Action Completed");
+                    snappingEvent?.Invoke();  // 이벤트 호출
+                    
+                });
+            }
+
+            // 시퀀스가 완료될 때까지 대기
+            yield return new WaitForSeconds(delayTime);
+            
+        }
+        
+
+        Debug.Log("All sequences completed.");
+    }
+
 
 
     private void UpdateAnimator(bool isPressed)

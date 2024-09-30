@@ -10,7 +10,9 @@ public class DoorPress : CommonPress
     private Node thisNode;
     [SerializeField] private Node nextStartNode;
     [SerializeField] private Node nextMovetoNode;
-    
+    [SerializeField] private bool isSim = false;
+    [SerializeField] private float delayTime = 0.5f;
+
 
     private void Start()
     {
@@ -47,16 +49,68 @@ public class DoorPress : CommonPress
     {
         if (sequenceTuples.Count == 0) return;
 
-        foreach (SequenceTuple s in sequenceTuples)
+        if (isSim)
         {
-            // 시퀀스 실행
-            if (s.sequenceManager != null)
-            {
-                s.sequenceManager.ExecuteSequence(s.target, () => { Debug.Log("Action"); snappingEvent?.Invoke(); });  // 시퀀스 실행
-            }
-
+            StartCoroutine(ExecuteSequencesSimulately());
+        }
+        else
+        {
+            StartCoroutine(ExecuteSequencesSequentially());
         }
     }
+
+
+    private IEnumerator ExecuteSequencesSequentially()
+    {
+        foreach (SequenceTuple s in sequenceTuples)
+        {
+            bool sequenceCompleted = false;
+
+            // 시퀀스가 끝난 뒤에 sequenceCompleted를 true로 설정
+            if (s.sequenceManager != null)
+            {
+                s.sequenceManager.ExecuteSequence(s.target, () =>
+                {
+                    Debug.Log("Action Completed");
+                    snappingEvent?.Invoke();  // 이벤트 호출
+                    sequenceCompleted = true;  // 시퀀스 완료
+                });
+            }
+
+            // 시퀀스가 완료될 때까지 대기
+            yield return new WaitUntil(() => sequenceCompleted);
+        }
+
+        Debug.Log("All sequences completed.");
+    }
+
+    private IEnumerator ExecuteSequencesSimulately()
+    {
+        foreach (SequenceTuple s in sequenceTuples)
+        {
+
+
+            // 시퀀스가 끝난 뒤에 sequenceCompleted를 true로 설정
+            if (s.sequenceManager != null)
+            {
+                s.sequenceManager.ExecuteSequence(s.target, () =>
+                {
+                    Debug.Log("Action Completed");
+                    snappingEvent?.Invoke();  // 이벤트 호출
+
+                });
+            }
+
+            // 시퀀스가 완료될 때까지 대기
+            yield return new WaitForSeconds(delayTime);
+
+        }
+
+
+        Debug.Log("All sequences completed.");
+    }
+
+
 
 
 
