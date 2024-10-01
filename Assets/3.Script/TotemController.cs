@@ -16,7 +16,7 @@ namespace RW.MonumentValley
         [Header("토템세팅")]
         public Transform target;
         public Transform pivot;
-        public float moveSpeed = 1f;
+        
         public int minDragDist = 10;
         public UnityEvent snapEvent; //이건 사용할 지는 모르겠네
         
@@ -26,8 +26,7 @@ namespace RW.MonumentValley
         //이 부분은 부모 객체에서 수행해야 할 부분
         private Camera mainCamera;
        
-        [Header("이동 가능한 노드에 대한 부분")]
-        [SerializeField] private Node[] Nodes;
+        
 
         public Graph graph;
         public Pathfinder pathfinder;
@@ -45,10 +44,7 @@ namespace RW.MonumentValley
             
         }
 
-        public List<Node> FindPathStart(Node node)
-        {
-            return pathfinder.FindBestPathForTotem(node, Nodes);
-        }
+        
 
         public void BeginDrag(Vector2 mousePosition)
         {
@@ -94,8 +90,7 @@ namespace RW.MonumentValley
         public Transform SnapToNearestNode(Transform _transform, bool isSmoothMove)
         {
 
-            
-
+            Debug.Log("snap");
             Node nearestNode = graph?.FindClosestNode(_transform.position, true);
             
             if(isSmoothMove)
@@ -135,7 +130,7 @@ namespace RW.MonumentValley
         [SerializeField] private TotemSettings totemSettings;
         [SerializeField] private Node startNode;
         [SerializeField] private Node destNode;
-        [SerializeField] private List<Node> canMoveNodes;
+        
         
         [Header("컨트롤 제어권")]
         public bool isControlEnabled = false;
@@ -151,7 +146,8 @@ namespace RW.MonumentValley
         private void Start()
         {
             totemSettings.SnapToNearestNode(transform, false);
-            canMoveNodes = totemSettings.FindPathStart(startNode);
+            
+            
         }
 
         
@@ -166,6 +162,7 @@ namespace RW.MonumentValley
 
         public void OnDrag(PointerEventData eventData)
         {
+           
             //드래그를 통해 해당하는 노드들만 이동하기 >> 노드가 있는 위치가 아니어도 가장 가깝고 이동 가능한 노드를 찾아서 그 방향으로 토템 이동하는 알고리즘
             if (totemSettings.isActive)
             {

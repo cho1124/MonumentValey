@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RW.MonumentValley;
 using UnityEngine.Events;
+using System;
 
 public enum ButtonType
 {
@@ -109,10 +110,11 @@ public class ButtonPress : CommonPress
             // 시퀀스가 끝난 뒤에 sequenceCompleted를 true로 설정
             if (s.sequenceManager != null)
             {
+                StartCoroutine(CallEventWhileSequenceRunning(() => sequenceCompleted));
                 s.sequenceManager.ExecuteSequence(s.target, () =>
                 {
                     Debug.Log("Action Completed");
-                    snappingEvent?.Invoke();  // 이벤트 호출
+                    //snappingEvent?.Invoke();  // 이벤트 호출
                     sequenceCompleted = true;  // 시퀀스 완료
                 });
             }
@@ -124,6 +126,20 @@ public class ButtonPress : CommonPress
         Debug.Log("All sequences completed.");
     }
 
+    private IEnumerator CallEventWhileSequenceRunning(Func<bool> isSequenceCompleted)
+    {
+        while (!isSequenceCompleted())
+        {
+            // 이벤트 호출
+            snappingEvent?.Invoke();
+
+            // 짧은 시간 대기 후 다시 이벤트 호출 (0.5초 대기 예시)
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        Debug.Log("Sequence completed, stopping event calls.");
+    }
+
     private IEnumerator ExecuteSequencesSimulately()
     {
         foreach (SequenceTuple s in sequenceTuples)
@@ -133,6 +149,8 @@ public class ButtonPress : CommonPress
             // 시퀀스가 끝난 뒤에 sequenceCompleted를 true로 설정
             if (s.sequenceManager != null)
             {
+                
+
                 s.sequenceManager.ExecuteSequence(s.target, () =>
                 {
                     Debug.Log("Action Completed");
@@ -154,7 +172,12 @@ public class ButtonPress : CommonPress
 
     private void UpdateAnimator(bool isPressed)
     {
-        animator.SetBool("isPressed", isPressed);
+
+        if(animator != null)
+        {
+            animator.SetBool("isPressed", isPressed);
+
+        }
     }
 
 }
