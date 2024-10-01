@@ -346,36 +346,42 @@ namespace RW.MonumentValley
 
         private void MoveTarget(Vector2 mousePosition)
         {
+            // Convert mouse position to world position
+            Vector3 currentDragPos = new Vector3(mousePosition.x, mousePosition.y, Camera.main.WorldToScreenPoint(pivot.position).z);
+            Vector3 currentDragWorldPos = Camera.main.ScreenToWorldPoint(currentDragPos);
 
-           
-            Vector3 CurrentDragPos = new Vector3(mousePosition.x, mousePosition.y, Camera.main.WorldToScreenPoint(pivot.position).z);
-            Vector3 CurrentDragWorldPos = Camera.main.ScreenToWorldPoint(CurrentDragPos);
+            // Get the axis direction for the movement (assuming z-axis in your example)
+            Vector3 axisDirection = GetAxisDirection();
 
-            Vector3 axisDirection = GetAxisDirection(); // z축 (0, 0, z)
+            // Convert world position to local position
+            Vector3 currentDragLocalPos = target.parent.InverseTransformPoint(currentDragWorldPos);
 
-            Vector3 newDir = new Vector3(axisDirection.x * CurrentDragWorldPos.x,
-                                         axisDirection.y * CurrentDragWorldPos.y,
-                                         axisDirection.z * CurrentDragWorldPos.z);
+            // Apply axis constraints (if needed)
+            Vector3 newLocalDir = new Vector3(axisDirection.x * currentDragLocalPos.x,
+                                              axisDirection.y * currentDragLocalPos.y,
+                                              axisDirection.z * currentDragLocalPos.z);
 
-            target.position = newDir;
+            // Move the target locally
+            target.localPosition = newLocalDir;
 
-            target.position = new Vector3(Mathf.Clamp(target.position.x, minTransform.position.x, maxTransform.position.x),
-                Mathf.Clamp(target.position.y, minTransform.position.y, maxTransform.position.y),
-                Mathf.Clamp(target.position.z, minTransform.position.z, maxTransform.position.z));
+            // Clamp the position within the bounds (also in local space)
+            target.localPosition = new Vector3(
+                Mathf.Clamp(target.localPosition.x, minTransform.localPosition.x, maxTransform.localPosition.x),
+                Mathf.Clamp(target.localPosition.y, minTransform.localPosition.y, maxTransform.localPosition.y),
+                Mathf.Clamp(target.localPosition.z, minTransform.localPosition.z, maxTransform.localPosition.z)
+            );
 
+            // Calculate ratio in local space based on local position
+            ratio = (target.localPosition - minTransform.localPosition).magnitude / (maxTransform.localPosition - minTransform.localPosition).magnitude;
 
-            ratio = (target.position - minTransform.position).magnitude / (maxTransform.position - minTransform.position).magnitude;
-            
-            
-            if(aimedObjects.Length != 0)
+            // Move aimed objects based on the ratio
+            if (aimedObjects.Length != 0)
             {
-                for(int i = 0; i < aimedObjects.Length; i++)
+                for (int i = 0; i < aimedObjects.Length; i++)
                 {
-                    
                     aimedObjects[i].MoveByRatio(ratio, aimedObjects[i].multiplyValue);
                 }
             }
-
         }
 
         protected Vector3 GetAxisDirection()

@@ -269,7 +269,7 @@ public class AiNav : MonoBehaviour
 
 
             //Vector3 newDir = targetPos - transform.position;
-            Vector3 newDir = targetPos - transform.position;
+            Vector3 newDir = localTargetPos - transform.localPosition;
 
             if (newDir != Vector3.zero)
             {
@@ -281,7 +281,7 @@ public class AiNav : MonoBehaviour
                 else
                 {
                     Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
-                    transform.rotation = Quaternion.Slerp(transform.localRotation, targetRotation, lerpValue);
+                    transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, lerpValue);
                 }
 
                 
@@ -343,7 +343,7 @@ public class AiNav : MonoBehaviour
                 else
                 {
                     Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
-                    transform.rotation = Quaternion.Slerp(transform.localRotation, targetRotation, lerpValue);
+                    transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, lerpValue);
                 }
             }
 

@@ -18,7 +18,7 @@ namespace RW.MonumentValley
         [Header("활성화시켜야 하는 트랜스폼 값")]
         public Transform activeTr;
 
-        [Header("Nodes to activate")]
+        [Header("ChainedMode에서는 할당 하지 마세요")]
         
         public Node nodeA;
         public Node nodeB;
@@ -34,15 +34,27 @@ namespace RW.MonumentValley
         public Transform targetObject;
         public DragSpinner spinnerSetter;
 
-        
+
     }
 
-    
+    [Serializable]
+    public class ChainedLink
+    {
+        public List<RotationLink> chainedTransforms;
+
+        [Header("리팩토링 필요 >> ChainedLink에서만 활성화할 노드 있으면 되니까 이 부분 수정할 것 나중에")]
+        public Node nodeA;
+        public Node nodeB;
+
+    }
+
+
     // activates or deactivates special Edges between Nodes
     public class Linker : MonoBehaviour
     {
         [SerializeField] private RotationLink[] rotationLinks;
         [SerializeField] private MoverLink[] moverLinks;
+        [SerializeField] private ChainedLink[] chainedLinks;
 
         // toggle active state of Edge between neighbor Nodes
         public void EnableLink(Node nodeA, Node nodeB, bool state)
@@ -75,7 +87,6 @@ namespace RW.MonumentValley
                 Vector3 targetPosition = l.activeTr.localPosition;
 
 
-
                 if (Mathf.Abs(angleDiff) < 0.05f && Vector3.Distance(targetPosition, l.linkedTransform.localPosition) < 0.05f)
                 {
                     EnableLink(l.nodeA, l.nodeB, true);
@@ -100,13 +111,38 @@ namespace RW.MonumentValley
 
             }
 
+            foreach (ChainedLink c in chainedLinks)
+            {
+                bool allLinksAligned = true;
+
+                foreach (RotationLink l in c.chainedTransforms)
+                {
+                    if (l.linkedTransform == null)
+                        continue;
+
+                    Quaternion targetAngle = l.activeTr.localRotation;
+                    float angleDiff = Quaternion.Angle(l.linkedTransform.localRotation, targetAngle);
+                    Vector3 targetPosition = l.activeTr.localPosition;
+
+                    if (Mathf.Abs(angleDiff) >= 0.05f || Vector3.Distance(targetPosition, l.linkedTransform.localPosition) >= 0.05f)
+                    {
+                        allLinksAligned = false;
+                    }
+                }
+
+                EnableLink(c.nodeA, c.nodeB, allLinksAligned);
+                // Enable or disable the chained link based on whether all rotations are aligned
+                
+            }
+
+
         }
 
 
         // update links when we begin
         private void Start()
         {
-            Debug.Log("StartedObj : " + transform.name);
+            
             UpdateRotationLinks();
         }
 
