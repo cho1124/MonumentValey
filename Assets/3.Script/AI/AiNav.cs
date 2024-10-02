@@ -293,27 +293,30 @@ public class AiNav : MonoBehaviour
         }
 
         currentNode.isStacked = false;
+
         
+
+
+
+        transform.parent = targetNode.transform;
 
         //노드에서 노드로 직접 이동?
         if (dirBoundary.isTeleport)
         {
             Boundary revDirBoundary = targetNode.FindEdge(currentNode);
             transform.localPosition = revDirBoundary.transform.localPosition; //여기도
-
+            Debug.Log("teleported");
 
         }
 
-        // 부모 변경 전 전역 좌표 저장
         Vector3 worldPosition = transform.position;
 
+        // 부모 변경 전 전역 좌표 저장
 
-        
-        transform.parent = targetNode.transform;
         currentNode = targetNode;
         transform.localPosition = currentNode.transform.InverseTransformPoint(worldPosition);
 
-        Debug.Log("local : " + transform.localPosition);
+        //Debug.Log("local : " + transform.localPosition);
         //transform.localPosition = 
         currentNode.isStacked = true;
 

@@ -88,7 +88,6 @@ public class ButtonPress : CommonPress
             targetAnimator.SetBool("isOpen", true);
         }
 
-
         if(isSim)
         {
             StartCoroutine(ExecuteSequencesSimulately());

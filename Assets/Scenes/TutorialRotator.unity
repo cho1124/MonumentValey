@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44109416, g: 0.4898492, b: 0.569927, a: 1}
+  m_IndirectSpecularColor: {r: 0.44109386, g: 0.48984855, b: 0.56992626, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2641,6 +2641,7 @@ MonoBehaviour:
     nodeA: {fileID: 0}
     nodeB: {fileID: 0}
   moverLinks: []
+  chainedLinks: []
 --- !u!4 &534635999 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 406789676710835998, guid: df82b4dd777efcc4ab6782f77c24cc84, type: 3}
@@ -13220,7 +13221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1838419370365390407, guid: 769f60d1aee7c9f4290f1e7abf01788c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8654078914716742988, guid: 769f60d1aee7c9f4290f1e7abf01788c, type: 3}
       propertyPath: destNode

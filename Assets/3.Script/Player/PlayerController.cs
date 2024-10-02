@@ -187,14 +187,12 @@ namespace RW.MonumentValley
                     //FaceNextPosition(transform.position, aimNode.transform.position);
 
                     // move to the next Node
-                    yield return StartCoroutine(MoveToNodeRoutine(transform.position, nextNode));
+                    yield return StartCoroutine(MoveToNodeRoutine(transform.localPosition, nextNode));
                 }
             }
-
             isMoving = false;
             //코루틴 끝나면 다시 idle상태 확인
             
-
         }
 
         //  lerp to another Node from current position
@@ -225,14 +223,14 @@ namespace RW.MonumentValley
                 Vector3 targetPos = dirBoundary.transform.parent.TransformPoint(localTargetPos);
 
 
-                Vector3 newDir = targetPos - transform.position;
+                transform.localPosition = Vector3.Lerp(startPosition, localTargetPos, lerpValue);
 
-                transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
+                Vector3 newDir = localTargetPos - transform.localPosition;
 
                 if (newDir != Vector3.zero)
                 {
 
-                    if(currentNode.NodeType is Node.NodeState.Ladder || currentNode.NodeType is Node.NodeState.Stair || dirBoundary.isTeleport)
+                    if(currentNode.NodeType is Node.NodeState.Ladder || currentNode.NodeType is Node.NodeState.Stair)
                     {
                         //Quaternion targetRotation = Quaternion.LookRotation(newDir);
                         //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
@@ -241,7 +239,7 @@ namespace RW.MonumentValley
                     else
                     {
                         Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
-                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, lerpValue);
                     }
 
                     
@@ -251,25 +249,32 @@ namespace RW.MonumentValley
 
             }
 
+            currentNode.isStacked = false;
+
+            transform.parent = targetNode.transform;
+
             if (dirBoundary.isTeleport)
             {
                 Boundary revDirBoundary = targetNode.FindEdge(currentNode);
 
 
-                transform.position = revDirBoundary.transform.position;
+                transform.localPosition = revDirBoundary.transform.localPosition;
             }
-            
 
-            transform.parent = targetNode.transform;
-            currentNode.isStacked = false;
+            Vector3 worldPosition = transform.position;
+
+            
+            
             currentNode = targetNode;
+            transform.localPosition = currentNode.transform.InverseTransformPoint(worldPosition);
+
             currentNode.isStacked = true;
 
             // invoke UnityEvent associated with next Node
             targetNode.gameEvent.Invoke();
             //Debug.Log("invoked GameEvent from targetNode: " + targetNode.name);
 
-            startPosition = transform.position;
+            startPosition = transform.localPosition;
             elapsedTime = 0;
 
             
@@ -279,15 +284,15 @@ namespace RW.MonumentValley
                 elapsedTime += Time.deltaTime;
                 float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
 
-                Vector3 targetPos = targetNode.transform.position;
-                transform.position = Vector3.Lerp(startPosition, targetPos, lerpValue);
+                Vector3 targetPos = currentNode.transform.localPosition;
+                transform.localPosition = Vector3.Lerp(startPosition, targetPos, lerpValue);
 
-                Vector3 newDir = targetPos - transform.position;
+                Vector3 newDir = targetPos - transform.localPosition;
 
 
                 if (newDir != Vector3.zero)
                 {
-                    if (currentNode.NodeType is Node.NodeState.Ladder || currentNode.NodeType is Node.NodeState.Stair || dirBoundary.isTeleport)
+                    if (currentNode.NodeType is Node.NodeState.Ladder || currentNode.NodeType is Node.NodeState.Stair)
                     {
                         
                         FaceNextPosition(transform.position, targetPos);
@@ -295,7 +300,7 @@ namespace RW.MonumentValley
                     else
                     {
                         Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
-                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, lerpValue);
                     }
                 }
 
@@ -321,7 +326,7 @@ namespace RW.MonumentValley
         {
             StopAllCoroutines();
             
-            Debug.Log("test");
+            
             currentNode.isStacked = false;
             currentNode = StartNode;
             currentNode.isStacked = true;
@@ -332,12 +337,15 @@ namespace RW.MonumentValley
 
 
         // turn face the next Node, always projected on a plane at the Player's feet
-        private void FaceNextPosition(Vector3 startPosition, Vector3 nextPosition)
+        private void FaceNextPosition(Vector3 startPosition, Vector3 nextPosition) //1. 현재 포지션, 타겟 포지션
         {
             if (Camera.main == null)
             {
                 return;
             }
+
+            //계단오르는것같은 느낌
+
 
             // convert next Node world space to screen space
             Vector3 nextPositionScreen = Camera.main.WorldToScreenPoint(nextPosition);
