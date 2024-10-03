@@ -346,6 +346,7 @@ namespace RW.MonumentValley
 
         private void MoveTarget(Vector2 mousePosition)
         {
+            Debug.Log("asd");
             // Convert mouse position to world position
             Vector3 currentDragPos = new Vector3(mousePosition.x, mousePosition.y, Camera.main.WorldToScreenPoint(pivot.position).z);
             Vector3 currentDragWorldPos = Camera.main.ScreenToWorldPoint(currentDragPos);

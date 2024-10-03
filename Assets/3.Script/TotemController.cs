@@ -136,6 +136,8 @@ namespace RW.MonumentValley
         public bool isControlEnabled = false;
         public bool isMoving = false;
 
+        public TotemSettings TotemSettings => totemSettings;
+
 
         private void Awake()
         {
@@ -188,6 +190,7 @@ namespace RW.MonumentValley
             StopAllCoroutines();
 
             transform.DOMove(totemSettings.SnapToNearestNode(transform, false).position, 0.5f);
+            totemSettings.snapEvent?.Invoke();
             //나중에 쓸지도 아닐지도 쓸 가능성이 높을듯 >>> 아닌것같기도   
         }
         public IEnumerator FollowPathRoutine(List<Node> path)

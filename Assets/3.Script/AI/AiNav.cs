@@ -73,15 +73,19 @@ public class AiNav : MonoBehaviour
     private void CheckInDoor()
     {
 
-        if (currentNode.isDoor)
+        if(RenderPlayerObj != null)
         {
-            RenderPlayerObj.layer = playerLayer;
+            if (currentNode.isDoor)
+            {
+                RenderPlayerObj.layer = playerLayer;
 
+            }
+            else
+            {
+                RenderPlayerObj.layer = levelLayer;
+            }
         }
-        else
-        {
-            RenderPlayerObj.layer = levelLayer;
-        }
+
 
     }
 
@@ -268,8 +272,8 @@ public class AiNav : MonoBehaviour
             transform.localPosition = Vector3.Lerp(startPosition, localTargetPos, lerpValue); //여기도
 
 
-            //Vector3 newDir = targetPos - transform.position;
-            Vector3 newDir = localTargetPos - transform.localPosition;
+            Vector3 newDir = targetPos - transform.position;
+            //Vector3 newDir = localTargetPos - transform.localPosition;
 
             if (newDir != Vector3.zero)
             {
@@ -281,7 +285,7 @@ public class AiNav : MonoBehaviour
                 else
                 {
                     Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
-                    transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, lerpValue);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
                 }
 
                 
@@ -332,9 +336,10 @@ public class AiNav : MonoBehaviour
             float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
 
             Vector3 targetPos = currentNode.transform.localPosition; //여기도!
+            Vector3 targetWorldPos = currentNode.transform.position;
             transform.localPosition = Vector3.Lerp(startPosition, targetPos, lerpValue); //여기도
 
-            Vector3 newDir = targetPos - transform.localPosition; //여기도
+            Vector3 newDir = targetWorldPos - transform.position; //여기도
 
             if (newDir != Vector3.zero)
             {
@@ -346,7 +351,7 @@ public class AiNav : MonoBehaviour
                 else
                 {
                     Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
-                    transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, lerpValue);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
                 }
             }
 

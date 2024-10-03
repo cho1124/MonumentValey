@@ -48,6 +48,15 @@ namespace RW.MonumentValley
 
     }
 
+    [Serializable]
+    public class TotemLink
+    {
+        public TotemController totem;
+        public Node targetNode;
+        public Node nodeA;
+        public Node nodeB;
+    }
+
 
     // activates or deactivates special Edges between Nodes
     public class Linker : MonoBehaviour
@@ -55,6 +64,7 @@ namespace RW.MonumentValley
         [SerializeField] private RotationLink[] rotationLinks;
         [SerializeField] private MoverLink[] moverLinks;
         [SerializeField] private ChainedLink[] chainedLinks;
+        [SerializeField] private TotemLink[] totemLinks;
 
         // toggle active state of Edge between neighbor Nodes
         public void EnableLink(Node nodeA, Node nodeB, bool state)
@@ -138,12 +148,33 @@ namespace RW.MonumentValley
 
         }
 
+        public void UpdateTotemLinks()
+        {
+            foreach(TotemLink l in totemLinks)
+            {
+                if (l.totem == null || l.nodeA == null || l.nodeB == null || l.targetNode == null)
+                    continue;
+
+                if(l.totem.TotemSettings.currentNode == l.targetNode)
+                {
+                    EnableLink(l.nodeA, l.nodeB, true);
+                }
+                else
+                {
+                    EnableLink(l.nodeA, l.nodeB, false);
+                }
+
+            }
+        }
+
+
 
         // update links when we begin
         private void Start()
         {
             
             UpdateRotationLinks();
+            UpdateTotemLinks();
         }
 
         

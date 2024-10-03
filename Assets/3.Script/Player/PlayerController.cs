@@ -6,10 +6,8 @@ using System.Linq;
 
 namespace RW.MonumentValley
 {
-
-  
     // handles Player input and movement
-    [RequireComponent(typeof(PlayerAnimation))]
+    
     public class PlayerController : MonoBehaviour
     {
         //  time to move one unit
@@ -38,23 +36,26 @@ namespace RW.MonumentValley
         // flags
         private bool isMoving;
         private bool isControlEnabled;
-        private PlayerAnimation playerAnimation;
+        
+        private Animator playerAnimator;
+        [SerializeField] private FakeCrow fakeCrow;
         
 
         private void Awake()
         {
-            
-            playerAnimation = GetComponent<PlayerAnimation>();
+
+
+            playerAnimator = GetComponentInChildren<Animator>();
 
             if (pathfinder != null)
             {
                 graph = pathfinder.GetComponent<Graph>();
             }
 
+            //fakeCrow = FindObjectOfType<FakeCrow>();
             isMoving = false;
             isControlEnabled = true;
             
-
         }
 
         private void Start()
@@ -97,8 +98,17 @@ namespace RW.MonumentValley
 
             UpdateAnimation();
             CheckInDoor();
-
-           
+            if(fakeCrow != null)
+            {
+                if(currentNode.canVisibleFakeCrow)
+                {
+                    fakeCrow.gameObject.SetActive(true);
+                }
+                else
+                {
+                    fakeCrow.gameObject.SetActive(false);
+                }
+            }
         }
 
         private void CheckInDoor()
@@ -180,7 +190,7 @@ namespace RW.MonumentValley
                     // use the current Node as the next waypoint
                     nextNode = path[i];
 
-                    //Debug.Log("nextNode's name : " + nextNode.name);
+                    //Debug.Log("nextNode's name : " + nextNode.name);  
                     // aim at the Node after that to minimize flipping
                     int nextAimIndex = Mathf.Clamp(i + 1, 0, path.Count - 1);
                     Node aimNode = path[nextAimIndex];
@@ -221,11 +231,9 @@ namespace RW.MonumentValley
 
                 Vector3 localTargetPos = dirBoundary.transform.localPosition;  // 타겟의 로컬 좌표
                 Vector3 targetPos = dirBoundary.transform.parent.TransformPoint(localTargetPos);
-
-
                 transform.localPosition = Vector3.Lerp(startPosition, localTargetPos, lerpValue);
 
-                Vector3 newDir = localTargetPos - transform.localPosition;
+                Vector3 newDir = targetPos - transform.position;
 
                 if (newDir != Vector3.zero)
                 {
@@ -238,8 +246,9 @@ namespace RW.MonumentValley
                     }
                     else
                     {
+                        
                         Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
-                        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, lerpValue);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
                     }
 
                     
@@ -285,9 +294,12 @@ namespace RW.MonumentValley
                 float lerpValue = Mathf.Clamp(elapsedTime / moveTime, 0f, 1f);
 
                 Vector3 targetPos = currentNode.transform.localPosition;
+                Vector3 targetWorldPos = currentNode.transform.position;
                 transform.localPosition = Vector3.Lerp(startPosition, targetPos, lerpValue);
 
-                Vector3 newDir = targetPos - transform.localPosition;
+
+                Vector3 newDir = targetWorldPos - transform.position;
+                Vector3 newWorldDir = targetWorldPos - transform.position;
 
 
                 if (newDir != Vector3.zero)
@@ -295,12 +307,15 @@ namespace RW.MonumentValley
                     if (currentNode.NodeType is Node.NodeState.Ladder || currentNode.NodeType is Node.NodeState.Stair)
                     {
                         
-                        FaceNextPosition(transform.position, targetPos);
+                        FaceNextPosition(transform.localPosition, targetPos);
                     }
                     else
                     {
+                        Vector3 localUp = currentNode.transform.TransformDirection(Vector3.up);
+                        
                         Quaternion targetRotation = Quaternion.LookRotation(newDir, currentNode.transform.up);
-                        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, lerpValue);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
+                        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue);
                     }
                 }
 
@@ -330,8 +345,9 @@ namespace RW.MonumentValley
             currentNode.isStacked = false;
             currentNode = StartNode;
             currentNode.isStacked = true;
-            transform.position = currentNode.transform.position;
-            StartCoroutine(MoveToNodeRoutine(transform.position, NextNode));
+            transform.parent = currentNode.transform;
+            transform.localPosition = currentNode.transform.localPosition;
+            StartCoroutine(MoveToNodeRoutine(transform.localPosition, NextNode));
             isMoving = false;
         }
 
@@ -381,38 +397,40 @@ namespace RW.MonumentValley
                 Debug.Log("currentNode is Ladder");
             }
 
-            
-            if (playerAnimation != null)
+
+
+            if (currentNode.NodeType is Node.NodeState.Ladder || nextNode?.NodeType is Node.NodeState.Ladder)
             {
-                if (currentNode.NodeType is Node.NodeState.Ladder || nextNode?.NodeType is Node.NodeState.Ladder)
+                if (nextNode.NodeType is Node.NodeState.Flat)
                 {
-                    if(nextNode.NodeType is Node.NodeState.Flat)
-                    {
-                        playerAnimation.StartAnimationParameter("isLadder", false);
-                        playerAnimation.StartAnimationParameter("isDown", false);
-                    }
-                    else 
-                    {
-                        playerAnimation.StartAnimationParameter("isLadder", true);
-                    }
-
+                    // "isLadder"를 false로 설정
+                    playerAnimator.SetBool("isLadder", false);
+                    // "isDown"을 false로 설정
+                    playerAnimator.SetBool("isDown", false);
                 }
-
-                if (currentNode.transform.position.y < nextNode?.transform.position.y)
+                else
                 {
-                    playerAnimation.StartAnimationParameter("isDown", false);
-
-
+                    // "isLadder"를 true로 설정
+                    playerAnimator.SetBool("isLadder", true);
                 }
-                //upTodown
-                else if (currentNode.transform.position.y > nextNode?.transform.position.y)
-                {
-                    playerAnimation.StartAnimationParameter("isDown", true);
-                }
-                
-                
             }
-            playerAnimation.StartAnimationParameter("isMoving", isMoving);
+
+            if (currentNode.transform.position.y < nextNode?.transform.position.y)
+            {
+                // "isDown"을 false로 설정 (위로 이동 중)
+                playerAnimator.SetBool("isDown", false);
+            }
+            // 아래로 이동 중인 경우
+            else if (currentNode.transform.position.y > nextNode?.transform.position.y)
+            {
+                // "isDown"을 true로 설정 (아래로 이동 중)
+                playerAnimator.SetBool("isDown", true);
+            }
+
+            // "isMoving" 파라미터를 설정
+            playerAnimator.SetBool("isMoving", isMoving);
+
+
         }
 
         // have we reached a specific Node?
@@ -455,5 +473,7 @@ namespace RW.MonumentValley
         {
             isControlEnabled = state;
         }
+
+        
     }
 }

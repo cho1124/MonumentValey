@@ -47,9 +47,10 @@ public class StageManager : MonoBehaviour
                     selectable.Opening();
                     
                 }
-                else
+                else if(selectable.GetCurrentState() is OpenedState)
                 {
                     Debug.Log("씬로드할예정");
+                    SceneLoad(selectable.stage.stageNum);
                     return;
                 }
 

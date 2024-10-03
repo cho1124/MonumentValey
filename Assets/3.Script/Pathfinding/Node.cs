@@ -89,6 +89,8 @@ namespace RW.MonumentValley
         public bool canAccessPlayer = true;
         public bool canAccessAI = true;
         public bool canAccessTotem = true;
+        
+        public bool canVisibleFakeCrow = false;
 
         public Node PreviousNode { get { return previousNode; } set { previousNode = value; } }
 
