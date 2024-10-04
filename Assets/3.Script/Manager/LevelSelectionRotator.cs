@@ -127,7 +127,13 @@ public class LevelSelectionRotator : MonoBehaviour
         {
             //TODO: 이 부분에서 현재 진행 상태를 불러와서 
             GameObject gameObject = Instantiate(stage.stageObj, stageTr);
-            gameObject.GetComponentInChildren<Selectable>().stage = stage;
+
+
+            Selectable selectable = gameObject.GetComponentInChildren<Selectable>();
+            selectable.stage = stage;
+            
+            
+            
             stageObj.Add(gameObject);
             gameObject.SetActive(false);
         }

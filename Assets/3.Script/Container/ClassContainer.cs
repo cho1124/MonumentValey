@@ -17,6 +17,7 @@ public class Stage
     public int stageNum;
     public string stageName;
     public GameObject stageObj;
-    
+    public IState StartState;
+
 }
 

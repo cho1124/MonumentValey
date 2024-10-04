@@ -307,7 +307,7 @@ namespace RW.MonumentValley
                     if (currentNode.NodeType is Node.NodeState.Ladder || currentNode.NodeType is Node.NodeState.Stair)
                     {
                         
-                        FaceNextPosition(transform.localPosition, targetPos);
+                        FaceNextPosition(transform.position, targetWorldPos);
                     }
                     else
                     {

@@ -8,10 +8,7 @@ public class GameStage
     public List<ButtonPress> buttons;
 
     
-    public void MoveObj()
-    {
-
-    }
+    
 
     //DoorClass ¸¸µé±â
 }

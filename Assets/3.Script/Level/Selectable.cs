@@ -31,13 +31,31 @@ public class Selectable : MonoBehaviour
         openingState = new OpeningState(this, ani, "Unlocking");
         openedState = new OpenedState(this, ani, "Open_4");
 
+        currentState = openedState;
+
         // 이 부분 json으로 불러오던지 어떤 방법이든지 써서 상태를 유동적으로 변환시키도록 할 것
-        currentState = closedState;
+        //currentState = closedState;
 
     }
     private void OnEnable()
     {
         ChangeState(currentState);
+    }
+
+    public void SetState()
+    {
+        
+
+        if (stage.stageNum == 6 || stage.stageNum == 8 || stage.stageNum == 10)
+        {
+            currentState = closedState;
+        }
+        else
+        {
+            currentState = openedState;
+        }
+
+        
     }
 
     private void ChangeState(IState newState)

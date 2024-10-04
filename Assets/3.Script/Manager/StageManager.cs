@@ -42,12 +42,7 @@ public class StageManager : MonoBehaviour
             {
                 Selectable selectable = hit.transform.GetComponentInParent<Selectable>();
 
-                if(selectable.GetCurrentState() is ClosedState)
-                {
-                    selectable.Opening();
-                    
-                }
-                else if(selectable.GetCurrentState() is OpenedState)
+                if(selectable.GetCurrentState() is OpenedState)
                 {
                     Debug.Log("씬로드할예정");
                     SceneLoad(selectable.stage.stageNum);

@@ -81,7 +81,32 @@ namespace RW.MonumentValley
         //각 바뀔때 UpdateRotation Links 다시 달기
         public void UpdateRotationLinks()
         {
-            
+
+            foreach (ChainedLink c in chainedLinks)
+            {
+                bool allLinksAligned = true;
+
+                foreach (RotationLink l in c.chainedTransforms)
+                {
+                    if (l.linkedTransform == null)
+                        continue;
+
+                    Quaternion targetAngle = l.activeTr.localRotation;
+                    float angleDiff = Quaternion.Angle(l.linkedTransform.localRotation, targetAngle);
+                    Vector3 targetPosition = l.activeTr.localPosition;
+
+                    if (Mathf.Abs(angleDiff) >= 0.05f || Vector3.Distance(targetPosition, l.linkedTransform.localPosition) >= 0.05f)
+                    {
+                        allLinksAligned = false;
+                    }
+                }
+
+                EnableLink(c.nodeA, c.nodeB, allLinksAligned);
+                // Enable or disable the chained link based on whether all rotations are aligned
+
+            }
+
+
             foreach (RotationLink l in rotationLinks)
             {
                 
@@ -121,30 +146,7 @@ namespace RW.MonumentValley
 
             }
 
-            foreach (ChainedLink c in chainedLinks)
-            {
-                bool allLinksAligned = true;
-
-                foreach (RotationLink l in c.chainedTransforms)
-                {
-                    if (l.linkedTransform == null)
-                        continue;
-
-                    Quaternion targetAngle = l.activeTr.localRotation;
-                    float angleDiff = Quaternion.Angle(l.linkedTransform.localRotation, targetAngle);
-                    Vector3 targetPosition = l.activeTr.localPosition;
-
-                    if (Mathf.Abs(angleDiff) >= 0.05f || Vector3.Distance(targetPosition, l.linkedTransform.localPosition) >= 0.05f)
-                    {
-                        allLinksAligned = false;
-                    }
-                }
-
-                EnableLink(c.nodeA, c.nodeB, allLinksAligned);
-                // Enable or disable the chained link based on whether all rotations are aligned
-                
-            }
-
+            
 
         }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public class UISettings
@@ -12,9 +13,6 @@ public class UISettings
     public List<string> names;
 
 }
-
-
-
 
 public class UIManager : MonoBehaviour
 {
@@ -38,9 +36,6 @@ public class UIManager : MonoBehaviour
 
     }
 
-
-
-
     // Start is called before the first frame update
     private void Start()
     {
@@ -54,13 +49,29 @@ public class UIManager : MonoBehaviour
 
     public void GameExit()
     {
+
+        Debug.Log(SceneManager.GetActiveScene().name);
+
+        if(SceneManager.GetActiveScene().buildIndex != 0)
+        {
+
+            
+            Debug.Log("asd");
+            SceneManager.LoadScene(0);
+        }
+        else
+        {
 #if UNITY_EDITOR
-        // 에디터에서는 플레이 모드를 종료
-        EditorApplication.isPlaying = false;
+            // 에디터에서는 플레이 모드를 종료
+            EditorApplication.isPlaying = false;
 #else
         // 빌드된 게임에서는 게임을 종료
-        Application.Quit();
+            Application.Quit();
 #endif
+        }
+
+
+
     }
 
     // Update is called once per frame
