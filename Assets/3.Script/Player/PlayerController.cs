@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 namespace RW.MonumentValley
 {
@@ -43,8 +42,6 @@ namespace RW.MonumentValley
 
         private void Awake()
         {
-
-
             playerAnimator = GetComponentInChildren<Animator>();
 
             if (pathfinder != null)
@@ -52,7 +49,6 @@ namespace RW.MonumentValley
                 graph = pathfinder.GetComponent<Graph>();
             }
 
-            //fakeCrow = FindObjectOfType<FakeCrow>();
             isMoving = false;
             isControlEnabled = true;
             
